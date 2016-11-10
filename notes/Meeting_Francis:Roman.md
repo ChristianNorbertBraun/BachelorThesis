@@ -1,4 +1,4 @@
-Einsatz eines Distributed File Systems (als Ersatz für die Relationale Datenbank - RDBMS) zur Verbesserung der Skalierung eines Banking-Buchungssystems.
+insatz eines Distributed File Systems (als Ersatz für die Relationale Datenbank - RDBMS) zur Verbesserung der Skalierung eines Banking-Buchungssystems.
 
 * Aktuelle Kernbankensysteme arbeiten mit Relationalen Datenbanken
 	(Kordoba)
@@ -18,6 +18,31 @@ Einsatz eines Distributed File Systems (als Ersatz für die Relationale Datenban
 	* Welche Konsistenz ist gewünscht?
 
 
+
+
+* Sharing Economy (Kostendruck S3)
+* Banken müssen mitspielen
+* Banken haben keine Anwenderschnittstelle
+* 10 Euro pro Jahr für ein Bankenkonto (Kordoba)
+* Kosten reduzieren Kernbanksysteme on Demand
+* Commodity Hardware
+
+
+* Speichern wo ich gerade beim Lesen des Files bin
+
+# Was bringen wir der Welt mit einem Skalierbaren Datenbanksystem
+* Alles in die Frage stellen (Doktor Werner Vogel)
+* Was brauche ich um diese Anforderungen zu erfüllen
+* ACID vs CAP Denken immer revolutiönar
+* Manches lässt sich nicht realisieren wegen Kosten
+* Datenbanksystem überdenken
+* Habe ich kein Girokonto, wieso dann diese Funktionalität
+* Kostenreduktion durch On Demand
+* Die Summe aller Kredit ist die Summer aller Debit
+* Doppelte Buchführung(Double Entry Book keeping)
+* Hoch performantes Lesen das ist das wichtigste
+* Hoch performantes Schreiben
+* Verstreuen der Files
 
 * Umsatztabelle ist sehr generisch
 * Durchsatz ist ein Problem (Transaktion ist minütlich)
