@@ -29,3 +29,6 @@ Einleitung
 	* Wie lässt sich das überhaupt ohne Update realisieren?
 	* Was muss ich dafür aufgeben?
 	
+Um Ratenkredit abzubilden
+Werden sehr viele Konten benötigt 4 Stück (40 Euro)
+Axel Wilkens Core Banking
