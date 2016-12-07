@@ -171,16 +171,19 @@ pdfkeywords={Keywords}
 %%%%%%%%%%%%%%%%%%%
 
 \section*{Zusammenfassung}
+\addcontentsline{toc}{chapter}{Zusammenfassung}
 
 TODO
 
 \section*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
 
 TODO
 
 \newpage
 \chapter*{Danksagung}
-
+\addcontentsline{toc}{chapter}{Danksagung}
+Danke an FH und adorsys. An Francis und an Prof.Heinzl. Eventuell auch an Korrekturleser.
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -195,27 +198,90 @@ TODO
 %%%%%%%%%%%%%%%%%%%
 \mainmatter
 
+
 \chapter{Einführung}\label{ch:intro}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vehicula felis lectus, nec aliquet arcu aliquam vitae. Quisque laoreet consequat ante, eget pretium quam hendrerit at. Pellentesque nec purus eget erat mattis varius. Nullam ut vulputate velit. Suspendisse in dui in eros iaculis tempus. Phasellus vel est arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer elementum, nulla eu faucibus dignissim, orci justo imperdiet lorem, luctus consectetur orci orci a nunc.
-
-Praesent at nunc nec tortor viverra viverra. Morbi in feugiat lectus. Vestibulum iaculis ipsum at eros viverra volutpat in id ipsum. Donec condimentum, ligula viverra pharetra tincidunt, nunc dui malesuada nisi, vitae mollis lacus massa quis velit. Integer feugiat ipsum a volutpat scelerisque. Nulla facilisis augue nunc. Curabitur eget consectetur nulla. Integer accumsan sem non nisi tristique dictum.
-
-Sed lacinia eu dolor sed congue. Ut dui orci, venenatis id interdum rhoncus, mattis elementum massa. Proin venenatis elementum purus ut rutrum. Phasellus sit amet enim porta, commodo mauris a, bibendum tortor. Nulla ut lobortis justo. Aenean auctor mi nec velit fermentum, quis ultricies odio viverra. Maecenas ultrices urna vel erat ornare, quis suscipit odio molestie. Donec vel dapibus orci, vel tincidunt orci.
-
-Etiam vitae eros erat. Praesent nec accumsan turpis, et mollis eros. Praesent lacinia nulla at neque porta aliquam. Quisque elementum neque ac porta suscipit. Nulla volutpat luctus venenatis. Aliquam imperdiet suscipit pretium. Nunc feugiat lacinia aliquet. Mauris ut sapien nec risus porttitor bibendum. Aenean feugiat bibendum lectus, id mattis elit adipiscing at. Pellentesque interdum felis non risus iaculis euismod fermentum nec urna. Nullam lacinia suscipit erat ac ullamcorper. Sed vitae nulla posuere, posuere sem id, ultricies urna. Maecenas eros lorem, tempus non nulla vitae, ullamcorper egestas nibh. Vestibulum facilisis ante vel purus accumsan mattis. Donec molestie tempor eros, a gravida odio congue posuere.
-
-Sed in tempus elit, sit amet suscipit quam. Ut suscipit dictum molestie. Etiam quis porta mauris. Cras dapibus sapien eget sem porta, ut congue sapien accumsan. Maecenas hendrerit lobortis mauris ut hendrerit. Suspendisse at aliquet est. Quisque eros est, scelerisque ac orci quis, placerat suscipit lorem. Phasellus rutrum enim non odio ullamcorper, sit amet auctor nulla fringilla. Nunc eleifend vulputate dui, a sollicitudin tellus venenatis non. Cras condimentum lorem at ultricies vestibulum. Vestibulum interdum lobortis commodo. Nullam rhoncus interdum massa, ut varius nisi scelerisque id. Nunc interdum quam in enim bibendum vulputate.
-
-\cite{gamma2011patterns}
-
-\cite{Alleman2006}
+\chapter{Bezug zum Unternehmen}
+Die Arbeit wird in Zusammenarbeit mit der adorsys GmbH \& Co. KG geschrieben.
+\section{Vorstellung von adorsys GmbH \& Co. KG}
+Kurzer Überblick über Firmengeschichte und Angebot von adorsys
+\section{Tätigkeiten im Banking-Bereich}
+Viele Kunden im Versicherungs- und Banking-Bereich.
+Einige wenige Nennen und Beispielprojekte erwähnen
 
 \chapter{Grundlagen}
+Einführung in wichtige Thematiken zur Realisierung der Arbeit
+\section{Buchungssystem}
+Was genau ist ein Buchungssystem?
+Buchungssystem als Teil eines Kernbankensystems
+\subsection{Bestandteile}
+Welche Konten befinden sich darin? 
+Aktiv- und Passivgeschäft erläutern
+\subsection{Anforderungen}
+Transaktionen erwähnen. Besonders auch auf aktuelle Technologie eingehen (RDBMS). Ausfallsicherheit, Erreichbarkeit, etc.
+\subsection{Probleme}
+Sehr teuer (Quelle????)
+Schwer zu skalieren
+Es wird Transaktionssicherheit auch für Kontoarten gewährleistet, welche gar keine benötigen
 
-\chapter{Problemstellung}
+\section{Distributed File System}
 
-\chapter{Lösung}
+\subsection{Funktionsweise}
+Verteiltes Datei System. Vielleicht auf Funktionsweise von Hadoop, etc. eingehen. Aber nur Überblick (Paper beinhalten Zusatzinformation).  
+In der Regel keine Update Operation => Keine Transaktionen
+\subsection{Anwendungsbereiche}
+Alles was mit Big Data zu tun hat. Google zum speichern der Weblinks, Facebook für Bilder, Yahoo, etc.
+\subsection{Vorteile und Nachteile}
+Schnell, billig, skalierbar, ausfallsicher, etc.
+
+Keine Transaktionen, eher low level, Analysen sind aufwendig (Map Reduce)
+\subsection{SeaweedFS}
+Auswahl eines konkreten File Systems in Bezug auf das Buchungssystem
+Besonders die stärken hervorheben (Kleine Files lesen, etc). Bezug zu Facebooks Haystack klar stellen.
+
+\chapter{Konzept}
+\section{Überblick}
+Was habe ich im großen Ganzen eigentlich vor
+\section{Transaktionen aufgeben}
+Kann man Transaktionen aufgeben? Wieso lohnt sich das? Was ist mein Ziel damit?
+\section{Verwendung des Distributed File Systems}
+Wie wird das DFS eingesetzt? Bzw. wie wird SeaweedFS eingesetzt.(Filer)
+\section{Aufbau der Anwendung}
+RESTfull Service, Kommunikation mit DFS
+\section{Erstellen einer Buchung}
+Ablauf
+\section{Lesen einer Buchung}
+Ablauf
+\section{Maßnahmen zur Skalierung}
+Wegen DFS leicht skalierbar, aber es muss auch auf Locks beim Schreiben von neuen Dateien geachtet werden.
+
+\chapter{Methodik}
+\section{Analyse der Ist-Situation}
+Analyse von Kernbankensystemen und deren Persistenzschicht. Was kostet das eine Bank im Jahr? 
+\section{Analyse und Auswahl eines Distributed File Systems}
+Analyse mehrerer DFS in Betrachtung der Anforderungen eines Buchungssystems und Auswahl von SeaweedFS
+\section{Entwicklung eines Konzepts zum Einsatz eines Distributed File Systems}
+Auf Basis der fehlenden Transaktionen das Konzept entwickeln. Was muss alles abgebildet werden etc.?
+\section{Beispielhafte Implementierung}
+Simple Beispielimplementierung zum Testen der Performance und der Umsetzbarkeit
+\section{Bewertung der Lösung}
+
+\chapter{Implementierung}
+\section{golang}
+Wieso habe ich golang verwendet? Bezug zu SeaweedFS
+\section{Schnittstelle zu SeaweedFS}
+Wieso wurde eine neue Schnittstelle geschrieben?
+Worauf war zu achten? Nutzung des Filers (Distributed Filer)
+\section{Bibliothek zur Abbildung von Buchungen}
+Einführen der fehlenden Abstraktionsschicht für die spätere Anwendung
+\section{RESTful Webservice}
+Implementierung einer API zum leichten Anlegen und Lesen von Buchungen. Besonderes Augenmerk auf Modularisierung.
+
+\chapter{Fazit}
+Mal sehen was hier später steht.
+
+\chapter{Ausblick}
+Ich bin sehr gespannt.
 
 \begin{lstlisting}[label=lst:java,
 				   language=java,
@@ -227,28 +293,10 @@ public void foo() {
 }
 \end{lstlisting}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vehicula felis lectus, nec aliquet arcu aliquam vitae. Quisque laoreet consequat ante, eget pretium quam hendrerit at. Pellentesque nec purus eget erat mattis varius. Nullam ut vulputate velit. Suspendisse in dui in eros iaculis tempus. Phasellus vel est arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer elementum, nulla eu faucibus dignissim, orci justo imperdiet lorem, luctus consectetur orci orci a nunc.
 
-Praesent at nunc nec tortor viverra viverra. Morbi in feugiat lectus. Vestibulum iaculis ipsum at eros viverra volutpat in id ipsum. Donec condimentum, ligula viverra pharetra tincidunt, nunc dui malesuada nisi, vitae mollis lacus massa quis velit. Integer feugiat ipsum a volutpat scelerisque. Nulla facilisis augue nunc. Curabitur eget consectetur nulla. Integer accumsan sem non nisi tristique dictum.
-
-Sed lacinia eu dolor sed congue. Ut dui orci, venenatis id interdum rhoncus, mattis elementum massa. Proin venenatis elementum purus ut rutrum. Phasellus sit amet enim porta, commodo mauris a, bibendum tortor. Nulla ut lobortis justo. Aenean auctor mi nec velit fermentum, quis ultricies odio viverra. Maecenas ultrices urna vel erat ornare, quis suscipit odio molestie. Donec vel dapibus orci, vel tincidunt orci.
-
-Etiam vitae eros erat. Praesent nec accumsan turpis, et mollis eros. Praesent lacinia nulla at neque porta aliquam. Quisque elementum neque ac porta suscipit. Nulla volutpat luctus venenatis. Aliquam imperdiet suscipit pretium. Nunc feugiat lacinia aliquet. Mauris ut sapien nec risus porttitor bibendum. Aenean feugiat bibendum lectus, id mattis elit adipiscing at. Pellentesque interdum felis non risus iaculis euismod fermentum nec urna. Nullam lacinia suscipit erat ac ullamcorper. Sed vitae nulla posuere, posuere sem id, ultricies urna. Maecenas eros lorem, tempus non nulla vitae, ullamcorper egestas nibh. Vestibulum facilisis ante vel purus accumsan mattis. Donec molestie tempor eros, a gravida odio congue posuere.
-
-Sed in tempus elit, sit amet suscipit quam. Ut suscipit dictum molestie. Etiam quis porta mauris. Cras dapibus sapien eget sem porta, ut congue sapien accumsan. Maecenas hendrerit lobortis mauris ut hendrerit. Suspendisse at aliquet est. Quisque eros est, scelerisque ac orci quis, placerat suscipit lorem. Phasellus rutrum enim non odio ullamcorper, sit amet auctor nulla fringilla. Nunc eleifend vulputate dui, a sollicitudin tellus venenatis non. Cras condimentum lorem at ultricies vestibulum. Vestibulum interdum lobortis commodo. Nullam rhoncus interdum massa, ut varius nisi scelerisque id. Nunc interdum quam in enim bibendum vulputate.
 
 
 \chapter{Evaluierung}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vehicula felis lectus, nec aliquet arcu aliquam vitae. Quisque laoreet consequat ante, eget pretium quam hendrerit at. Pellentesque nec purus eget erat mattis varius. Nullam ut vulputate velit. Suspendisse in dui in eros iaculis tempus. Phasellus vel est arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Integer elementum, nulla eu faucibus dignissim, orci justo imperdiet lorem, luctus consectetur orci orci a nunc.
-
-Praesent at nunc nec tortor viverra viverra. Morbi in feugiat lectus. Vestibulum iaculis ipsum at eros viverra volutpat in id ipsum. Donec condimentum, ligula viverra pharetra tincidunt, nunc dui malesuada nisi, vitae mollis lacus massa quis velit. Integer feugiat ipsum a volutpat scelerisque. Nulla facilisis augue nunc. Curabitur eget consectetur nulla. Integer accumsan sem non nisi tristique dictum.
-
-Sed lacinia eu dolor sed congue. Ut dui orci, venenatis id interdum rhoncus, mattis elementum massa. Proin venenatis elementum purus ut rutrum. Phasellus sit amet enim porta, commodo mauris a, bibendum tortor. Nulla ut lobortis justo. Aenean auctor mi nec velit fermentum, quis ultricies odio viverra. Maecenas ultrices urna vel erat ornare, quis suscipit odio molestie. Donec vel dapibus orci, vel tincidunt orci.
-
-Etiam vitae eros erat. Praesent nec accumsan turpis, et mollis eros. Praesent lacinia nulla at neque porta aliquam. Quisque elementum neque ac porta suscipit. Nulla volutpat luctus venenatis. Aliquam imperdiet suscipit pretium. Nunc feugiat lacinia aliquet. Mauris ut sapien nec risus porttitor bibendum. Aenean feugiat bibendum lectus, id mattis elit adipiscing at. Pellentesque interdum felis non risus iaculis euismod fermentum nec urna. Nullam lacinia suscipit erat ac ullamcorper. Sed vitae nulla posuere, posuere sem id, ultricies urna. Maecenas eros lorem, tempus non nulla vitae, ullamcorper egestas nibh. Vestibulum facilisis ante vel purus accumsan mattis. Donec molestie tempor eros, a gravida odio congue posuere.
-
-Sed in tempus elit, sit amet suscipit quam. Ut suscipit dictum molestie. Etiam quis porta mauris. Cras dapibus sapien eget sem porta, ut congue sapien accumsan. Maecenas hendrerit lobortis mauris ut hendrerit. Suspendisse at aliquet est. Quisque eros est, scelerisque ac orci quis, placerat suscipit lorem. Phasellus rutrum enim non odio ullamcorper, sit amet auctor nulla fringilla. Nunc eleifend vulputate dui, a sollicitudin tellus venenatis non. Cras condimentum lorem at ultricies vestibulum. Vestibulum interdum lobortis commodo. Nullam rhoncus interdum massa, ut varius nisi scelerisque id. Nunc interdum quam in enim bibendum vulputate.
 
 \chapter{Zusammenfassung}
 

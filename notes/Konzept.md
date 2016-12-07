@@ -15,6 +15,7 @@ Einsatz eines DFS
 =================
 * Von Anforderungen eines Buchungssystems auf Anwendungsbereiche von DFS verweisen
 	* Banken sind Big Data!
+	* Auch Sharing Economy ist hier Thema! (Amazon S3)
 * Was sind Stärken bzw. Schwächen von DFS
 	* Stark transaktionsbasiert (Was heißt das genau?)
 	* Speichern sehr vieler unstrukturierter Daten
