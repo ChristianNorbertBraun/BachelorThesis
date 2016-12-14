@@ -27,7 +27,8 @@
 \usepackage{setspace}
 \usepackage{booktabs}
 \usepackage[style=numeric]{biblatex}
-\bibliography{literatur2}
+%\bibliography{literatur2}
+\addbibresource{literatur.bib}
 
 
 %%%%%%%%%%%%%%%%%%%
@@ -185,7 +186,6 @@ TODO
 \addcontentsline{toc}{chapter}{Danksagung}
 Danke an FH und adorsys. An Francis und an Prof.Heinzl. Eventuell auch an Korrekturleser.
 
-
 %%%%%%%%%%%%%%%%%%%
 %% Inhaltsverzeichnis
 %%%%%%%%%%%%%%%%%%%
@@ -200,52 +200,54 @@ Danke an FH und adorsys. An Francis und an Prof.Heinzl. Eventuell auch an Korrek
 
 
 \chapter{Einführung}\label{ch:intro}
+\section{Motivation}
+\section{Umfeld}
+\section{Zielsetzung}
 
-\chapter{Bezug zum Unternehmen}
-Die Arbeit wird in Zusammenarbeit mit der adorsys GmbH \& Co. KG geschrieben.
-\section{Vorstellung von adorsys GmbH \& Co. KG}
-Kurzer Überblick über Firmengeschichte und Angebot von adorsys
-\section{Tätigkeiten im Banking-Bereich}
-Viele Kunden im Versicherungs- und Banking-Bereich.
-Einige wenige Nennen und Beispielprojekte erwähnen
+\chapter{Methodik}
+Wenig Emirpie mehr Analytik
+\section{Analyse der Ist-Situation}
+Analyse von Kernbankensystemen und deren Persistenzschicht. Was kostet das eine Bank im Jahr? 
+\section{Analyse und Auswahl eines Distributed File Systems}
+Analyse mehrerer DFS in Betrachtung der Anforderungen eines Buchungssystems und Auswahl von SeaweedFS
+\section{Entwicklung des Konzepts}
+Auf Basis der fehlenden Transaktionen das Konzept entwickeln. Was muss alles abgebildet werden etc.?
+\section{Beispielhafte Implementierung}
+Simple Beispielimplementierung zum Testen der Performance und der Umsetzbarkeit
+\section{Bewertung der Lösung}
 
-\chapter{Grundlagen}
-Einführung in wichtige Thematiken zur Realisierung der Arbeit
-\section{Buchungssystem}
+\chapter{Wesen und Probleme eines Buchungssystems}
+\section{Begriffserklärung}
 Was genau ist ein Buchungssystem?
 Buchungssystem als Teil eines Kernbankensystems
-\subsection{Bestandteile}
+Double Entry Book Keeping
+\section{Bestandteile}
 Welche Konten befinden sich darin? 
 Aktiv- und Passivgeschäft erläutern
-\subsection{Anforderungen}
+\section{Anforderungen}
 Transaktionen erwähnen. Besonders auch auf aktuelle Technologie eingehen (RDBMS). Ausfallsicherheit, Erreichbarkeit, etc.
-\subsection{Probleme}
+\section{Probleme}
 Sehr teuer (Quelle????)
 Schwer zu skalieren
 Es wird Transaktionssicherheit auch für Kontoarten gewährleistet, welche gar keine benötigen
 
-\section{Distributed File System}
+\chapter{Dirstributed File System als Backbone für Buchungssysteme}
 
-\subsection{Funktionsweise}
+\section{Funktionsweise}
 Verteiltes Datei System. Vielleicht auf Funktionsweise von Hadoop, etc. eingehen. Aber nur Überblick (Paper beinhalten Zusatzinformation).  
 In der Regel keine Update Operation => Keine Transaktionen
-\subsection{Anwendungsbereiche}
+\section{Anwendungsbereiche}
 Alles was mit Big Data zu tun hat. Google zum speichern der Weblinks, Facebook für Bilder, Yahoo, etc.
-\subsection{Vorteile und Nachteile}
+\section{Vorteile und Nachteile}
 Schnell, billig, skalierbar, ausfallsicher, etc.
-
 Keine Transaktionen, eher low level, Analysen sind aufwendig (Map Reduce)
-\subsection{SeaweedFS}
-Auswahl eines konkreten File Systems in Bezug auf das Buchungssystem
-Besonders die stärken hervorheben (Kleine Files lesen, etc). Bezug zu Facebooks Haystack klar stellen.
 
 \chapter{Konzept}
-\section{Überblick}
-Was habe ich im großen Ganzen eigentlich vor
 \section{Transaktionen aufgeben}
 Kann man Transaktionen aufgeben? Wieso lohnt sich das? Was ist mein Ziel damit?
+\section{Ausfallsicherheit}
 \section{Verwendung des Distributed File Systems}
-Wie wird das DFS eingesetzt? Bzw. wie wird SeaweedFS eingesetzt.(Filer)
+Wie wird das DFS eingesetzt? Noch keine Konkrete Implementierung angeben.
 \section{Aufbau der Anwendung}
 RESTfull Service, Kommunikation mit DFS
 \section{Erstellen einer Buchung}
@@ -255,20 +257,13 @@ Ablauf
 \section{Maßnahmen zur Skalierung}
 Wegen DFS leicht skalierbar, aber es muss auch auf Locks beim Schreiben von neuen Dateien geachtet werden.
 
-\chapter{Methodik}
-\section{Analyse der Ist-Situation}
-Analyse von Kernbankensystemen und deren Persistenzschicht. Was kostet das eine Bank im Jahr? 
-\section{Analyse und Auswahl eines Distributed File Systems}
-Analyse mehrerer DFS in Betrachtung der Anforderungen eines Buchungssystems und Auswahl von SeaweedFS
-\section{Entwicklung eines Konzepts zum Einsatz eines Distributed File Systems}
-Auf Basis der fehlenden Transaktionen das Konzept entwickeln. Was muss alles abgebildet werden etc.?
-\section{Beispielhafte Implementierung}
-Simple Beispielimplementierung zum Testen der Performance und der Umsetzbarkeit
-\section{Bewertung der Lösung}
 
 \chapter{Implementierung}
+\section{SeaweedFS}
+Einsatz von SeaweedFS und wieso?
+Wie wird er hier konkret Konfiguriert
 \section{golang}
-Wieso habe ich golang verwendet? Bezug zu SeaweedFS
+Wieso habe ich golang verwendet? Bezug zu SeaweedFS 
 \section{Schnittstelle zu SeaweedFS}
 Wieso wurde eine neue Schnittstelle geschrieben?
 Worauf war zu achten? Nutzung des Filers (Distributed Filer)
@@ -277,7 +272,7 @@ Einführen der fehlenden Abstraktionsschicht für die spätere Anwendung
 \section{RESTful Webservice}
 Implementierung einer API zum leichten Anlegen und Lesen von Buchungen. Besonderes Augenmerk auf Modularisierung.
 
-\chapter{Fazit}
+\chapter{Evaluierung}
 Mal sehen was hier später steht.
 
 \chapter{Ausblick}
@@ -292,11 +287,6 @@ public void foo() {
 	// Kommentar
 }
 \end{lstlisting}
-
-
-
-
-\chapter{Evaluierung}
 
 \chapter{Zusammenfassung}
 

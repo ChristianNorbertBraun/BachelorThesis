@@ -10,6 +10,9 @@
 .PHONY: all clean publish makepdf makehtml
 .SUFFIXES: .pdf .ps .dvi .eps .tex .html
 
+build:
+	pdflatex -output-directory=build thesis.tex && biber thesis --output-directory build && pdflatex -output-directory=build thesis.tex  && pdflatex -output-directory=build thesis.tex && cd build/ && open thesis.pdf
+
 #################################################################################
 ## file names
 #################################################################################
