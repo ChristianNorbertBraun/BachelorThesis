@@ -1,3 +1,61 @@
+Einführung
+==========
+## Motivation
+## Umfeld
+## Zielsetzung
+
+Methodik
+========
+## Analyse der Ist-Situation
+## Analyse und Auswahl eines Distributed File Systems
+## Entwicklung des Konzepts
+## Beispielhafte Implementierung
+## Bewertung der Lösung
+
+Wesen und Probleme eines Buchungssystems
+========================================
+## Begriffserklärung
+## Bestandtteile
+## Anforderungen
+## Probleme
+
+Dirstributed File System als Backbone für Buchungssysteme
+=========================================================
+## Funktionsweise
+## Anwendungsbereiche
+## Vorteile und Nachteile
+
+Konzept
+=======
+## Transaktionen aufgeben
+## Ausfallsicherheit
+## Verwendung des Distributed File Systems
+## Aufbau der Anwendung
+## Erstellen einer Buchung
+## Lesen einer Buchung
+## Skalierung
+
+Implementierung
+===============
+## SeaweedFS
+## golang
+## Schnittstelle zu SeaweedFS
+## Bibliothek zur Abbildung von Buchungen
+## RESTful Webservice
+
+Evaluierung
+===========
+
+Ausblick
+========
+
+Zusammenfassung
+===============
+
+
+
+
+
 Was ist ein Buchungssystem? (!!! Schwer an Infos zu kommen)
 ===========================
 * Rolle des Buchungssystems in einer Bank
