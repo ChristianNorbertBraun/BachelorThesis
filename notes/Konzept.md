@@ -1,37 +1,107 @@
 Einführung
 ==========
+
 ## Motivation
+* Banken sind Big Data (Hier brauche ich noch Infos!!!)
+* Sharing Economy (Amazon s3)
+* Wirtschaftlicher Vorteil
+* Skalierbarkeit von Buchungssystemen
+
 ## Umfeld
+* adorsys
+* Consulting IT Firma mit Versicherungen und Banken als Kunden
+* Easy Credit
+* Open Source Kernbankensystem
+
 ## Zielsetzung
+* Nicht im Rahmen der aktuellen Technologie denken, sondern Anfiorderungen hinterfragen(Vielleicht auch Motvation)
+* Stark transaktionsbasiertes System nach echten Anforderungen hinterfragen
+* Bessere Skalierbarkeit, Ausfallsicherheit und Performance
+* Beantwortung der Frage ob ein Buchungssystem bzw. welche Teile/ Konten lassen sich realisieren
+* Was bringt es mir tatsächlich das ganze umzusetzen
 
 Methodik
 ========
-## Analyse der Ist-Situation
-## Analyse und Auswahl eines Distributed File Systems
+Eher analytisch weniger Empirisch
+Aber wieso eigentlich eher analytisch?
+## Analyse der Ist-Situation (Nur Vorgehensweise erläutern)
+* Aktuelle Kernbankensysteme und Buchungssysteme erläutern
+* Anforderungen herausfinden
+	* Insbesondere auf Skalierung und Ausfallsicherheit
+* Zusammenarbeit mit Axel Wilkens und vll. Teambank
+* Vor- und Nachteile herausarbeiten
+* Gewichten der Anforderungen
+## Analyse und Auswahl eines Distributed File Systems (Muss die Analyse auch mit in der Arbeit stehen?)
+* Allgemeine Infos zu Distributed File Systemen sammeln
+* Auf Basis der Anforderungen und Pros und Contras von Buchungssystemen Anforderungen an DFS herausarbeiten
+* Ausgesuchte DFS müssen den Anforderungen entsprechen
+	* Entsprechend der Anfoderungen analysieren
 ## Entwicklung des Konzepts
+* Möglichkeiten zur Abbildung der Buchungssprozesse auf DFS erarbeiten
+* Schritte für eine Buchung und das Lesen einer Buchung herrausarbeiten
 ## Beispielhafte Implementierung
+* Auf Basis des Konzepts eine Implementierung anfertigen
 ## Bewertung der Lösung
+* Performance Tests auf Implementierung
+* Speicher Preise vergleichen
+* Skalierung vergleichen
+* Ausfallsicherheit vergleichen
 
-Wesen und Probleme eines Buchungssystems
+Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
 ========================================
+* Kernstück eines Kernbankensystems
 ## Begriffserklärung
-## Bestandtteile
-## Anforderungen
+* Abwicklung aller Prozesse 
+* Zahlungsverkehr
+* Nachverfolgung von Resourcen Nutzung
+## Bestandtteile (FIS Kordoba Flyer) (Fällt vll. mit Begriffserklärung zusammen)
+* Zahlungsverkehr
+* Aktivgeschäfte
+* Passivgeschäfte
+## Anforderungen(Quellen?)
+* Ausfallsicherheit
+* Skalierbar
+* Vielleicht aus Arbeit zur Bankings Architektur
+* Mandantenfähig(http://www.enzyklopaedie-der-wirtschaftsinformatik.de/lexikon/informationssysteme/Sektorspezifische-Anwendungssysteme/Finanzsektor--Anwendungssysteme-im/kernbanksystem)
+
 ## Probleme
+* Aus Anforderungen ergeben sich Probleme
+* RDBMS lässt sich nicht beliebig skalieren
+* Locking verlangsamt Transaktionen
+* Skalierung nur bedingt machbar
+	* Sehr teuer und aufwendig (Nicht auf commodity Hardware)
 
 Dirstributed File System als Backbone für Buchungssysteme
 =========================================================
 ## Funktionsweise
+* Abspeichern von Unstrukturierten Dateien auf vielen Data Clustern
 ## Anwendungsbereiche
+* Big Data 
+	* Weblinks, Bilder
+	* Google, Facebook, Yahoo
 ## Vorteile und Nachteile
+* Leicht skalierbar
+* Ausfallsicher
+* Aufwendige Analysen
+* Keine Transaktionen
 
 Konzept
 =======
+* Es gibt bestimmt Kontoarten, die sich nicht mit einem DFS realisieren lassen
 ## Transaktionen aufgeben
+* Keine Transaktionen werden benötigt für
+	* Ratenkreditkonto
+	* Sparkonto
+	* Termineinlage
+* Diese Konten können realisiert werden
 ## Ausfallsicherheit
+* Ausfallsicherheit ist sehr wichtig
+* Mein System muss auch Ausfallsicher sein
+
 ## Verwendung des Distributed File Systems
 ## Aufbau der Anwendung
 ## Erstellen einer Buchung
+* Verschlüsselung?
 ## Lesen einer Buchung
 ## Skalierung
 
