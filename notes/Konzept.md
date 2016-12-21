@@ -94,10 +94,11 @@ Konzept
 	* Sparkonto
 	* Termineinlage
 * Diese Konten können realisiert werden
-## Ausfallsicherheit
+## Ausfallsicherheit (Vielleicht kein Teil des Konzepts)
 * Ausfallsicherheit ist sehr wichtig
 * Mein System muss auch Ausfallsicher sein
-
+* DFS sind sehr ausfallsicher
+* Wie Konfiguriere ich das System?
 ## Verwendung des Distributed File Systems
 ## Aufbau der Anwendung
 ## Erstellen einer Buchung
