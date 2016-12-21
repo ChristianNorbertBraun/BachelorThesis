@@ -3,17 +3,42 @@ Einführung
 
 ## Motivation
 * Banken sind Big Data (Hier brauche ich noch Infos!!!)
-* Sharing Economy (Amazon s3)
-* Wirtschaftlicher Vorteil
-* Skalierbarkeit von Buchungssystemen
+	* Was heißt das konkret?
+	* Welche VOrteile bringt und Big Data im Bankensektor?
+	* Was entsteht daraus?
+		* FinTech?? Hat das was damit zu tun?
+	* Was sind die Herausforderungen, die es zu bewältigen gilt
+* Wie haben andere das Problem gelöst?
+	* Sharing Economy (Was ist das genau? Welche Bedeutung hat es? Wie löst es das Problem von Big Data?)
+* Durch Anpassen der Achitektur auf die Bedürfnisse kann Speicher und Rechenzeit sehr flexibel berechnet werden
+* Daraus folgt ein wirtschaftlicher Vorteil
+	* Kernbankensysteme müssen je nach Model unterschiedlich abkassieren
+		* Leasing, Miete, pro Transaktion etc.
+	* Kostenersparnis bei Servern
+	* Kostenersparnis bei Speicher
+	* Diese Ersparnis fällt im besten Fall sogar auf den Kunden zurück
+* Was zusätzlich noch mitkommt ist eine beliebige Skalierbarkeit und Ausfallsicherheit
+	* Und bessere Performance
 
 ## Umfeld
-* adorsys
-* Consulting IT Firma mit Versicherungen und Banken als Kunden
-* Easy Credit
-* Open Source Kernbankensystem
+* In wie weit sich die Sharing Economy durch den Einsatz eines Distributed File Systems auf ein Banking Buchungsystem übertragen lässt soll in dieser Arbeit bearbeitet werden
+* Partner ist hierbei adorsys
+* IT Consulting Firma, welche selbst einige Kunden im Versucherungs und Finanz sektor hat
+* Beispielsweise Easy Credit wurde mit adorsys umgesetzt
+* Desweiteren war auch die Umsetzung eines Open Source Kernbankensystems durch adorsys geplant
 
 ## Zielsetzung
+* Relationale Datenbanken sind mit die ältesten Systeme
+	* Steuern die Art wie Systeme gebaut sind
+	* Doch Transaktionen und Indizes werden vielleicht auch gar nicht immer gebraucht
+* Rausfinden Welche Teile eines Buchungssystems sich  durch ein Distributed File System realisieren lassen
+* Methriken finden um die Ergebnisse zu Messen
+* Es sollen weitestgehend alle Anforderungen eines Buchungssystems realisiert werden können
+* Kostenersparnis sichtbar machen (Nur wie!!!!!!)
+
+
+
+
 * Nicht im Rahmen der aktuellen Technologie denken, sondern Anfiorderungen hinterfragen(Vielleicht auch Motvation)
 * Stark transaktionsbasiertes System nach echten Anforderungen hinterfragen
 * Bessere Skalierbarkeit, Ausfallsicherheit und Performance
@@ -55,6 +80,7 @@ Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
 * Zahlungsverkehr
 * Nachverfolgung von Resourcen Nutzung
 ## Bestandtteile (FIS Kordoba Flyer) (Fällt vll. mit Begriffserklärung zusammen)
+* Avaloq banking suite nutzt PL/SQL
 * Zahlungsverkehr
 * Aktivgeschäfte
 * Passivgeschäfte
@@ -63,6 +89,7 @@ Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
 * Skalierbar
 * Vielleicht aus Arbeit zur Bankings Architektur
 * Mandantenfähig(http://www.enzyklopaedie-der-wirtschaftsinformatik.de/lexikon/informationssysteme/Sektorspezifische-Anwendungssysteme/Finanzsektor--Anwendungssysteme-im/kernbanksystem)
+* Es muss Modular sein um sich in ein Kernbankensystem eingleidern zu können
 
 ## Probleme
 * Aus Anforderungen ergeben sich Probleme
