@@ -3,6 +3,9 @@ Einführung
 
 ## Motivation
 * Banken sind Big Data (Hier brauche ich noch Infos!!!)
+	* Kreditanträge
+	* Kontoumsätze
+	* Mobilebanking
 	* Was heißt das konkret?
 	* Welche VOrteile bringt und Big Data im Bankensektor?
 	* Was entsteht daraus?
@@ -121,17 +124,27 @@ Konzept
 	* Sparkonto
 	* Termineinlage
 * Diese Konten können realisiert werden
+## Verwendung des Distributed File Systems
+* Wie kommt hier das DFS ins Spiel?
+## Aufbau der Anwendung
+* Journal
+* Client
+* Backend
+* Rest Schnittstelle
+## Erstellen einer Buchung
+* Verschlüsselung?
+## Lesen einer Buchung
+## Skalierung
+* Wie lässt sich das Konzept skalieren?
+* SOA Prinzip beim Backend
+* DFS von Haus aus stark skalierbar
+* Keine Transaktionen sind sehr sicher
+* Nur eventuelle Konsistenz
 ## Ausfallsicherheit (Vielleicht kein Teil des Konzepts)
 * Ausfallsicherheit ist sehr wichtig
 * Mein System muss auch Ausfallsicher sein
 * DFS sind sehr ausfallsicher
 * Wie Konfiguriere ich das System?
-## Verwendung des Distributed File Systems
-## Aufbau der Anwendung
-## Erstellen einer Buchung
-* Verschlüsselung?
-## Lesen einer Buchung
-## Skalierung
 
 Implementierung
 ===============
@@ -146,7 +159,7 @@ Evaluierung
 
 Ausblick
 ========
-
+* Einsatz von Amazon S3
 Zusammenfassung
 ===============
 
