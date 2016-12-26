@@ -78,6 +78,7 @@ Aber wieso eigentlich eher analytisch?
 Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
 ========================================
 * Kernstück eines Kernbankensystems
+* Kernbankensystem erklären
 ## Begriffserklärung
 * Abwicklung aller Prozesse 
 * Zahlungsverkehr
@@ -93,6 +94,10 @@ Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
 * Vielleicht aus Arbeit zur Bankings Architektur
 * Mandantenfähig(http://www.enzyklopaedie-der-wirtschaftsinformatik.de/lexikon/informationssysteme/Sektorspezifische-Anwendungssysteme/Finanzsektor--Anwendungssysteme-im/kernbanksystem)
 * Es muss Modular sein um sich in ein Kernbankensystem eingleidern zu können
+## Ablauf einer Buchung
+* Posting trifft  ein
+* Posting wird validiert
+* Transaktion zum Kontoauslesen
 
 ## Probleme
 * Aus Anforderungen ergeben sich Probleme
