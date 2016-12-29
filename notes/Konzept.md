@@ -3,11 +3,16 @@ Einführung
 
 ## Motivation
 * Banken sind Big Data (Hier brauche ich noch Infos!!!)
+	* Könnten auch Faktoren zur Methodik sein
+		* Infrastruktur
+		* Data Storage
+		* Data Processing and Management
+		* Data Analytics
 	* Kreditanträge
 	* Kontoumsätze
 	* Mobilebanking
 	* Was heißt das konkret?
-	* Welche VOrteile bringt und Big Data im Bankensektor?
+	* Welche VOrteile bringt uns Big Data im Bankensektor?
 	* Was entsteht daraus?
 		* FinTech?? Hat das was damit zu tun?
 	* Was sind die Herausforderungen, die es zu bewältigen gilt
@@ -135,6 +140,7 @@ Konzept
 * Journal
 * Client
 * Backend
+* DFS
 * Rest Schnittstelle
 ## Erstellen einer Buchung
 * Verschlüsselung?
