@@ -167,10 +167,14 @@ Implementierung
 
 Evaluierung
 ===========
+* Benchmark Tests
+* Paper zu Skalierung eiens DFS lesen und Metriken entnehmen
 
 Ausblick
 ========
 * Einsatz von Amazon S3
+* Validierungen implementieren
+
 Zusammenfassung
 ===============
 
