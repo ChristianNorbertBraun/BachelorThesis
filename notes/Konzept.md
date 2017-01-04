@@ -1,3 +1,5 @@
+* Wieso keine NoSQL Datenbank sondern ein DFS? Was sind die unterschiede?
+
 Einführung
 ==========
 
@@ -14,11 +16,10 @@ Einführung
 		* Online und Mobile Banking
 		* Auch  der Einsatz von Banking APIs ermöglicht drittanbieter apps auf die Daten der Banken zuzugreifen und auch neue zu generieren.
 		* Die Vielzahl an Verwendungsmöglichkeiten erhöht natürlich die Datenmenge
-	* Welche VOrteile bringt uns Big Data im Bankensektor?
-		* Erkennen von ungewöhnlichen Transaktionen
-		* Für Kundenzugeschnittene Angebote
-		* Kreditwürdigkeit und Risiko analyse wird genauer
-		* Welcher Finanzsektor ist am Wachsen, beziehungswiese interessant
+	* Probelm ist jedoch, dass die eingesetzte Technologie nicht hinterherkommt
+		* Veraltete Kernbankensysteme
+		* Die Systeme müssen hohe Bedingungen erfüllen, daher ist ein Wechsel schwierig
+		* Alte Kernbankensysteme bremsen Fortschritt aus
 	* Was sind die Herausforderungen, die es zu bewältigen gilt?
 		* Analyse der Daten
 		* Skalierung der Systeme
@@ -26,6 +27,11 @@ Einführung
 		* Anfragen der Kunden bewältigen
 		* Die Architektur muss entsprechend angepasst werden
 		* Kernbankensysteme sind nicht darauf ausgerichtet
+	* Welche VOrteile bringt uns Big Data im Bankensektor?
+		* Erkennen von ungewöhnlichen Transaktionen
+		* Für Kundenzugeschnittene Angebote
+		* Kreditwürdigkeit und Risiko analyse wird genauer
+		* Welcher Finanzsektor ist am Wachsen, beziehungswiese interessant
 * Wie haben andere das Problem gelöst?
 	* Firmen wie Google, Yahoo oder Facebook haben das gleiche Problem
 	* Sie lösen das mit hoch skalierbaren Systemen, die sich dynamisch entsprechend der Anforderungen verhalten
@@ -33,6 +39,8 @@ Einführung
 	* Infrakstruktur wächst entsprechend der Anforderungen
 	* Immer nur das Bezhalen was gebraucht wird
 	* Was genau hat Sharing Economy mit dem ganzen Thema zu tun?
+	* Anwendung von einem DFS auf die Banking Welt.
+
 * Durch Anpassen der Achitektur auf die Bedürfnisse kann Speicher und Rechenzeit sehr flexibel berechnet werden
 * Daraus folgt ein wirtschaftlicher Vorteil
 	* Kernbankensysteme müssen je nach Model unterschiedlich abkassieren
@@ -40,6 +48,8 @@ Einführung
 	* Kostenersparnis bei Servern
 	* Kostenersparnis bei Speicher
 	* Diese Ersparnis fällt im besten Fall sogar auf den Kunden zurück
+	* Banken müssen sich den neuen Herausforderungen stellen
+		* Sharing Economy und Fin Techs sind Konkurrenten
 * Was zusätzlich noch mitkommt ist eine beliebige Skalierbarkeit und Ausfallsicherheit
 	* Und bessere Performance
 
