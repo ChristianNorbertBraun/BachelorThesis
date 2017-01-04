@@ -10,14 +10,29 @@ Einführung
 		* Data Analytics
 	* Kreditanträge
 	* Kontoumsätze
-	* Mobilebanking
-	* Was heißt das konkret?
+	* Wo kommen all diese Daten her?
+		* Online und Mobile Banking
+		* Auch  der Einsatz von Banking APIs ermöglicht drittanbieter apps auf die Daten der Banken zuzugreifen und auch neue zu generieren.
+		* Die Vielzahl an Verwendungsmöglichkeiten erhöht natürlich die Datenmenge
 	* Welche VOrteile bringt uns Big Data im Bankensektor?
-	* Was entsteht daraus?
-		* FinTech?? Hat das was damit zu tun?
-	* Was sind die Herausforderungen, die es zu bewältigen gilt
+		* Erkennen von ungewöhnlichen Transaktionen
+		* Für Kundenzugeschnittene Angebote
+		* Kreditwürdigkeit und Risiko analyse wird genauer
+		* Welcher Finanzsektor ist am Wachsen, beziehungswiese interessant
+	* Was sind die Herausforderungen, die es zu bewältigen gilt?
+		* Analyse der Daten
+		* Skalierung der Systeme
+		* Kostenprobleme Speicher und Hardware kostet
+		* Anfragen der Kunden bewältigen
+		* Die Architektur muss entsprechend angepasst werden
+		* Kernbankensysteme sind nicht darauf ausgerichtet
 * Wie haben andere das Problem gelöst?
-	* Sharing Economy (Was ist das genau? Welche Bedeutung hat es? Wie löst es das Problem von Big Data?)
+	* Firmen wie Google, Yahoo oder Facebook haben das gleiche Problem
+	* Sie lösen das mit hoch skalierbaren Systemen, die sich dynamisch entsprechend der Anforderungen verhalten
+	* Crowd Funding wie Kickstarter
+	* Infrakstruktur wächst entsprechend der Anforderungen
+	* Immer nur das Bezhalen was gebraucht wird
+	* Was genau hat Sharing Economy mit dem ganzen Thema zu tun?
 * Durch Anpassen der Achitektur auf die Bedürfnisse kann Speicher und Rechenzeit sehr flexibel berechnet werden
 * Daraus folgt ein wirtschaftlicher Vorteil
 	* Kernbankensysteme müssen je nach Model unterschiedlich abkassieren
@@ -159,6 +174,7 @@ Konzept
 
 Implementierung
 ===============
+* Als Open Source Projekt!
 ## SeaweedFS
 ## golang
 ## Schnittstelle zu SeaweedFS
