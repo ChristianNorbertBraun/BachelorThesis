@@ -25,6 +25,7 @@
 \usepackage{epstopdf}		
 \usepackage{longtable}  
 \usepackage{setspace}
+\usepackage[nolist]{acronym}
 \usepackage{booktabs}
 \usepackage[style=numeric]{biblatex}
 %\bibliography{literatur2}
@@ -141,6 +142,14 @@ pdfkeywords={Keywords}
 
 \begin{document}
 
+\acrodefplural{dfs}[DFS]{Distributed File Systems}
+
+\begin{acronym}[Bash]
+  \acro{dfss}[DFS]{Distributed File System}
+  \acro{hdfs}[HDFS]{Hadoop Distributed File System}
+  \acro{api}[API]{Application Programming Interface}
+\end{acronym}
+
 
 %%%%%%%%%%%%%%%%%%%
 %% Titelseite
@@ -201,8 +210,9 @@ Danke an FH und adorsys. An Francis und an Prof.Heinzl. Eventuell auch an Korrek
 
 \chapter{Einführung}\label{ch:intro}
 \section{Motivation}
-Quellen benötigt!!!!
-Banken sind Big Data. Jeden Tag fließen tausende Zahlungsprozesse alleine durch die Systeme deutscher Banken. Der stetige Datenzuwachs birgt zahlreiche Möglichkeiten jedoch auch Herausforderungen. Zur Auswertung werden hoch skalierbare und performante Systeme benötigt. Die aktuell weitläufig in Kernbankensystemen eingesetzten Technologien stoßen hier an ihre Grenzen oder erfordern teure Hardware um den Anforderungen gerecht zu werden. Durch Nutzung der Sharing Economy skalieren Systeme entsprechend der Anforderungen und gewährleisten hohe Stabilität. Diese Vorteile können zu einem wirtschaftlichen Vorteil bei der Realisierung eines Banking Buchungssystems genutzt werden.
+Banken sind Big Data. Jeden Tag fließen unzählige Zahlungsprozesse und Kundendaten durch die Systeme deutscher und internationaler Banken. Alleine im Jahr 2012 schätzte man die Menge der gespeicherten Daten auf etwa 1,9 Petabyte pro Bank \cite{datanami}. Ein Ende des Datenwachstums ist nicht in Sicht. Durch den Einsatz von Mobile- und Online-Banking steigt nicht nur die Anzahl der Vertriebswege sondern auch der ausgeführten Transaktionen \cite{DBBigData}. Kunden rufen mobil ihren Kontostand ab, überweisen online ihre Rechnungen und bezahlen den Einkauf im Shoppingcenter mit der Kreditkarte. Dieses vertriebswegübergreifende Nutzen der Bankprodukte hat nicht nur einen Anstieg der Lese- und Schreibzugriffe auf die Systeme der Bank zur Folge, sondern fordert die Banken auch dazu auf, auf allen Vertriebswegen eine ähnlich gutes Nutzererlebnis zu liefern \cite{bankwirtschaft}.
+Doch die weitläufig eingesetzten Kernbankensysteme sind veraltet und haben Probleme den Anforderungen und der Unmenge an Daten Herr zu werden. Ein Ausbau wäre möglich, ist jedoch aufgrund der benötigten Hard- und Software teuer oder liefert keine langfristige Skalierbarkeit und Ausfallsicherheit \cite{herzKernbankensystem}. Auf dieses Problem stießen vor den Banken schon Firmen wie Google, Facebook oder Yahoo. Die Lösung war in allen drei Fällen der Einsatz eines \acp{dfs}. So entwickelte Google das Google File System \cite{GFS} zur Skalierung ihrer Websuche, Facebook Haystack \cite{haystack} zum Speichern und Lesen von Bildern und Yahoo das \ac{hdfs} \cite{hdfs}. Diese Systeme sind nicht nur einfach und günstig skalierbar sondern überzeugen auch durch eine hohe Ausfallsicherheit und Verfügbarkeit. Auch Banken könnten durch die Möglichkeiten eines \acp{dfs} profitieren. Was bei Google und Co. funktioniert, könnte auch den Banken helfen um langfristig mit den aufstrebenden FinTechs zu konkurrieren und das volle Potential ihrer Daten auszunutzen.
+
 \section{Umfeld}
 In Zusammenarbeit mit der adorsys GmbH \& Co. Kg. gilt es die Möglichkeiten durch den Einsatz der Sharing Economy für ein Banking Buchungssystem im Rahmen dier Arbeit zu analysieren. adorsys ist eine It Consulting Firma, die auch zahlreiche Firmen im Versicherungs und Banking-Bereich betreut. Dabei wird besonderer Wert auf die Betreuung als Komplettpacket gelegt. adorsys liefert über Beratung, Design und Implementierung auf die Kunden zugeschnittene Lösungen. 
 \section{Zielsetzung}

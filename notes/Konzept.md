@@ -5,11 +5,6 @@ Einführung
 
 ## Motivation
 * Banken sind Big Data (Hier brauche ich noch Infos!!!)
-	* Könnten auch Faktoren zur Methodik sein
-		* Infrastruktur
-		* Data Storage
-		* Data Processing and Management
-		* Data Analytics
 	* Kreditanträge
 	* Kontoumsätze
 	* Wo kommen all diese Daten her?
@@ -34,10 +29,6 @@ Einführung
 		* Welcher Finanzsektor ist am Wachsen, beziehungswiese interessant
 * Wie haben andere das Problem gelöst?
 	* Firmen wie Google, Yahoo oder Facebook haben das gleiche Problem
-	* Sie lösen das mit hoch skalierbaren Systemen, die sich dynamisch entsprechend der Anforderungen verhalten
-	* Crowd Funding wie Kickstarter
-	* Infrakstruktur wächst entsprechend der Anforderungen
-	* Immer nur das Bezhalen was gebraucht wird
 	* Was genau hat Sharing Economy mit dem ganzen Thema zu tun?
 	* Anwendung von einem DFS auf die Banking Welt.
 
@@ -78,6 +69,11 @@ Einführung
 * Beantwortung der Frage ob ein Buchungssystem bzw. welche Teile/ Konten lassen sich realisieren
 * Was bringt es mir tatsächlich das ganze umzusetzen
 
+	* Könnten auch Faktoren zur Methodik sein
+		* Infrastruktur
+		* Data Storage
+		* Data Processing and Management
+		* Data Analytics
 Methodik
 ========
 Eher analytisch weniger Empirisch
@@ -149,6 +145,9 @@ Dirstributed File System als Backbone für Buchungssysteme
 * Ausfallsicher
 * Aufwendige Analysen
 * Keine Transaktionen
+* Sie lösen das mit hoch skalierbaren Systemen, die sich dynamisch entsprechend der Anforderungen verhalten
+* Infrakstruktur wächst entsprechend der Anforderungen
+* Immer nur das Bezhalen was gebraucht wird
 
 Konzept
 =======
