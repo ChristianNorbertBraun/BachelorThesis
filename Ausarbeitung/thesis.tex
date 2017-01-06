@@ -144,10 +144,11 @@ pdfkeywords={Keywords}
 
 \acrodefplural{dfs}[DFS]{Distributed File Systems}
 
-\begin{acronym}[Bash]
-  \acro{dfss}[DFS]{Distributed File System}
+\begin{acronym}
+  \acro{dfs}[DFS]{Distributed File System}
   \acro{hdfs}[HDFS]{Hadoop Distributed File System}
   \acro{api}[API]{Application Programming Interface}
+  \acro{bbs}[Buchungssystem]{Banking Buchungssystem}
 \end{acronym}
 
 
@@ -209,16 +210,32 @@ Danke an FH und adorsys. An Francis und an Prof.Heinzl. Eventuell auch an Korrek
 
 
 \chapter{Einführung}\label{ch:intro}
+Banken sind Big Data. Jeden Tag fließen unzählige Zahlungsprozesse und Kundendaten durch die Systeme deutscher und internationaler Banken. Alleine im Jahr 2012 schätzte man die Menge der gespeicherten Daten auf etwa 1,9 Petabyte pro Bank \cite{datanami}. Ein Ende des Datenwachstums ist nicht in Sicht. Durch den Einsatz von Mobile- und Online-Banking steigt nicht nur die Anzahl der Vertriebswege sondern auch der ausgeführten Transaktionen \cite{DBBigData}. Kunden rufen mobil ihren Kontostand ab, überweisen online ihre Rechnungen und bezahlen den Einkauf im Shoppingcenter mit der Kreditkarte. Dieses vertriebswegübergreifende Nutzen der Bankprodukte hat nicht nur einen Anstieg der Lese- und Schreibzugriffe auf die Systeme der Banken zur Folge, sondern fordert auch auf allen Vertriebswegen eine ähnlich gutes Nutzererlebnis \cite{bankwirtschaft}.
+
 \section{Motivation}
-Banken sind Big Data. Jeden Tag fließen unzählige Zahlungsprozesse und Kundendaten durch die Systeme deutscher und internationaler Banken. Alleine im Jahr 2012 schätzte man die Menge der gespeicherten Daten auf etwa 1,9 Petabyte pro Bank \cite{datanami}. Ein Ende des Datenwachstums ist nicht in Sicht. Durch den Einsatz von Mobile- und Online-Banking steigt nicht nur die Anzahl der Vertriebswege sondern auch der ausgeführten Transaktionen \cite{DBBigData}. Kunden rufen mobil ihren Kontostand ab, überweisen online ihre Rechnungen und bezahlen den Einkauf im Shoppingcenter mit der Kreditkarte. Dieses vertriebswegübergreifende Nutzen der Bankprodukte hat nicht nur einen Anstieg der Lese- und Schreibzugriffe auf die Systeme der Bank zur Folge, sondern fordert die Banken auch dazu auf, auf allen Vertriebswegen eine ähnlich gutes Nutzererlebnis zu liefern \cite{bankwirtschaft}.
-Doch die weitläufig eingesetzten Kernbankensysteme sind veraltet und haben Probleme den Anforderungen und der Unmenge an Daten Herr zu werden. Ein Ausbau wäre möglich, ist jedoch aufgrund der benötigten Hard- und Software teuer oder liefert keine langfristige Skalierbarkeit und Ausfallsicherheit \cite{herzKernbankensystem}. Auf dieses Problem stießen vor den Banken schon Firmen wie Google, Facebook oder Yahoo. Die Lösung war in allen drei Fällen der Einsatz eines \acp{dfs}. So entwickelte Google das Google File System \cite{GFS} zur Skalierung ihrer Websuche, Facebook Haystack \cite{haystack} zum Speichern und Lesen von Bildern und Yahoo das \ac{hdfs} \cite{hdfs}. Diese Systeme sind nicht nur einfach und günstig skalierbar sondern überzeugen auch durch eine hohe Ausfallsicherheit und Verfügbarkeit. Auch Banken könnten durch die Möglichkeiten eines \acp{dfs} profitieren. Was bei Google und Co. funktioniert, könnte auch den Banken helfen um langfristig mit den aufstrebenden FinTechs zu konkurrieren und das volle Potential ihrer Daten auszunutzen.
+Die weitläufig eingesetzten Kernbankensysteme sind veraltet und haben Probleme den Anforderungen und der Unmenge an Daten Herr zu werden. Ein Ausbau wäre möglich, ist jedoch aufgrund der benötigten Hard- und Software teuer oder liefert keine langfristige Skalierbarkeit und Ausfallsicherheit \cite{herzKernbankensystem}. Auf dieses Problem stießen vor den Banken schon Firmen wie Google, Facebook oder Yahoo. Die Lösung war in allen drei Fällen der Einsatz eines \acp{dfs}. So entwickelte Google das Google File System \cite{GFS} zur Skalierung ihrer Websuche, Facebook Haystack \cite{haystack} zum Speichern und Lesen von Bildern und Yahoo das \ac{hdfs} \cite{hdfs}. Diese Systeme laufen auf standard Hardware und sind daher einfach und günstig skalierbar. Außerdem überzeugen sie auch durch eine hohe Ausfallsicherheit und Verfügbarkeit. Auch Banken könnten durch die Möglichkeiten eines \acp{dfs} profitieren. Was bei Google und Co. funktioniert, birgt auch für Banken eine Chance langfristig mit den aufstrebenden FinTechs zu konkurrieren und das volle Potential ihrer Daten auszunutzen.
+
+\section{Zielsetzung}
+
+Banken führen Änderungen der IT Struktur in der Regel erst dann durch, wenn die zu übernehmende Technologie lang erprobt und sich als zuverlässig erwiesen hat. Doch der Wandel der Kunden im Umgang mit den Bankprodukten und die wachsende Datenmenge zwingt die Finanz Branche zu einem Umdenken \cite{bigdataBigStorage}. Im Rahmen dieser Arbeit sollen die Auswirkungen erarbeitet werden, die der Einsatz eines \acp{dfs} als Persistenzschicht eines Banking Buchungssystems (Buchungssystem) bewirken kann. Da nicht alle Prozesse, die ein Buchungssystem abbildet, die gleichen Anforderungen haben, gilt es diejenigen herauszufinden, welche durch ein \ac{dfs} realisierbar sind. Insbesondere sollen die Möglichkeiten einer verbesserten Skalierbarkeit und Ausfallsicherheit diskutiert werden. Aktuelle Buchungssysteme sind behebig und der Unterhalt für die Banken teuer \cite{bankingsCosts}. Durch ein auf standard Hardware optimiertes und leicht skalierbares System könnten Ressourcen akquiriert werden, wenn sie wirklich gebraucht werden und abgeschaltet werden, wenn sie nicht mehr nötig sind. So sollen die Kosten um ein Buchungssystem zu betreiben verringert werden. Im Idealfall profitieren davon nicht nur die Banken sondern auch deren Kunden. Zusätzlich zu den wirtschaftlichen Verbesserungen sollen auch die Entwicklungen in der Ausfallsicherheit und Verfügbarkeit in dieser Arbeit kenntlich gemacht werden.
 
 \section{Umfeld}
-In Zusammenarbeit mit der adorsys GmbH \& Co. Kg. gilt es die Möglichkeiten durch den Einsatz der Sharing Economy für ein Banking Buchungssystem im Rahmen dier Arbeit zu analysieren. adorsys ist eine It Consulting Firma, die auch zahlreiche Firmen im Versicherungs und Banking-Bereich betreut. Dabei wird besonderer Wert auf die Betreuung als Komplettpacket gelegt. adorsys liefert über Beratung, Design und Implementierung auf die Kunden zugeschnittene Lösungen. 
-\section{Zielsetzung}
-Diese Arbeit diskutiert die Anforderungen an aktuelle Buchungssysteme und stellt die dazu verwendeten Technoligien in Frage. Weg von einem System, welches nach den Möglichkeiten der Technologie gebaut wurde, hin zu einer Lösung, die auf Grundlage der Aufgaben eines Buchungssystems die richtigen Mittel und Methoden sucht. Dabei sollen besonders die Punkte Skalierbarkeit, Ausfallsicherheit und Performance beleuchtet und analysiert werden. 
+Unterstützend und beratend bei der Entwicklung dieser Arbeit tritt das IT Consulting Unternehmen adorsys GmbH \$ Co. Kg. auf. adorsys mit ihrem Hauptsitz in Nürnberg entwickelt mittlerweile seit mehr als 10 Jahren individuelle Software für Banken und Versicherungen. Zu den Kunden zählen neben easy Credit auch ERGO Direkt und Schwäbisch Hall. Auch die entwicklung eines Open Source Kernbankensystems war zwischenzeitig geplant. Alles in Allem ist adorsys ein Partner mit Expertise im Finanzsektor und bei der Architektur von komplexen Systemen.
 
-\chapter{Methodik}
+\section{Aufbau der Arbeit}
+Im folgenden Kapitel wird zunächst genauer auf die Vorgehensweise der Recherche und Entwicklung der Arbeit eingegangen. So werden benötigte Methriken zum Messen der Performanz, Ausfallsicherheit und Skalierbarkeit erarbeitet. Außerdem wird der Rahmen der beispielhaften Implementierung und Bewertung der Lösung weiter abgesteckt.
+
+Im Kapitel \nameref{buchungssystem} werden die grundlegenden Bestandteile und Aufgaben eines Buchungssystems erläutert. Besonders die Probleme und Entwicklungschancen sollen analysiert und ausgearbeitet werden.
+
+Im darauf folgenden Kapitel soll auf Basis der vorher erarbeiteten Probleme die Funktionsweise eines \acp{dfs} näher erläutert und die Vor- und Nachteile analysiert werden. Auch auf typische Anwendungsgebiete und Grenzen wird näher eingegangen.
+
+Nachdem nun die Begriffe des Buchungssystems und \acp{dfs} grob abgesteckt sind, können diese im Konzept-Kapitel verheiratet werden. Hier werden die Vorgänge zum Lesen und Schreiben von Buchungen sowie die Bedeutung von Transaktionen in einem Buchunugssystems betrachtet. Außerdem werden zusätzliche Maßnahmen zur Skalierung und Ausfallsicherheit besprochen.
+
+Das Kapitel zur Implementierung beschreibt die schrittweise Umsetzung des Konzepts und die dafür benötigten Technologien. Auch auf die konkrete Auswahl der Programmiersprache und des \acp{dfs} wird hier getätigt.
+
+Die beiden letzten Kapitel Evaluierung und Ausblick sollen die Ergebnisse der Testimplementierung verständlich aufbereiten und mögliche Erweiterungen aufzeigen.
+
+\chapter{Vorgehensweise}
 Wenig Emirpie mehr Analytik
 \section{Analyse der Ist-Situation}
 Analyse von Kernbankensystemen und deren Persistenzschicht. Was kostet das eine Bank im Jahr? 
@@ -231,6 +248,7 @@ Simple Beispielimplementierung zum Testen der Performance und der Umsetzbarkeit
 \section{Bewertung der Lösung}
 
 \chapter{Wesen und Probleme eines Buchungssystems}
+\label{buchungssystem}
 \section{Begriffserklärung}
 Was genau ist ein Buchungssystem?
 Buchungssystem als Teil eines Kernbankensystems

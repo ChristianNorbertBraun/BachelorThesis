@@ -32,17 +32,6 @@ Einführung
 	* Was genau hat Sharing Economy mit dem ganzen Thema zu tun?
 	* Anwendung von einem DFS auf die Banking Welt.
 
-* Durch Anpassen der Achitektur auf die Bedürfnisse kann Speicher und Rechenzeit sehr flexibel berechnet werden
-* Daraus folgt ein wirtschaftlicher Vorteil
-	* Kernbankensysteme müssen je nach Model unterschiedlich abkassieren
-		* Leasing, Miete, pro Transaktion etc.
-	* Kostenersparnis bei Servern
-	* Kostenersparnis bei Speicher
-	* Diese Ersparnis fällt im besten Fall sogar auf den Kunden zurück
-	* Banken müssen sich den neuen Herausforderungen stellen
-		* Sharing Economy und Fin Techs sind Konkurrenten
-* Was zusätzlich noch mitkommt ist eine beliebige Skalierbarkeit und Ausfallsicherheit
-	* Und bessere Performance
 
 ## Umfeld
 * In wie weit sich die Sharing Economy durch den Einsatz eines Distributed File Systems auf ein Banking Buchungsystem übertragen lässt soll in dieser Arbeit bearbeitet werden
@@ -59,6 +48,17 @@ Einführung
 * Methriken finden um die Ergebnisse zu Messen
 * Es sollen weitestgehend alle Anforderungen eines Buchungssystems realisiert werden können
 * Kostenersparnis sichtbar machen (Nur wie!!!!!!)
+* Durch Anpassen der Achitektur auf die Bedürfnisse kann Speicher und Rechenzeit sehr flexibel berechnet werden
+* Daraus folgt ein wirtschaftlicher Vorteil
+	* Kernbankensysteme müssen je nach Model unterschiedlich abkassieren
+		* Leasing, Miete, pro Transaktion etc.
+	* Kostenersparnis bei Servern
+	* Kostenersparnis bei Speicher
+	* Diese Ersparnis fällt im besten Fall sogar auf den Kunden zurück
+	* Banken müssen sich den neuen Herausforderungen stellen
+		* Sharing Economy und Fin Techs sind Konkurrenten
+* Was zusätzlich noch mitkommt ist eine beliebige Skalierbarkeit und Ausfallsicherheit
+	* Und bessere Performance
 
 
 
