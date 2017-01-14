@@ -1,6 +1,28 @@
+* Das System muss in die Bank eingegliedert werden! API
+* Banken mehr IT Unternehmen als Facebook etc.
+* Read only Datei System als Abbild von Konto System
 * Wieso keine NoSQL Datenbank sondern ein DFS? Was sind die unterschiede?
+* Amazon Dynamo
+* Grid Computing
+* Austauschbare Speicherschicht
+* DFS vs NoSQL Anfragen an Verwaltungs node und dann an Backendnode entgegen falschenhals
+* Jede Abstaktion ist auf Laufzeit veränderung
 
-Einführung
+
+# Aldi Einkauf
+
+* Aldi karten Tool
+	* Bezahldienstleister (First Data)
+		* Standort des gerätes bekannt
+		* ließt meine Kontonummer, BLZ
+		* Anfrage an First Data (Debit Anfrage an Bank)
+		* Saldo Prüfung, Authorisierungsanfrage
+		* First Data antwortet Gerät ob Möglich oder nicht
+		* Drucken der Rechnung, Transaktion an First Data
+	* First Data schickt im batch asynchron Posting an Banken der Beteiligten (Datenträgeraustausch DTA, heute  SEPA-Dateien alle Postings einer Bank)
+* SEPA Dateien im Buchungssystem der Bank verarbeiten
+* Zahlungsverkehr Programm (CBS Zahlungsverkehrmodul)
+Einführung (3 Seiten)
 ==========
 
 ## Motivation
@@ -74,41 +96,93 @@ Einführung
 		* Data Storage
 		* Data Processing and Management
 		* Data Analytics
-Methodik
+
+
+
+
+
+
+
+
+
+
+
+Vorgehen (2 - 3 Seiten)
 ========
+
 Eher analytisch weniger Empirisch
-Aber wieso eigentlich eher analytisch?
+Weil wir keine Bankendaten haben
+* Es gibt nur wenige Informationen über die Architektur von Banken
+	* Datenmenge
+	* Transaktionen pro Tag, Jahr
+	* Maßnahmen zur Erneuerung der Kernbanken systeme
+
 ## Analyse der Ist-Situation (Nur Vorgehensweise erläutern)
-* Aktuelle Kernbankensysteme und Buchungssysteme erläutern
-* Anforderungen herausfinden
-	* Insbesondere auf Skalierung und Ausfallsicherheit
+* Banken reden nicht sehr detailiert über die Grenzen ihrer KBS, aber die Probleme der eingesetzten Technologien sind durchaus bekannt
+* Wie sie Skalieren, wo die Grenzen liegen
+* Also will ich Probleme herausfinden und einordnen
+* Das genaue Aufgabenfeld von Buchungssystemen muss herausgearbeitet werden
+* Funktionsumfang
+* Dann gilt es durch recherche Probleme der Banken rauszufinden
+* Was muss ein Buchungssystem mindestends erfüllen
+* Wie sind die Buchungssysteme und KBS überhaupt aufgebaut
+* Wie könnte mein System sich darin integrieren
 * Zusammenarbeit mit Axel Wilkens und vll. Teambank
 * Vor- und Nachteile herausarbeiten
 * Gewichten der Anforderungen
-## Analyse und Auswahl eines Distributed File Systems (Muss die Analyse auch mit in der Arbeit stehen?)
-* Allgemeine Infos zu Distributed File Systemen sammeln
-* Auf Basis der Anforderungen und Pros und Contras von Buchungssystemen Anforderungen an DFS herausarbeiten
+## Analyse eines Distributed File Systems (Muss die Analyse auch mit in der Arbeit stehen?)
+* Welche von den Anforderungen lassen sich überhaupt realisieren?
+* Dazu muss die Funktionsweise von DFS verstanden werden
+* Welche Bestanddteile ha ein DFS?
+	* Was braucht ein DFS um zu funktionieren?
+* Wozu ist es besonders geeignet?
+* Wo sind seine Grenzen?
+* Welche DFS sind aktuell die besten?
+* Gibt es überhaupt ein DFS was zu den Anforderungen von Banken passt?
 * Ausgesuchte DFS müssen den Anforderungen entsprechen
 	* Entsprechend der Anfoderungen analysieren
 ## Entwicklung des Konzepts
-* Möglichkeiten zur Abbildung der Buchungssprozesse auf DFS erarbeiten
-* Schritte für eine Buchung und das Lesen einer Buchung herrausarbeiten
+* Darüber was ein DFS kann und was nicht auf mögliche Teilbereiche schließen in denen es eingesetzt werden könnte
+* Wie kann ich das Buchungssystem überhaupt unterteilen?
+* Unter berücksichtigung gerade der wirtschaftlichen Ziele eine Theorie entwickeln um das Buchungssystem zu realisieren
+* Skalierbarkeit berücksichtigen
+* Den aktuellen Ablauf einer Buchung genau betrachten und den Ablauf im neuen System gegenüberstellen
+
 ## Beispielhafte Implementierung
-* Auf Basis des Konzepts eine Implementierung anfertigen
+* Versuchen das Konzept in Code zu gießen
+* Darauf aufbauend ein DFS auswählen
+* Machbarkeit damit überprüfen
+* Basis Implementierung anfertigen mit minimalen Anforderungen 
 ## Bewertung der Lösung
 * Performance Tests auf Implementierung
 * Speicher Preise vergleichen
 * Skalierung vergleichen
 * Ausfallsicherheit vergleichen
+* Vergleichen nach MEASUREMENTS of DFS
 
-Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
+
+
+
+
+
+
+
+
+
+
+
+Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)(3-4 Seiten)
 ========================================
 * Kernstück eines Kernbankensystems
+* Kernbankensystem ohne Buchungssystem quasi nicht möglich
 * Kernbankensystem erklären
+* Vom durchziehen der Karte an der Kasse bis zum übertragen des Geldes alles
+* Lange gewachsen und Komplex geworden
 ## Begriffserklärung
 * Abwicklung aller Prozesse 
 * Zahlungsverkehr
 * Nachverfolgung von Resourcen Nutzung
+* Viele Read abfragen um Ressourcen zu sehen
 ## Bestandtteile (FIS Kordoba Flyer) (Fällt vll. mit Begriffserklärung zusammen)
 * Avaloq banking suite nutzt PL/SQL
 * Zahlungsverkehr
@@ -131,8 +205,10 @@ Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)
 * Locking verlangsamt Transaktionen
 * Skalierung nur bedingt machbar
 	* Sehr teuer und aufwendig (Nicht auf commodity Hardware)
+* Schwer wartbar und veraltet
+* Anpassung an Marktänderung schwer möglich
 
-Dirstributed File System als Backbone für Buchungssysteme
+Dirstributed File System als Backbone für Buchungssysteme(3 - 4 Seiten)
 =========================================================
 ## Funktionsweise
 * Abspeichern von Unstrukturierten Dateien auf vielen Data Clustern
@@ -149,7 +225,7 @@ Dirstributed File System als Backbone für Buchungssysteme
 * Infrakstruktur wächst entsprechend der Anforderungen
 * Immer nur das Bezhalen was gebraucht wird
 
-Konzept
+Konzept(10-15 Seiten)
 =======
 * Es gibt bestimmt Kontoarten, die sich nicht mit einem DFS realisieren lassen
 ## Transaktionen aufgeben
@@ -181,7 +257,7 @@ Konzept
 * DFS sind sehr ausfallsicher
 * Wie Konfiguriere ich das System?
 
-Implementierung
+Implementierung(10 Seiten)
 ===============
 * Als Open Source Projekt!
 ## SeaweedFS
@@ -190,17 +266,17 @@ Implementierung
 ## Bibliothek zur Abbildung von Buchungen
 ## RESTful Webservice
 
-Evaluierung
+Evaluierung(5 Seiten)
 ===========
 * Benchmark Tests
 * Paper zu Skalierung eiens DFS lesen und Metriken entnehmen
 
-Ausblick
+Ausblick(2 Seite)
 ========
 * Einsatz von Amazon S3
 * Validierungen implementieren
 
-Zusammenfassung
+Zusammenfassung(1 Seite))
 ===============
 
 
