@@ -236,9 +236,11 @@ Das Kapitel zur Implementierung beschreibt die schrittweise Umsetzung des Konzep
 Im Kapitel zur Evaluierung wird die Zielsetzung der Arbeit mit den Funktionen der Testimplementierung verglichen und das Ergebnis bewertet. Das Letzte Kapitel zeigt Möglichkeiten und Erweiterungen der Lösung auf.
 
 \chapter{Vorgehensweise}
-Wenig Emirpie mehr Analytik
+Die in der Einführung beschriebene Zielsetzung kann sich leider nur auf sehr wenige wissenschaftliche Quellen stützen. Gerade die benötigte Information zu den Banken ist rar gesät und kann meist nur aus Artikeln von News-Seiten oder Bloggern entnommen werden. Angaben zur Datenmenge von Banken oder den Betreibungskosten eines Kernbankensystems können daher nur geschätzt werden. Die Entwicklung des Konzepts und die darauf folgende Bewertung begründet sich also mehr auf Analysen und Annahmen als auf empirisch bewiesene Tatsachen. Alle technologie bezogenen Annahmen werden jedoch durch wissenschaftliche Arbeiten, welche sich mit den Grenzen und Möglichkeiten eben dieser Technologie beschäftigen, untermauert.
+
 \section{Analyse der Ist-Situation}
-Analyse von Kernbankensystemen und deren Persistenzschicht. Was kostet das eine Bank im Jahr? 
+Bevor eine Bewertung der Ist-Situation in irgendeiner Form durchgeführt werden kann, muss zunächst die Bedeutung eines Buchungssystems innerhalb des Kernbankensystems und der Bank verstanden werden. Dabei gilt es nicht nur die technische Architektur herauszuarbeiten sondern auch die abzubildenden Prozesse zu erfassen. Dies soll vorallem im Hinblick auf die Anforderungen geschehen, welche sich durch die neuen Vertriebswege wie Online- und Mobile-Banking ergeben haben. Was mussten Buchungssysteme damals und was müssen sie heute leisten? Entstehen überhaupt Probleme durch die zunehmende Anzahl an Anfragen an die Systeme der Banken? Welche Aufgaben habe welche Teile des Buchungssystems? Durch Fragen wie diese sollen die minimalen Anforderungen eines heutigen Buchungssystems erarbeitet und priorisiert werden. Außerdem soll erforscht werden zu welchen Bedingungen diese Anforderungen von den aktuellen Systemen abgebildet werden und wo es Spielraum für den Einsatz anderer Technologien gibt.
+
 \section{Analyse und Auswahl eines Distributed File Systems}
 Analyse mehrerer DFS in Betrachtung der Anforderungen eines Buchungssystems und Auswahl von SeaweedFS
 \section{Entwicklung des Konzepts}

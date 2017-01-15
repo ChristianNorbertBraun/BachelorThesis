@@ -269,6 +269,8 @@ Implementierung(10 Seiten)
 Evaluierung(5 Seiten)
 ===========
 * Benchmark Tests
+* Vielleicht darauf kommen, dass eine NoSQL Datenbank das alles schon kann!
+* Oder ein Object Store oder Key Value Store
 * Paper zu Skalierung eiens DFS lesen und Metriken entnehmen
 
 Ausblick(2 Seite)
