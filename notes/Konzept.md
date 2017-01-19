@@ -1,3 +1,5 @@
+* Was kostet ein Append an ein File
+* NATSD Messaging Software
 * Das System muss in die Bank eingegliedert werden! API
 * Banken mehr IT Unternehmen als Facebook etc.
 * Read only Datei System als Abbild von Konto System
@@ -131,29 +133,80 @@ Weil wir keine Bankendaten haben
 * Vor- und Nachteile herausarbeiten
 * Gewichten der Anforderungen
 ## Analyse eines Distributed File Systems (Muss die Analyse auch mit in der Arbeit stehen?)
-* Welche von den Anforderungen lassen sich überhaupt realisieren?
-* Dazu muss die Funktionsweise von DFS verstanden werden
-* Welche Bestanddteile ha ein DFS?
-	* Was braucht ein DFS um zu funktionieren?
-* Wozu ist es besonders geeignet?
-* Wo sind seine Grenzen?
-* Welche DFS sind aktuell die besten?
-* Gibt es überhaupt ein DFS was zu den Anforderungen von Banken passt?
-* Ausgesuchte DFS müssen den Anforderungen entsprechen
-	* Entsprechend der Anfoderungen analysieren
+* Die Stellen, wo was machbar ist sind jetzt bekannt
+* Ich schau mir die Anforderungen dieser Stellen an
+* Ich schau mir die Funktionsweise der DFSs an 
+* Ich vergleiche die erfüllten Anforderungen der DFSs mit denen der Teile des Buchungssystems
+* Gibt es überhaupt ein DFS was zu diesen Anforderungen passt?
+* Ist ein mindestmaß an Anforderungen erfüllt?
+* Kann das DFS mit etwas kombiniert werden um das Mindestmaß zu erfüllen?
+* Welche Vorteile bietet der Einsatz eines DFS an dieser Stelle?
+* Überweigen diese Vorteile den Nachteilen der aktuellen Version?
+
+
 ## Entwicklung des Konzepts
-* Darüber was ein DFS kann und was nicht auf mögliche Teilbereiche schließen in denen es eingesetzt werden könnte
-* Wie kann ich das Buchungssystem überhaupt unterteilen?
+
+* Jetzt sind die Anforderungen eines Buchungssystems klar
+* Und es ist klar welche Bestandteile Raum für Verbesserung ermöglichen
+* Außerdem ist die Grundfunktionalität eines DFS verstanden und klar welcher Ansatz am besten die Anforderungen erfüllt
+* Auf dieser Basis kann jetzt ein Konzeot für den Einsatz eiens Distributed File Systems zur Skalierung eines Buchungssystem entwickelt werden
+* Dabei setzen wir darauf auf was bestehedne DFS bieten und verfeienern die Funktionalität, bis sie möglichst gut auf die Anforderungen passt
+* Dabei ist egal, ob es ein DFS gibt, welches diese Anforderungen schon im Detail erfüllt
+* Im Rahmen dieser Arbeit soll ein Konzept erarbeitet werden, welches möglichst gut auf die Bedürfnisse eines Buchungssystems passt
+* Es wird der Ablauf einer Buchung mit dem neuen System erarbeitet
+* Dieser Ablauf wird mit dem vorherigen gegenübergestellt
+* Die Lösung wird intensiv nach Vor und Nachteilen analysiert
+* Können die erwünschten Ziele erreicht werden?
+
+* Mit der basis funktionalität von einem DFS versuchen die Prozesse, die man herausgearbeitet hat abzubilden
+* Es wird bis auf Grundfunktionalität eines DFS keine weitere Rücksicht genommen, ob es ein DFS gibt was alle Einzelheiten des Konzepts erfüllt
+* Dabei ist es zunächst egal, ob es aktuell überhaupt ein DFS gibt was eins zu eins diese Anforderungen erfüllt
+
 * Unter berücksichtigung gerade der wirtschaftlichen Ziele eine Theorie entwickeln um das Buchungssystem zu realisieren
 * Skalierbarkeit berücksichtigen
 * Den aktuellen Ablauf einer Buchung genau betrachten und den Ablauf im neuen System gegenüberstellen
 
 ## Beispielhafte Implementierung
+* Versuchen das Konzeot in Code zu gießen
+* Alle teile des Konzepts solen hier durch eine tatsächliche Implementierung ersetzt werden
+* Das beinhaltet, die Auswahl der Programmiersprache für die Entwicklung des Backends
+* Die Auswahl eines DFS
+* Falls es kein DFS gibt, dass alle Anforderungen erfüllt, muss auf das am besten passende ausgewichen werden
+* Weil entwicklung eines DFS sehr aufwendig
+* Das Konzeot muss dementsprechend angepasst werden
+* Und Alle benötigten zwischenschritte müssen entwickelt werden
+* Zum Beispiel die Schnittstelle zum DFS
+* Ein großteil der Funktionalität soll getestet werden
+
+
+
+
 * Versuchen das Konzept in Code zu gießen
 * Darauf aufbauend ein DFS auswählen
 * Machbarkeit damit überprüfen
 * Basis Implementierung anfertigen mit minimalen Anforderungen 
 ## Bewertung der Lösung
+* Tatsächliche Ergebnisse können nur auf Basis der Implementierung erzielt werden
+* Das heißt möglicherweise kann die mögliche Leistung des Konzepts gar nicht wiedergegeben werden
+
+* Wie gut lässt es sich in das Bestehende System integrieren?
+
+* Es soll Skalierbarkeit betrachtet werden
+* Wo ist der Flaschenhals des Systems
+
+* Die Performance soll gemessen werden
+* Wieviele ANfragen können bewältigt werden?
+
+* Ausfallsicherheit wird betrachtet
+* Welche Teile des Systems können ohne Probleme ausfallen?
+
+* Und die wirtschaftlichkeit
+* Was für maschinen werden für das System benötigt?
+* Was kosten diese maschinen
+* Was kostet der Speicher?
+
+* Das alles wird immer gegen Schätzungen für die aktuell Eingesetzten Systeme verglichen
+
 * Performance Tests auf Implementierung
 * Speicher Preise vergleichen
 * Skalierung vergleichen
