@@ -1,5 +1,6 @@
+* ACID vs BASE innerhalb des DFS betrachten
 * Was kostet ein Append an ein File
-* NATSD Messaging Software
+* NATSD Messaging Software vielleicht als Load Balancer?
 * Das System muss in die Bank eingegliedert werden! API
 * Banken mehr IT Unternehmen als Facebook etc.
 * Read only Datei System als Abbild von Konto System
@@ -226,6 +227,7 @@ Weil wir keine Bankendaten haben
 
 Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)(3-4 Seiten)
 ========================================
+* Unterteilt in Systemarchitektur und Anwendungsarchitektur (ITidF S94-95)
 * Kernstück eines Kernbankensystems
 * Kernbankensystem ohne Buchungssystem quasi nicht möglich
 * Kernbankensystem erklären
@@ -247,6 +249,9 @@ Wesen und Probleme eines Buchungssystems (Hier fehlt mir noch viel)(3-4 Seiten)
 * Vielleicht aus Arbeit zur Bankings Architektur
 * Mandantenfähig(http://www.enzyklopaedie-der-wirtschaftsinformatik.de/lexikon/informationssysteme/Sektorspezifische-Anwendungssysteme/Finanzsektor--Anwendungssysteme-im/kernbanksystem)
 * Es muss Modular sein um sich in ein Kernbankensystem eingleidern zu können
+## Technische Umsetzung
+* Durchweg auf relationalen Datenbanken (ITidF S.105)
+* Logik häufig noch Cobol, Assembler etc.
 ## Ablauf einer Buchung
 * Posting trifft  ein
 * Posting wird validiert
