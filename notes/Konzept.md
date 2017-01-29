@@ -303,6 +303,15 @@ Konzept(10-15 Seiten)
 ## Erstellen einer Buchung
 * Verschlüsselung?
 ## Lesen einer Buchung
+## Was lässt sich jetzt damit abbilden?
+* Auch auf Anwendungsfälle in der Praxis eingehen
+* Online Banking etc.
+* Ansich wird ja auch immer nur eine einzige Anfrage gemacht
+* Amazon Buchungen(Da kann ja eigentlich nur das raus was eh schon mal eingezahlt wurde)
+* Was passiert bei einer normalen Lastschrift?
+* Zieht der mit dem Lastschriftverfahren immer den kürzeren?
+* Zahlungsdienstleister fr Kreditkarte als Anhaltspunkt
+
 ## Skalierung
 * Wie lässt sich das Konzept skalieren?
 * SOA Prinzip beim Backend
