@@ -58,10 +58,18 @@ Probleme
 * Kümmert sich das Backend um das einfügen eines Postings in das Journal und den Updateservice?
 	* Das würde bedeuten, dass der gesamte Prozess gelockt werden muss
 	* Aber sowohl das Journal als auch der Updateservice müsste sich nur um einfache Dinge kümmern
-* Alternativ könnte das Journal die Update requests erzeugen und mit dem Updateservice kommunizieren
+
+
+
+* [Aktuelle Lösung]Das Backend und das Journal sind die beiden relevanten Instanzen.
+	* Journal kümmert sich um Schreiben der Postings und updaten
+	* Vielleicht sollte der Service dann lieber **CommandService** heißen!
+
+* [Nicht sinnvoll!] ~~Alternativ könnte das Journal die Update requests erzeugen und mit dem Updateservice kommunizieren~~
 	* Ist von außen schlechter nachvollziehbar und macht Journal abhängig
 	* Auf der anderen Seite ist so eine sinnvolle Priorisierung der Updates möglich (Wenn mehrere Writes einer Kontonummer im Journal 
 	muss Update danach kommen)
+	* Im Endeffekt ist aber immer eine 1:1 Bindung von Update und Jorunal eintrag nötig. Daher sollten sie zusammengelegt werden
 * Realisiere ich das alles als Microservices oder als ein mächtiges Backend?
 
 ## Pro MS
@@ -75,4 +83,9 @@ Probleme
 * Für den Prototypen wahrscheinlich leichter
 * Ausfallsicherheit für mich leichter zu testen
 * leichter zu debuggen
+
+
+## Realisierung 
+* Vielleicht mit Messaging Dienst wie NATS
+* Benötigt dafür aber Sicherheit, dass unerbrachte Messages nicht verloren gehen
 

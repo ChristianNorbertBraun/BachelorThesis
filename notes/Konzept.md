@@ -1,3 +1,6 @@
+* Sepa ICT
+* PSD2 checken
+* Two Phase commit
 * ACID vs BASE innerhalb des DFS betrachten
 * Was kostet ein Append an ein File
 * NATSD Messaging Software vielleicht als Load Balancer?
