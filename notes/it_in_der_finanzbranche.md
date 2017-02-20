@@ -164,3 +164,14 @@ Informationssystemen orientieren
 * Anzahl Transaktionen so groß, dass Postbank in jeder Niederlassung eigenes
 Kernbankensystem Kordoba installiert um Transaktionen Herr zu werden S.129 unten
 * Postbank 12,6 Mio Transaktionen täglich 2003 S.130
+
+# 5. Entwurf von Anwendungssystemen
+* S.153 Fortfolgende Softwareentwicklung und Qualitätssicherung
+* S.160 Vorgang beim Entwickeln der Software (Vll. für Implementierung)
+
+# 9. Neue Wege des IT-Managements
+* S.351 Kostenarten in der IT
+	* Hardware
+	* Lizenzen
+	* Personalkosten
+	* Gebäude und Räume
