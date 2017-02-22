@@ -24,13 +24,18 @@
 \usepackage{subfigure}			
 \usepackage{epstopdf}		
 \usepackage{longtable}  
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.9}
+\usetikzlibrary{pgfplots.dateplot}
+\usepackage{pgfplotstable}
+\usepackage{filecontents}
 \usepackage{setspace}
 \usepackage[nolist]{acronym}
 \usepackage{booktabs}
 \usepackage[style=numeric]{biblatex}
 %\bibliography{literatur2}
 \addbibresource{literatur.bib}
-
 
 %%%%%%%%%%%%%%%%%%%
 %% definitions
@@ -279,41 +284,114 @@ Seit den ersten Anwendungssystemen der Banken stand das Konto und die Kontoführ
   \label{zwiebel}
 \end{figure}
 
-Heutzutage sind bei Genossenschaftsbanken häufig die Produkte von Fiducia GAD \cite{fiducia}, bei den kleineren Privatbanken Systeme von FIS Kordoba \cite{kordoba} oder SAP \cite{SAP} und bei den Sparkassen die Lösung von der finanz informatik OSPlus (One System Plus) \cite{finanzinformatik} im Einsatz. Die Entwicklung eigener Systeme können sich nur noch wenige große Banken wie die Deutsche Bank erlauben. Bis auf die Lösung der finanz informatik OSPlus und FIS Kordoba handelt es sich in Deutschland in der Regel um Systeme die keine Gesamtbankenlösung bieten sondern mehr oder weniger Teile der Geschäfts- und Kontoprozesse der Banken abdecken und mit anderen Systemen kombiniert werden können \cite{MarkstudieKernbankensysteme}\cite[56-58]{ITidF}. Auch wenn die aktuellen Systeme deutlich besser standardisiert und dadurch wartbarer als früher sind, ist die Struktur immer noch ähnlich oder baut im Kern sogar noch auf den Ursprüngen der Banken IT auf. Die Architektur lässt sich in vier Schichten aufteilen, die von oben nach unten folgendermaßen beschrieben sind \cite[104]{ITidF}:
+Heutzutage sind bei Genossenschaftsbanken häufig die Produkte von Fiducia GAD \cite{fiducia}, bei kleineren Privatbanken Systeme von FIS Kordoba \cite{kordoba} oder SAP \cite{SAP} und bei den Sparkassen die Lösung der finanz informatik OSPlus (One System Plus) \cite{finanzinformatik} im Einsatz. Die Entwicklung eigener Systeme können sich nur noch wenige große Banken wie die Deutsche Bank erlauben. Bis auf die Lösung der finanz informatik OSPlus und FIS Kordoba handelt es sich in Deutschland in der Regel um Systeme die keine Gesamtbankenlösung bieten sondern mehr oder weniger Teile der Geschäfts- und Kontoprozesse der Banken abdecken und mit anderen Systemen kombiniert werden können \cite{einfuehrungKernbanksystem}\cite[56-58]{ITidF}. Auch wenn die aktuellen Systeme deutlich besser standardisiert und dadurch wartbarer als früher sind, ist die Struktur immer noch ähnlich oder baut im Kern sogar noch auf den Ursprüngen der Banken IT auf. Die Architektur lässt sich in vier Schichten aufteilen, die von oben nach unten folgendermaßen beschrieben sind \cite[104]{ITidF}:
 
 \begin{enumerate}
-\item \textbf{Visualisierungsschicht:} Die Visualisierungsschicht ist die Schnittstelle zum Benutzer und wird auch auf dessen Endgerät ausgeführt. Einerseits bezieht Daten von der Darstellungsschicht und zeigt diese ansprechend an. Andererseits leitet sie die Eingaben des Nutzers an die Darstellungsschicht weiter.
+\item \textbf{Visualisierungsschicht:} Die Visualisierungsschicht ist die Schnittstelle zum Benutzer und wird auf dessen Endgerät ausgeführt. Sie bezieht einerseits Daten von der Darstellungsschicht und zeigt diese ansprechend an. Andererseits leitet sie die Eingaben des Nutzers an die Darstellungsschicht weiter.
 \item \textbf{Darstellungsschicht:} Diese Schicht ist verantwortlich für eine fehlerfreie Kommunikation zwischen Visualisierungsschicht und Anwendungsschicht. Daten werden von einer Schicht empfangen und in das gewünschte Format der anderen Schicht überführt.
 \item \textbf{Anwendungsschicht:} Die Anwendungsschicht kümmert sich um die eigentliche Geschäftslogik für einen bestimmten Teilbereich. Sie stellt Schnittstellen für Dienste wie teilweise auch die neuen Vertriebswege Online- und Mobile-banking zur Verfügung und führt aufwendige Daten Manipulationen auf der Datenschicht durch. Aufgrund der teilweise sehr alten und komplexen Systeme finden sich hier auch noch Bereiche die noch in COBOL oder sogar Assembler geschrieben sind.
 \item \textbf{Datenhaltungsschicht:} Die Datenhaltungsschicht ist für die Verwaltung der Stammdaten sowie der von der Anwendungsschicht gesendeten und angefragten Informationen zuständig. Auch Operationen für einfache Manipulationen der Daten werden von ihr bereitgestellt. In der Finanzindustrie gelten relationale Datenbanken als Standard für die Persistenzschicht der Datenhaltungsschicht \cite[105]{ITidF}\cite{MarkstudieKernbankensysteme}
 \end{enumerate}
 
-Die Datenhaltungsschicht als Basis der Architektur entspricht je nach Aufteilung und Definition entweder allein oder in Kombination einzelner Anwendungsschichten dem Buchungssystem. Ähnlich wie in Abbildung \ref{zwiebel} bildet es auch heute noch das Zentrum der IT Landschaft von Banken. Als ein solches wird es auch häufig als Kernbankensystem bezeichnet. Diese Bezeichnung verdeutlicht auch, dass das Buchungssystems nur Kernaufgaben erfüllt und allein nur eine begrenzte Funktionalität bereitstellt. Die Unterstützung weitergehender Bank Prozesse muss durch das aufsetzen weiterer Anwendungsschichten erfolgen \cite[58]{ITidF}. Da in der Literatur und Wirtschaft der Begriff Kernbankensystem auch häufig als eine Gesamtbankenlösung verstanden wird, wird in dieser Arbeit immer von Buchungssystem gesprochen sofern es um die Kernfunktionalität von Banken geht \cite{vergleichCoreBanking}.  
+Die Datenhaltungsschicht als Basis der Architektur entspricht je nach Aufteilung und Definition entweder allein oder in Kombination mit einzelnen Anwendungsschichten dem Buchungssystem. Ähnlich wie in Abbildung \ref{zwiebel} bildet es auch heute noch das Zentrum der IT Landschaft von Banken. Als ein solches wird es auch häufig als Kernbankensystem bezeichnet. Diese Bezeichnung verdeutlicht auch, dass die Aufgabe des Buchungssystems die Erfüllung von Kernaufgaben ist und allein nur eine begrenzte Funktionalität bereitstellt. Die Unterstützung weitergehender Bank Prozesse muss durch das Aufsetzen weiterer Anwendungsschichten erfolgen \cite[58]{ITidF}. Da in der Literatur und Wirtschaft der Begriff Kernbankensystem auch häufig als eine Gesamtbankenlösung verstanden wird, wird in dieser Arbeit immer von Buchungssystem gesprochen sofern es um die Kernfunktionalität von Banken geht \cite{vergleichCoreBanking}.  
 
 
 \section{Das Buchungssystem und seine Aufgaben}
-Das Buchungssystem steht demnach im Zentrum jedes kontenbasierten Geschäftsvorfalls der Banken \cite{bankEnzy}. Daher muss es auch alle Kernfunktionen eben dieser erfüllen und unterstützen können. Dazu gehören die Zahlungsverkehrs-, Investitions- und Kreditfunktion aber auch die Verwaltung von Kundenstammdaten sowie die Grundlegende Kontoführung. Für Investitions- und Kreditfunktion können auch die Begriffe Passiv- und Aktivgeschäfte genutzt werden \cite[12, 86]{DdF}. Im Folgenden sollen die Bestandteile der einzelnen Funktionen anhand von \cite[69-88]{DdF} und \cite[91-153]{bankwirtschaft} beschrieben werden.
+Das Buchungssystem steht demnach im Zentrum jedes kontenbasierten Geschäftsvorfalls der Banken \cite{bankEnzy}. Daher muss es auch alle Kernfunktionen eben dieser erfüllen und unterstützen können. Dazu gehören die Zahlungsverkehrs-, Investitions- und Kreditfunktion aber auch die Verwaltung von Kundenstammdaten sowie die grundlegende Kontoführung. Für Investitions- und Kreditfunktion können auch die Begriffe Passiv- und Aktivgeschäfte genutzt werden \cite[12, 86]{DdF}\cite{einfuehrungKernbanksystem}. Im Folgenden soll der Inhalt der einzelnen Funktionen anhand von \cite[69-88]{DdF} und \cite[91-153]{bankwirtschaft} beschrieben werden.
 
 \begin{itemize}
   \item \textbf{Aktivgeschäfte:} Das Aktivgeschäft erhält seinen Namen, dar alle Kreditgeschäfte also Forderungen an Kunden in der Bilanz auf der Aktivseite abgebildet werden. Durch das Kreditgeschäft erzielen Banken einen Großteil ihrer Zinserträge. Jedoch ist damit auch ein hohes Risikopotential verbunden. Als Aktivgeschäft zählen unter Anderem alle klassischen Kreditgeschäfte.
   Zum Beispiel der Kontokorrentkredit oder auch Dispositionskredit, räumt Privatpersonen zum Beispiel eine Überziehungsmöglichkeit des Kontos ein. Aber auch längerfristige Kreditgeschäfte wie der Hypothekarkredit, Baukredit oder Investitionskredit gehören zu den Aktivgeschäften. Bei den Kreditgeschäften gilt in der Regel, dass von der Bank zum Kunden ein vertraglich festgelegter Betrag fließt, dessen Rückzahlung zusätzlich Zinsen vom Schuldner auf ein Konto der Bank zu erbringen ist.
-  \item \textbf{Passivgeschäfte:} Als Passivgeschäft werden alle Einlagegeschäfte der Banken bezeichnet. Im Gegensatz zu den Aktivgeschäften erscheinen sie in der Bilanz auf der Passiv Seite. Aktiv- und Passivgeschäfte stehen in einer engen Verbindung. Häufig finanzieren Kreditinstitute ihre Aktivgeschäfte durch die Einlagen der Kunden. Zu den Passivgeschäften gehören Sichteinlagen, und Termineinlagen. Sichteinlagen sind täglich fällige Gelder. In der Regel handelt es sich hierbei um die Einzahlungen auf ein Girokonto. Ihr Zweck ist hauptsächlich der bargeldlose Zahlungsverkehr. Terminanlagen hingegen entziehen den Kunden den Zugriff auf die Einlage für einen festgelegten Zeitraum welcher in der Regel mindestens 30 Tagen und maximal 5 Jahre entspricht. Es handelt sich also um Einlagen, welche der Kunde über einen gewissen Zeitraum nicht benötigt. Dafür werden Termineinlagen höher verzinst als Sichteinlagen. Werden Termineinlagen als Kündigungsgelder vereinbart, so gibt es keine Laufzeitfrist und die Auszahlung erfolgt nach Einreichen einer Kündigung und abgelaufener Kündigungsfrist. Bei Passivgeschäften fließt also ein festgelegter Betrag vom Kunden zur Bank, welche über die Einlage in einem festgelegten Rahmen verfügen darf.
-  \item \textbf{Zahlungsverkehr:} Der Zahlungsverkehr im Bankengeschäft beschreibt die bare und unbare Übertragung von Zahlungsmitteln im Inland und Ausland. Zur Übertragung können Überweisungen, Kartenzahlungen oder Lastschriften genutzt werden. Die besondere Bedeutung des Zahlungsverkehrs liegt in der Unumgänglichkeit für die Bankkunden. Auch wenn Kunden keine Kredite nehmen oder keine Termineinlagen tätigen, so müssen dennoch immer Zahlungen über die Systeme der Banken ausgeführt werden. Gerade die zunehmende Digitalisierung wird einen großen Einfluss auf die Entwicklung des bargeldlosen Zahlungsverkehrs haben. 
+  \item \textbf{Passivgeschäfte:} Als Passivgeschäft werden alle Einlagegeschäfte der Banken bezeichnet. Im Gegensatz zu den Aktivgeschäften erscheinen sie in der Bilanz auf der Passiv Seite. Aktiv- und Passivgeschäfte stehen in einer engen Verbindung. Häufig finanzieren Kreditinstitute ihre Aktivgeschäfte durch die Einlagen der Kunden. Zu den Passivgeschäften gehören Sichteinlagen, und Termineinlagen. Sichteinlagen sind täglich fällige Gelder. In der Regel handelt es sich hierbei um die Einzahlungen auf ein Girokonto. Ihr Zweck ist hauptsächlich der bargeldlose Zahlungsverkehr. Terminanlagen hingegen entziehen den Kunden den Zugriff auf die Einlage für einen festgelegten Zeitraum welcher in der Regel mindestens 30 Tage und maximal einer Dauer von 5 Jahren entspricht. Es handelt sich also um Einlagen, welche der Kunde über einen gewissen Zeitraum nicht benötigt. Dafür werden Termineinlagen höher verzinst als Sichteinlagen. Werden Termineinlagen als Kündigungsgelder vereinbart, so gibt es keine Laufzeitfrist und die Auszahlung erfolgt nach Einreichen einer Kündigung und abgelaufener Kündigungsfrist. Bei Passivgeschäften fließt also ein festgelegter Betrag vom Kunden zur Bank, welche über die Einlage in einem festgelegten Rahmen verfügen darf.
+  \item \textbf{Zahlungsverkehr:} Der Zahlungsverkehr im Bankengeschäft beschreibt die bare und unbare Übertragung von Zahlungsmitteln im Inland und Ausland. Zur Übertragung können Überweisungen, Kartenzahlungen oder Lastschriften genutzt werden. Die besondere Bedeutung des Zahlungsverkehrs liegt in der Unumgänglichkeit für die Bankkunden. Auch wenn Kunden keine Kredite nehmen oder keine Einlagen tätigen, so müssen dennoch immer Zahlungen über die Systeme der Banken ausgeführt werden. Gerade die zunehmende Digitalisierung wird einen großen Einfluss auf die Entwicklung des bargeldlosen Zahlungsverkehrs haben. 
 \end{itemize}
 
-Buchungssystem als Teil eines Kernbankensystems
-Double Entry Book Keeping
-Welche Konten befinden sich darin? 
-Aktiv- und Passivgeschäft erläutern
+Das Buchungssystem muss all diese Inhalte führen können und Kontobewegungen nachvollziehbar ablegen. Es dient also neben den Anwendungssystemen auch den gesetzlichen Rechnungsabschlüssen und Bilanzen als Grundlage \cite{bankEnzy}\cite{MarkstudieKernbankensysteme}. In der Regel wird diese Nachvollziehbarkeit durch die Doppelte Buchführung gewährleistet. Das heißt, dass eine Kontobewegung immer in den Konten beider beteiligten Parteien auftaucht. In Summe müssen alle Kredit- und Debitbeträge Null ergeben\cite{accounting}.
+
 \section{Anforderungen}
-Zwiebelstruktur fordert viel
-Transaktionen erwähnen. Besonders auch auf aktuelle Technologie eingehen (RDBMS). Ausfallsicherheit, Erreichbarkeit, etc.
+Um die oben genannten Aufgaben jetzt und auch noch in Zukunft zuverlässig zu erfüllen, müssen Buchungssysteme gewisse Anforderungen gerecht werden. Diese lassen sich in interne und externe Anforderungen unterteilen. Interne Anforderungen beschreiben die Bedingungen, die eine Bank nachkommen muss um die geschäftsinternen Prozesse reibungslos und wirtschaftlich durchzuführen. Beispiele dafür sind eine wohldefinierte Schnittstelle des Buchungssystems um bei Bedarf neue Geschäftsprozesse anzudocken oder ein detaillierte Analyse des Kundenverhaltens durchführen zu können. Auch die Reduktion der IT Wartungskosten gilt als eine interne Anforderung an Buchungssysteme. Externe Anforderungen beziehen sich auf Bedingungen, die Banken von außen auferlegt werden. Dazu gehören gesetzliche Richtlinien, sowie Veränderungen von Angebot und Nachfrage im Markt \cite{capgemini}. So wird durch den Kunden aber auch dem Gesetzgeber das zuverlässige Ablegen einer jeden Kontobewegung beziehungsweise Buchung gefordert. Das Buchungssystem muss folglich immer erreichbar sein und eine hohe Ausfallsicherheit gewährleisten. Da aber neben der Sicherheit auch die Geschwindigkeit der Abarbeitung bankfachlicher Prozesse relevant ist, spielt die Performance der Buchungssysteme auch eine tragende Rolle. Banken legen deswegen häufig ihre Buchungssysteme redundant an und stellen ein sichere und performante Verbindung zwischen den Systemen \cite{bankEnzy}\cite[97-99]{ITidF}. Die so nebeneinander gestellten Systeme erlauben auch eine Lastverteilung bei der Bearbeitung mehrerer Anfragen. Gerade in Hinblick auf die neuen Vertriebswege und dem steigenden bargeldlosen Zahlungsverkehr ist ein System, dass sich skalieren lässt unabdingbar \cite{bankEnzy}\cite{capgemini}. Die Abbildungen \ref{online-banking} und \ref{bargeldlos} zeigen dieses Wachstum auf.
+
+
+\begin{filecontents}{date.dat}
+date       value
+2006-01-01  34
+2007-01-01  34
+2008-01-01  36
+2009-01-01  37
+2010-01-01  35
+2011-01-01  44
+2012-01-01  44
+2013-01-01  45
+2014-01-01  54
+\end{filecontents}
+
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+date coordinates in=x,
+xtick=data,
+xticklabel style=
+{rotate=90,anchor=near xticklabel},
+xticklabel=\year,
+xlabel={Jahre},
+y tick label style={/pgf/number format/1000 sep=},
+extra y tick style={grid=major, tick label style={xshift=-1cm}},
+ylabel={Anteil der Nutzer in Prozent},
+date ZERO=2005-01-01,% <- improves precision!
+]
+\addplot table[x=date,y=value] {date.dat};
+\end{axis}
+\end{tikzpicture}
+\caption[Nutzer von Online-Banking in Deutschland]{Nutzer von Online-Banking in Deutschland. Nachempfunden nach \cite{onlinebanking}.}
+\label{online-banking}
+\end{center}
+\end{figure}
+
+
+\begin{filecontents}{date2.dat}
+date       value
+2011-01-01  90.61 
+2012-01-01  94.38
+2013-01-01  99.52
+2014-01-01  103.34
+2015-01-01  112.13
+\end{filecontents}
+
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+date coordinates in=x,
+xtick=data,
+xticklabel style=
+{rotate=90,anchor=near xticklabel},
+xticklabel=\year,
+xlabel={Jahre},
+y tick label style={/pgf/number format/1000 sep=},
+extra y tick style={grid=major, tick label style={xshift=-1cm}},
+ylabel={Anzahl der Transaktionen in Mrd.},
+date ZERO=20010-01-01,% <- improves precision!
+]
+\addplot table[x=date,y=value] {date2.dat};
+\end{axis}
+\end{tikzpicture}
+\caption[Transaktionen im bargeldlosen Zahlungsverkehr in der EU]{Anzahl der Transaktionen im bargeldlosen Zahlungsverkehr in der EU. Nachempfunden nach \cite{bargeldlos}.}
+\label{bargeldlos}
+\end{center}
+\end{figure}
+
+
+Die Folge dieser Entwicklung ist nicht nur eine steigende Anzahl an Zugriffen auf die Systeme der Banken, sondern auch eine stetig zunehmende Datenmenge. Nicht umsonst wurde in der Einleitung dieser Arbeit die Verbindung zwischen Big Data und Banken geknüpft. Alleine das Speichern aller Buchungsdaten stellt aktuell für Banken ein Problem dar, doch neue Dienste und Richtlinien fordern nun auch den schnellen und gezielten Zugriff auf Kundendaten, Konten und Buchungen \cite{bigdataBigStorage}. In diesem Zuge ist die Second Payment Service Directive (PSD2) zu nennen. Dabei handelt es sich um eine EU Richtlinie die im Januar 2016 in Kraft getreten ist. Demnach sind Banken verpflichtet auf Wunsch des Kunden alle seine Konten, und durchgeführten Buchungen einem Drittanbieter über eine sichere Verbindung zur Verfügung zu stellen. Auch das autorisieren von Bezahlungen muss über diese Verbindung möglich sein. Aktuell arbeitet die Europäische Aufsichtsbehörde an den Regulatory Technical Standards (RTS) welche festlegen sollen, wie diese Verbindung realisiert werden soll und wie die Schnittstelle für Drittanbieter auszusehen hat. Wenn die RTS ausgearbeitet sind haben die Banken 18 Monate beziehungsweise maximal bis zum vierten Quartal 2018 Zeit die Bestimmung in ihre Systeme zu integrieren \cite{eu-psd2}\cite{psd2dk}. Die PSD2 stellt eine enorme Herausforderung für die Buchungssysteme der Banken dar. Wo vorher nur Zugriffe von bankeigenen Systemen möglich waren können jetzt beliebige Drittanbieter Kontodaten und Kontobewegungen abfragen. Als Konsequenz können deutlich steigende Lese- und moderat steigende Schreibzugriffe erwartet werden. Die Vorteile die sich für den Endnutzer ergeben, stellen die Banken hingegen vor ein Problem. Für die Bankkunden sind alle Bankprodukte bankenübergreifend in einer einzigen Anwendung verfügbar. Drittanbieter können Kauf- und Sparverhalten der Kunden analysieren und sinnvolle Hinweise zur Kontoführung geben. Zusätzlich sind Kunden nicht mehr an die eine Schnittstelle ihrer Bank gebunden um Buchungen durchzuführen, sondern können die beste Anwendung zum Managen ihrer Finanzen nutzen. Die Banken müssen jedoch zum einen mit der größeren Belastung der Buchungssysteme umgehen und zum Anderen ihre Anwendungen und Infrastruktur umstrukturieren um trotz Konkurrenz die Kunden auf ihrer Plattform halten zu können \cite{psd2vid}. 
+
 \section{Probleme}
 Sehr teuer (Quelle????)
 Schwer zu skalieren
 Es wird Transaktionssicherheit auch für Kontoarten gewährleistet, welche gar keine benötigen
 
-\chapter{Dirstributed File System als Backbone für Buchungssysteme}
+\chapter{Distributed File System als Backbone für Buchungssysteme}
 
 \section{Funktionsweise}
 Verteiltes Datei System. Vielleicht auf Funktionsweise von Hadoop, etc. eingehen. Aber nur Überblick (Paper beinhalten Zusatzinformation).  
