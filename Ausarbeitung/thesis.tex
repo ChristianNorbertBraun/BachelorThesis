@@ -541,6 +541,8 @@ Wie in Haystack ein Bild gespeichert wird, ist in Abbildung \ref{writeHaystack} 
   \label{writeHaystack}
 \end{figure}
 
+Damit der Speicher der durch überschriebene oder korrupte Bilder belegt wird nicht verloren ist, werden Volumes regelmäßig verdichtet. Dazu wird das Volume Bild für Bild kopiert und korrupte oder überschriebene Bilder übersprungen. Daraufhin wird das ursprüngliche Volume durch das neue ersetzt. Um auch bei korrupten Bildern eine gleichmäßige Replikation zu garantieren, kommunizieren Store Machines und Directory gelegentlich miteinander. Dabei teilen die Store Machines den Inhalt und den Zustand ihrer Volumes mit. Sind einige Bilddaten korrumpiert, kann das Directory dem betroffenen logischen Volume ein neues physikalisches Volume zuordnen und die Replikation starten. Inkonsistenzen treten bei Haystack nur auf, wenn ein Bild angefordert wird, während es noch auf die einzelnen Store Machines verteilt wird, oder wenn ein korruptes Bild angefragt wird, bevor dieser Fehler von der zuständigen Store Machine erkannt wurde.
+
 \section{Anwendungsbereiche}
 Alles was mit Big Data zu tun hat. Google zum speichern der Weblinks, Facebook für Bilder, Yahoo, etc.
 \section{Vorteile und Nachteile}
