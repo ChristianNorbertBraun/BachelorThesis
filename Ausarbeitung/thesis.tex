@@ -532,6 +532,15 @@ In Abbildung \ref{readHaystack} sind die Schritte zum Lesen eines Bildes in Hays
   \label{readHaystack}
 \end{figure}
 
+Wie in Haystack ein Bild gespeichert wird, ist in Abbildung \ref{writeHaystack} zu sehen. Im ersten Schritt fragt der Client das Directory nach einem beschreibbaren logischen Volume. Dieses antwortet mit der ID des logischen Volumes und den Adressen der Store Machines, die die im logischen Volume enthaltenen physikalischen Volumes beinhalten. Darauf hin vergibt der Client einen eindeutigen Schlüssel für das hochzuladende Bild. Der Schlüssel entspricht der oben erklärten Form. Gemeinsam mit dem Schlüssel übertragt der Client daraufhin die Bilddaten an alle vom Directory erhaltenen Store Machines. Diese hängen das Bild in den entsprechenden Volumes an und aktualisieren die Volume-Information in ihrem Hauptspeicher. Da Bilder in Volumes immer nur an die bestehenden Bilder angehängt werden können, ist eine Modifikation eines bereits gespeicherten Bildes nicht möglich. Um ein solches Bild zu überschreiben, sendet der Client ein neues Bild mit dem gleichen Schlüssel wie das zu überschreibende Bild. Bei der nächsten Anfrage nach diesem Bild wird die Store Machine immer das Bild zurückgeben, das den größten Offset innerhalb des Volumes besitzt, da dieses immer das aktuellste ist. Der Speicher der für das ungültig gewordene Bild benötigt wird, bleibt weiterhin belegt. Um die Netzwerkbandbreite und die Leistung der Festplatten optimal auszunutzen, bemüht sich Haystack immer mehrere Bilder auf einmal zu einem Volume hinzuzufügen. Dies wird ermöglicht, da Nutzer von Facebook in der Regel Bilder in Alben auf die Plattform laden.
+
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=15cm]{img/4/WriteHaystack.png}
+  \caption[Ablauf beim Schreiben eines Bildes in Haystack.]{ Ablauf beim Schreiben eines Bildes. Nachempfunden nach \cite{haystack}.}
+  \label{writeHaystack}
+\end{figure}
+
 \section{Anwendungsbereiche}
 Alles was mit Big Data zu tun hat. Google zum speichern der Weblinks, Facebook für Bilder, Yahoo, etc.
 \section{Vorteile und Nachteile}
