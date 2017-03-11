@@ -603,7 +603,59 @@ ylabel={Zeit zum Herunterladen in Sekunden},
 \end{figure}
 
 \chapter{Konzept}
-\section{Transaktionen aufgeben}
+Die Erhaltung eines konsistenten Zustandes sowie die geringe Datenmenge einer einzelnen Buchung scheinen nicht mit den Möglichkeiten eines DFS vereinbar. Wenn der Kontostand eines Kontos nicht sicher bestimmt werden kann, kann das Durchführen einer Buchung den Kontostand unter Null bringen. Das darf aber zum Beispiel bei einem Girokonto nicht passieren. Aber gelten diese Bedingungen denn für alle Kontoarten? In diesem Kapitel soll ein Konzept entwickelt werden, dass die Stärken eines DFS für ein Buchungssystem zugänglich macht. Dabei wird die Relevanz der Konsistenz in Frage gestellt und eine Lösung für die kleine Datenmenge einer Buchung erarbeitet. Zu Letzt soll ein Designvorschlag für das Buchungssystem gemacht werden, der eine extreme Skalierung sowie ausreichende Konsistenz liefert.
+
+\section{Dringend notwendige Konsistenz}
+Starke Konsistenz in einem Buchungssystem scheint unabdingbar. Wenn man sich aber wieder auf die Bedeutung der eventual consistency besinnt, wird klar, dass ein DFS auch irgendwann starke Konsistenz liefert. Und zwar immer wenn eine bestimmte Zeit keine Schreibzugriffe getätigt wurden. 
+Inkonsistenzen treten also immer nur im Rahmen weniger Sekunden bis zu einer Minute nach dem Durchführen einer Buchung auf. Gibt es nicht Kontoarten für die diese Konsistenz ausreichen würde? Problematisch sind alle Konten, bei denen regelmäßig Geld ein- und ausgeht und einen vorgegebener Saldo nicht unterschritten werden darf. Bei einem Girokonto zum Beispiel darf der Kontostand nicht unter Null gehen. Durch einen Dispositionskredit kann der Kontostand zwar negativ werden, aber auch nur einen bestimmten Betrag erreichen. Mit einer eventual consistency kann dieses Verhalten aber nicht garantiert werden. Wenn zum Zeitpunkt einer Buchung kein konsistenter Zustand vorliegt, kann nicht festgestellt werden ob das Konto noch über genügend Zahlungsmittel verfügt. Würden Buchungen immer nur zu bekannten Zeitpunkten eingehen könnte man sicher gehen, dass zuvor ein konsistenter Zustand hergestellt wird. Auch Konten, die beliebig überzogen werden können, könnten abgebildet werden. Hier spielt es keine Rolle, ob ein bestimmter Betrag unterschritten wurde und Buchungen können einfach durchgeführt werden. Würde ein Girokonto auf diese Art funktionieren läge die Verantwortung das Saldo des Kontos nicht zu überschreiten beim Bankkunden mit dem Risiko einer starken Verschuldung. Ganz zu schweigen von der Gefahr, dass ein unberechtigter Zugriff auf ein solches Konto fatal für den Kunden sowie das Vertrauen in die Bank wäre.
+
+Konten die eine starke Konsistenz also nicht zwingend benötigen, sollten nicht einfach von außerhalb der Bank zugänglich sein. Auch Konten die lediglich Zahlungen empfangen und selbst keine Zahlungen durchführen würden mit einer gelockerten Konsistenz zurecht kommen. Wo kein Geld abgehoben wird, kann der Kontostand auch nicht sinken. Aber auch wenige kontrollierte Abbuchungen sind mit eventual consistency realisierbar. Wenn Abbuchungen nur in sehr großen Abständen oder einmalig erfolgen, kann sichergestellt werden, dass zum Zeitpunkt der Buchung der Zustand konsistent ist. All diese Punkte treffen auf die Konten zu, die komplett in der Verantwortung der Bank liegen. Von den Passivgeschäften lässt sich die Termineinlage sehr gut mit einem DFS abbilden. In der Regel handelt es sich hierbei um eine einmalige Einzahlung des Bankkunden, bei dem bekannt ist, wann der Betrag plus Zinsen wieder ausgezahlt wird. Für die Dauer der Termineinlage liegt die Verantwortung bei der Bank. Diese ist aber durchaus in der Lage Buchungen nur zu vorbestimmten Zeitpunkten durchzuführen und sicherzustellen, dass das Kontosaldo nicht unter Null fällt. Besonders die Aktivgeschäfte können auch ohne starke Konsistenz abgebildet werden. Bei allen Formen des Ratenkredites, gibt es auf Seiten der Bank ein Konto, auf welches der Kreditnehmer seine Raten einzahlen muss. Auf dieses Konto wird nur Geld eingezahlt und zum Ende des Kredits der Gesamtbetrag auf ein weiteres Konto der Bank gebucht. Für jede Termineinlage und für Jeden Ratenkredit, wird auf Seite der Bank also ein Konto angelegt, welches relativ wenige Kontobewegung erfährt und in den Händen der Banken liegt. Wie Abbildung \ref{ratenkredite} zeigt ist die Anzahl der Konten die allein für die Ratenkredite angelegt werden beachtlich. Auch wenn jedes dieser Konten an sich die starke Konsistenz der relationalen Datenbanken nicht benötigt, zahlen Banken den gleichen Betrag dafür, wie für Girokonten. Alleine die Speicherung der Konten für Termineinlagen und Ratenkredite in einem DFS könnte den Banken Kosten sparen und Druck von den Buchungssystemen nehmen.
+
+\begin{filecontents}{date6.dat}
+date       value
+2008-01-01  6909
+2009-01-01  7611
+2010-01-01  7272
+2011-01-01  7183
+2012-01-01  7697
+2013-01-01  7737
+2014-01-01  7434
+2015-01-01  7442
+\end{filecontents}
+
+
+\begin{figure}[htb]
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+date coordinates in=x,
+xtick=data,
+xticklabel style=
+{rotate=90,anchor=near xticklabel},
+xticklabel=\year,
+xlabel={Jahre},
+y tick label style={/pgf/number format/1000 sep=},
+extra y tick style={grid=major, tick label style={xshift=-1cm}},
+ylabel={Anzahl der Kreditverträge in Tausend},
+date ZERO=2008-01-01,% <- improves precision!
+]
+\addplot table[x=date,y=value] {date6.dat};
+\end{axis}
+\end{tikzpicture}
+\caption[Anzahl der Ratenkreditverträge in Deutschland]{Anzahl der Ratenkreditverträge in Deutschland. Nachempfunden nach \cite{ratenkredite}.}
+\label{ratenkredite}
+\end{center}
+\end{figure}
+
+
+Das hier entwickelte Konzept soll aber von der Skalierbarkeit und Leistung auch in der Lage sein alle anderen Kontoarten abzudecken
+
+
+
+
+
+
+
 Kann man Transaktionen aufgeben? Wieso lohnt sich das? Was ist mein Ziel damit?
 \section{Ausfallsicherheit}
 \section{Verwendung des DFS}
