@@ -685,17 +685,10 @@ Kombiniert man diese Idee eines Buchungssystem mit dem in Kapitel \ref{oneOnlyDF
 
 Beim Lesen von Buchungen für ein Konto wird zunächst ermittelt ob auch der Kontostand übertragen werden soll. Wenn dem so ist, wird er aus der Kontostands Datenbank ausgelesen. Darauf hin wird die Anfrage an das DFS weitergeleitet und die Antwort mit dem Kontostand kombiniert und zum Client ausgeliefert. Zusätzlich kann der Client informiert werden, ob aktuell noch Buchungen ausstehen, die sich aktuell in der Verarbeitung befinden.
 
-\section{Verwendung des DFS}
-Wie wird das DFS eingesetzt? Noch keine Konkrete Implementierung angeben.
-\section{Aufbau der Anwendung}
-RESTfull Service, Kommunikation mit DFS
-\section{Erstellen einer Buchung}
-Ablauf
-\section{Lesen einer Buchung}
-Ablauf
-\section{Maßnahmen zur Skalierung}
-Wegen DFS leicht skalierbar, aber es muss auch auf Locks beim Schreiben von neuen Dateien geachtet werden.
+\section{Skalierbarkeit}
+Der Sinn dieses Konzepts für ein DFS und des darauf aufsetzenden Buchungssystem, war die Erfüllung einer besonders einfachen und beliebig großen Skalierbarkeit. Besonders Lesezugriffe sollen immer schnell beantwortet werden können. Da der Fokus vor allem auf diesen Punkten lag, hat das Konzept nicht den Anspruch in allen Aspekten vollständig zu sein. 
 
+Das hier entwickelte Buchungssystem und das dazugehörige DFS lässt sich auf mehrere Arten skalieren. Die Anwendungsschicht ist zunächst einmal komplett unabhängig vom DFS und der Kontostand Datenbank. Demnach lassen sich beliebig viele Instanzen davon parallel hochfahren. Je nach Anzahl der Anfragen, kann dies sogar lastbezogen geschehen. Wenn sehr viele Anfragen auf das Buchungssystem einprasseln, lassen sich mehrere Anwendungsschichten hochfahren, wenn der die Anzahl der Anfragen wieder sinkt, können die zusätzlichen Systeme einfach wieder entfernt werden. Die Skalierung der Kontostands Datenbank kann entweder über Replikation erfolgen, also mehrere Systeme oder über eine klare Aufteilung der Zuständigkeit auf mehrere Datenbanksysteme. So dass ein Datenbanksystem immer nur für einen bestimmten BIC Bereich zuständig ist und nur Anfragen beantwortet, die diesen Bereich betreffen. Das DFS lässt sich wie bereits beschrieben, einfach durch das hinzufügen weiterer OSDs oder das aufstocken des Hauptspeichers des Masters skalieren. Dabei ist zu erwähnen, dass die Skalierung des DFS, sowie die Skalierung der Anwendungsschicht der Buchungssysteme komplett unabhängig von einander statt finden kann. Die Anwendungsschicht braucht keine Anpassungen vorzunehmen um die gesteigerte Kapazität des DFS zu nutzen. Demnach wäre es auch denkbar das DFS auf Systemen von Drittanbietern auszulagern. Sollte die Möglichkeiten des Skalierung des DFS an ihre Grenzen stoßen, kann ähnlich wie bei der Kontostands Datenbank die Zuständigkeit für die Buchungen anhand des BICs auf mehreren DFS aufgeteilt werden.
 
 \chapter{Implementierung}
 \section{SeaweedFS}
