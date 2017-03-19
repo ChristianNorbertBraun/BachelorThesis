@@ -11,13 +11,14 @@
 \usepackage{textcomp}
 \usepackage{nicefrac}
 \usepackage{pdfpages}
+\usepackage{hyphenat}
 \usepackage{float} 
 \usepackage{pdflscape}
 \usepackage{subfigure}
 \usepackage{pdfpages}  
 \usepackage[verbose]{placeins} 
 \usepackage[nouppercase,headsepline,plainfootsepline]{scrpage2}
-\usepackage{listings}		
+\usepackage{listings}	
 \usepackage{xcolor}			
 \usepackage{color}			
 \usepackage{caption}		
@@ -36,6 +37,12 @@
 \usepackage[style=numeric]{biblatex}
 %\bibliography{literatur2}
 \addbibresource{literatur.bib}
+
+
+
+\hyphenation{Dritt-an-bie-tern}
+\hyphenation{Dritt-an-bie-ter}
+\hyphenation{Da-tei-na-men}
 
 %%%%%%%%%%%%%%%%%%%
 %% definitions
@@ -62,6 +69,7 @@ pdfkeywords={Keywords}
 \colorlet{numb}{magenta!60!black}
 
 \definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{black}{rgb}{0,0,0}
 \definecolor{darkblue}{rgb}{0.0,0.0,0.6}
 \definecolor{cyan}{rgb}{0.0,0.6,0.6}
 
@@ -71,7 +79,7 @@ pdfkeywords={Keywords}
 \definecolor{pgrey}{rgb}{0.46,0.45,0.48}
 
 \lstset{
-  basicstyle=\ttfamily,
+  basicstyle=\ttfamily\color{black},
   columns=fullflexible,
   showstringspaces=false,
   commentstyle=\color{gray}\upshape
@@ -106,20 +114,20 @@ pdfkeywords={Keywords}
       {]}{{{\color{delim}{]}}}}{1},
 }
 
-\lstset{language=xml,
-  morestring=[b]",
-  morestring=[s]{>}{<},
-  morecomment=[s]{<?}{?>},
-  stringstyle=\color{black},
-  numbers=left,
-  numberstyle=\scriptsize,
-  stepnumber=1,
-  numbersep=8pt,
-  identifierstyle=\color{darkblue},
-  keywordstyle=\color{cyan},
-  backgroundcolor=\color{background},
-  morekeywords={xmlns,version,type}% list your attributes here
-}
+%\lstset{language=xml,
+%  morestring=[b]",
+%  morestring=[s]{>}{<},
+%  morecomment=[s]{<?}{?>},
+%  stringstyle=\color{black},
+%  numbers=left,
+%  numberstyle=\scriptsize,
+%  stepnumber=1,
+%  numbersep=8pt,
+%  identifierstyle=\color{darkblue},
+%  keywordstyle=\color{cyan},
+%  backgroundcolor=\color{background},
+%  morekeywords={xmlns,version,type}% list your attributes here
+%}
 
 \lstset{language=Java,
   showspaces=false,
@@ -603,6 +611,7 @@ ylabel={Zeit zum Herunterladen in Sekunden},
 \end{figure}
 
 \chapter{Konzept}
+\label{concept}
 Der Erhalt eines konsistenten Zustandes, sowie die geringe Datenmenge einer einzelnen Buchung scheinen nicht mit den Möglichkeiten eines DFS vereinbar. Wenn der Kontostand eines Kontos nicht sicher bestimmt werden kann, kann die Durchführung einer Buchung den Kontostand unter Null bringen. Das darf aber zum Beispiel bei einem Girokonto nicht passieren. Aber gelten diese Bedingungen denn für alle Kontoarten? In diesem Kapitel soll ein Konzept entwickelt werden, das die Stärken eines DFS für ein Buchungssystem zugänglich macht. Dabei wird die Relevanz der strong consistency in Frage gestellt und eine Lösung für das Speichern der kleinen Datenmenge einer Buchung erarbeitet. Zu Letzt soll ein Designvorschlag für das Buchungssystem gemacht werden, der eine extreme Skalierbarkeit sowie ausreichende Konsistenz liefert.
 
 \section{Konsistenz und Kontoarten}
@@ -691,16 +700,129 @@ Der Sinn dieses Konzepts für ein DFS und des darauf aufsetzenden Buchungssystem
 Das hier entwickelte Buchungssystem und das dazugehörige DFS lässt sich auf mehrere Arten skalieren. Die Anwendungsschicht ist zunächst einmal komplett unabhängig vom DFS und der Kontostanddatenbank. Demnach lassen sich beliebig viele Instanzen davon parallel hochfahren. Je nach Anzahl der Anfragen, kann dies sogar lastbezogen geschehen. Wenn sehr viele Anfragen auf das Buchungssystem einprasseln, lassen sich mehrere Anwendungsschichten hochfahren, wenn die Anzahl der Anfragen wieder sinkt, können die zusätzlichen Systeme einfach wieder entfernt werden. Die Skalierung der Kontostandsdatenbank kann entweder über Replikation erfolgen, also mehrere Systeme oder über eine klare Aufteilung der Zuständigkeit auf mehrere Datenbanksysteme. So dass ein Datenbanksystem immer nur für einen bestimmten BIC Bereich zuständig ist und nur Anfragen beantwortet, die diesen Bereich betreffen. Das DFS lässt sich wie bereits beschrieben, einfach durch das Hinzufügen weiterer OSDs oder das Aufstocken des Hauptspeichers des Masters skalieren. Dabei ist zu erwähnen, dass die Skalierung des DFS, sowie die Skalierung der Anwendungsschicht der Buchungssysteme komplett unabhängig von einander statt finden kann. Die Anwendungsschicht braucht keine Anpassungen vorzunehmen um die gesteigerte Kapazität des DFS zu nutzen. Demnach wäre es auch denkbar das DFS auf Systeme von Drittanbietern auszulagern. Sollte die Möglichkeiten der Skalierung des DFS an ihre Grenzen stoßen, kann ähnlich wie bei der Kontostands Datenbank die Zuständigkeit für die Buchungen anhand des BICs auf mehreren DFS aufgeteilt werden.
 
 \chapter{Implementierung}
-Ein DFS, so wie es im Kapitel \ref{oneOnlyDFS} beschrieben wurde, existiert aktuell nicht. Da die Entwicklung eines DFS aber äußert komplex und zeitaufwendig ist, wird für die beispielhafte Implementierung auf ein bereits bestehendes DFS, das am besten auf die erarbeiteten Anforderungen passt, zurückgegriffen. Hauptkriterium ist dabei das Speichern und Lesen vieler kleiner Dateien. Von den beiden betrachteten DFS bietet sich dafür Haystack an. Leider gibt es jedoch von Haystack keine öffentlich zugängliche Version. Das Open Source Projekt SeaweedFS wurde aber auf Basis des Haystack Artikels entwickelt und weist dementsprechend eine große Ähnlichkeit in Architektur und Leistung zu seinem Vorbild auf. Bevor in diesem Kapitel näher auf die Anwendung und Details von SeaweedFS eingegangen wird, soll die Programmiersprache Go kurz angerissen werden. In ihr wurde sowohl SeaweedFS, die extra für diese Arbeit angefertigte Client Bibliothek für SeaweedFS und alle anderen Systemkomponenten implementiert. Auch der Aufbau des entwickelten Systems und der Ablauf beim Lesen und Schreiben einer Buchung wird in diesem Kapitel dargelegt. Bei der hier besprochenen Implementierung handelt es sich mehr um einen Proof of Concept als um eine allumfassende Lösung zur Umstrukturierung von Buchungssystemen. Der Schwerpunkt lag auf Skalierung und Ausfallsicherheit. Der Sicherheit der Daten und der Entwicklung einer Nutzerauthentifizierung wurden im Rahmen dieser Implementierung keine Aufmerksamkeit geschenkt.
+Ein DFS, so wie es im Kapitel \ref{oneOnlyDFS} beschrieben wurde, existiert aktuell nicht. Da die Entwicklung eines DFS aber äußert komplex und zeitaufwendig ist, wird für die beispielhafte Implementierung auf ein bereits bestehendes DFS, das am besten auf die erarbeiteten Anforderungen passt, zurückgegriffen. Hauptkriterium ist dabei das Speichern und Lesen vieler kleiner Dateien. Von den beiden betrachteten DFS bietet sich dafür Haystack an. Leider gibt es jedoch von Haystack keine öffentlich zugängliche Version. Das Open Source Projekt SeaweedFS wurde aber auf Basis des Haystack Artikels entwickelt und weist dementsprechend eine große Ähnlichkeit in Architektur und Leistung zu seinem Vorbild auf. Bevor in diesem Kapitel näher auf die Anwendung und Details von SeaweedFS eingegangen wird, soll die Programmiersprache Go kurz angerissen werden. In ihr wurde sowohl SeaweedFS, die extra für diese Arbeit angefertigte Client-Bibliothek für SeaweedFS und alle anderen Systemkomponenten implementiert. Auch der Aufbau des entwickelten Systems und der Ablauf beim Lesen und Schreiben einer Buchung wird in diesem Kapitel dargelegt. Bei der hier besprochenen Implementierung handelt es sich mehr um einen Proof of Concept als um eine allumfassende Lösung zur Umstrukturierung von Buchungssystemen. Der Schwerpunkt lag auf Skalierung und Ausfallsicherheit. Der Sicherheit der Daten und der Entwicklung einer Nutzerauthentifizierung wurden im Rahmen dieser Implementierung keine Aufmerksamkeit geschenkt.
 
 \section{Golang}
-Go ist eine von Robert Griesemer, Rob Pike und Ken Thompson bei Google entwickelte Programmiersprache. 2009 wurde der Quellcode Open Source. 
+Go ist eine von Robert Griesemer, Rob Pike und Ken Thompson bei Google entwickelte Programmiersprache. 2009 wurde der Quellcode Open Source. Der Grund, wieso überhaupt eine neue Sprache entwickelt wurde ist im offiziellen FAQ von Go beschrieben \cite{gofaq}. Demnach waren die Autoren frustriert über die bestehenden Sprachen zur Systemprogrammierung, bei denen immer die Entscheidung zwischen Leichtigkeit der Programmierung, schneller Kompilierung und schneller Ausführung fallen musste. Go soll das leichtgewichtige Programmieren, das von interpretierten dynamisch typisierten Programmiersprachen bekannt ist, mit den Vorteilen einer statischen Typisierung kombinieren und dabei auch große Programme schnell kompilieren und ausführen. Zusätzlich bringt Go schon von Haus aus viele Werkzeuge mit, die die Entwicklung erleichtern sollen. Neben dem Kompilieren der Programme für unterschiedliche Betriebssysteme, können Unit Tests sowie Benchmark Tests nur mit der Standard Runtime von Go entwickelt werden. Zusätzlich liefert Go eine Art Linter, eine vordefinierte Quellcodeformatierung, sowie eine automatisch generierte Projektdokumentation.
 
+Bei Go handelt es sich um eine prozedurale Programmiersprache, die sich in ihrem Syntax stark an C orientiert. Der Code für Hello World in Go ist in Abbildung \ref{lst:helloworld} zu sehen.
+\begin{lstlisting}[label=lst:helloworld,
+           language=Java,
+           firstnumber=1,
+           caption=Hello World mit Go.]           
+package main
 
+import "fmt"
 
+func main() {
+  fmt.Println("Hello World")
+}
 
+\end{lstlisting}
+
+Besonders aber eignet sich Go zur Entwicklung von Webservern \cite[3-22]{gowebprogramming}. Der Hauptgrund dafür dürfte der geschickte Umgang mit Nebenläufigkeit sein. Anstelle von Threads wird Parallelität in Go durch sogenannte Goroutines bewerkstelligt. Diese werden im Gegensatz zu Threads nicht vom Betriebssystem verwaltet sondern von der Go Runtime. Das ermöglicht ein schnelles Erstellen und Zerstören von Goroutines. Außerdem wird für das Anlegen einer Goroutine weniger Hauptspeicher als für einen Thread benötigt \cite{goroutines}. Um eine Goroutine zu starten, muss lediglich das Schlüsselwort \textit{go} vor den Funktionsaufruf geschrieben werden. Der in Go standardmäßig  enthaltene Webserver ist dadurch sehr leichtgewichtig und simpel anzuwenden. Ein Beispiel für einen einfachen Webserver und eine Goroutine ist in Listing \ref{lst:webserver} zu sehen. Nach einer im Jahr 2016 durchgeführten Umfrage nutzen 63 \% der Go Programmierer die Sprache zur Webentwicklung \cite{gosurvey}.
+
+Für die Implementierung eines Buchungssystems fiel die Wahl auf Go zum einen, weil das verwendete DFS, Seaweedfs, in Go realisiert wurde, und zum anderen, weil die einfache parallele Programmierung mit bereits geringen Aufwand eine Leistungssteigerung der Systeme ermöglicht.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[label=lst:webserver,
+           language=Java,
+           firstnumber=1,
+           caption=Einfacher Webserver in Go und Beispiel einer Goroutine.]           
+package main
+
+import (
+  "fmt"
+  "net/http"
+)
+
+// StartAsGoroutine is a simple example for a function that can be 
+// called within a Goroutine
+func StartAsGoroutine() {
+  fmt.Println("This will be called asynchronous!")
+}
+
+func main() {
+  http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    go StartAsGoroutine()
+    fmt.Fprintf(w, "Hi there it's me!")
+  })
+
+  http.ListenAndServe(":8080", nil)
+}
+\end{lstlisting}
+\end{minipage}
 
 \section{SeaweedFS}
+SeaweedFS ist eine unter der Apache Lizenz veröffentlichte Open Source Implementierung eines DFS auf Basis des 2010 veröffentlichten Haystack Artikels \cite{seaweedfsRepo}. Die internen Schritte zum Schreiben und Lesen von Dateien laufen also wie beim Vorbild ab. Über eine HTTP-Schnittstelle lassen sich beim Master Schlüssel und Adresse der Store Machine zum Speichern von Dateien anfragen und dann direkt auf der Store Machine ablegen. Diese beiden Schritte werden in Listing \ref{lst:seaweedfs} mit Hilfe des Kommandozeilen-Programms \textit{curl} dargestellt. Das Directory ist hierbei unter der Adresse \url{http://localhost:9333} erreichbar und die Store Machine unter \url{http://localhost:8080}.
+
+Mit den Schnittstellen, die SeaweedFS auf Grundlage von Haystack zur Verfügung stellt, lassen sich aber nicht alle Teile des in Kapitel \ref{concept} vorgestellten Konzepts realisieren. So können zum Beispiel keine eigenen Schlüssel in der Form BIC, IBAN gefolgt von einem Zeitstempel erzeugt werden. Außerdem gibt es keine Möglichkeit nach Dateien zu suchen. Das Lesen einer Datei benötigt immer die Kenntnis über deren Schlüssel. Auch die Gruppierung von logisch zusammenhängenden Daten ist so nicht möglich. Der Client kann nicht bestimmen in welchem Volume und in welcher Reihenfolge innerhalb des Volumes die Daten landen.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[label=lst:seaweedfs,
+           language={},
+           emphstyle=\color{black},
+           extendedchars=true,
+           literate={ü}{{\"u}}1,
+           keywordstyle=\color{black},
+           stringstyle=\color{black},
+           firstnumber=1,
+           caption=Schritte zum Ablegen einer Datei in SeaweedFS.]           
+# Anfragen eines Schlüssels
+curl http://localhost:9333/dir/assign
+{"count":1,"fid":"3,01637037d6","url":"127.0.0.1:8080",
+ "publicUrl":"localhost:8080"}
+
+# Abspeichern der Datei mit dem gegebenen Schlüssel
+curl -F file=@testData.txt http://localhost:8080/3,01637037d6
+{"size": 43234}
+\end{lstlisting}
+\end{minipage}
+
+Die ersten beiden Probleme können aber über eine Besonderheit von SeaweedFS gelöst werden. Neben dem Directory und den Store Machines verfügt SeaweedFS auch über einen sogenannten Filer. Über diesen können Dateien in Pfaden und Ordnern abgelegt werden. Da SeaweedFS ganz nach dem Vorbild von Haystack entwickelt wurde, werden diese Pfade und Ordner hocheffizient im Hauptspeicher des Filers gehalten. Stellt man beim Filer eine Anfrage nach einer Datei innerhalb eines Ordners, müssen drei Schritte unternommen werden. Zunächst muss die Ordner-ID für den der Datei übergeordneten Ordner gefunden werden. Gemeinsam mit der ermittelten Ordner-ID und dem Namen der Datei kann dann der Dateischlüssel gefunden werden. Zuletzt wird über den Dateischlüssel der entsprechende Datenblock aus den Volumes gesucht. Der letzte Schritt fällt bereits in den Aufgabenbereich des Directories. Der Filer ist demnach nur für die Zuordnung von Ordner zu Ordner-ID und Dateiname zu Dateischlüssel zuständig. Während die Ordner und Pfade im Hauptspeicher des Filers liegen, wird die Zuordnung von übergeordneter Ordner und Dateiname zu Dateischlüssel in einem Key-Value-Store gespeichert. In der Standardkonfiguration von SeaweedFS ist dieser eine LevelDB. Wenn der Dateischlüssel ermittelt wurde, leitet der Filer die Anfrage an das entsprechende Volume weiter. Dieses Antwortet dann dem Client mit den Daten.
+Über den Filer kann jetzt ein eigener Schlüssel in Form von Ordner und Dateiname vergeben werden. Der erste Teil des Schlüssels also BIC und IBAN wird dabei in den Pfad kodiert, der stets aufsteigende  zweite Teil des Schlüssels, der Zeitstempel, in den Dateinamen. Der Schlüssel für eine Buchung hat demnach die Form \textit{[BIC/IBAN/Timestamp]}. Über den Filer kann auch nach Dateien innerhalb eines Ordners gesucht werden. Gibt man bei einer Anfrage einen \textit{lastFileName} über einen Query-Parameter mit, werden alle Dateien vom Filer zurückgeliefert, die in alphabetischer Reihenfolge nach dem \textit{lastFileName} liegen. Ein Beispiel zum Anlegen, Auslesen und dem Filtern nach Dateien ist in Listing \ref{lst:filer} zu sehen.
+
+In der Standardkonfiguration stellt der Filer jedoch einen Single Point of Failure da. Durch den Einsatz von Redis oder Apache Casandra anstelle der LevelDB als Persistenzschicht für den Filer, kann ein Verteilter Filer realisiert werden. Alternativ könnten auch mehrere Filer gestartet werden, die jeweils einen anderen Namensraum verwalten. 
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[label=lst:filer,
+           language={},
+           emphstyle=\color{black},
+           extendedchars=true,
+           literate={ü}{{\"u}}1,
+           keywordstyle=\color{black},
+           stringstyle=\color{black},
+           firstnumber=1,
+           caption=Schritte zum Ablegen einer Datei in SeaweedFS.]           
+
+# Ablegen einer Datei über den Filer
+curl -F "file=@Buchung" "http://localhost:8888/book/IBAN/BIC/Timestamp"
+
+# Anfragen einer Datei über den Filer
+curl "http://localhost:8888/book/IBAN/BIC/Timestamp"
+{"Daten":1,"MehrDaten":2}
+
+# Filtern aller Dateien in einem Ordner über den Dateinamen
+curl "http://localhost:8888/book/IBAN/BIC/?lastFileName=Timestamp"
+{
+  "Path": "/BIC/IBAN/",
+  "Files": [
+    {
+      "name": "Timestamp1",
+      "fid": "6,0625473512"
+    },
+    {
+      "name": "Timestamp2",
+      "fid": "6,106f19db84"
+    }
+  ],
+  "Directories": null,
+  "Limit": 100,
+  "LastFileName": "Timestamp2",
+  "ShouldDisplayLoadMore": false
+}
+\end{lstlisting}
+\end{minipage}
 Einsatz von SeaweedFS und wieso?
 Wie wird er hier konkret Konfiguriert
 \section{golang}
@@ -721,6 +843,7 @@ Ich bin sehr gespannt.
 
 \begin{lstlisting}[label=lst:java,
 				   language=java,
+           keywordstyle=\color{black},
 				   firstnumber=1,
 				   caption=Beispiel für einen Quelltext]				   
 
@@ -743,16 +866,16 @@ public void foo() {
 %%%%%%%%%%%%%%%%%%%
 %% create tables list
 %%%%%%%%%%%%%%%%%%%
-\listoftables
+%\listoftables
 
 %%%%%%%%%%%%%%%%%%%
 %% create listings list
 %%%%%%%%%%%%%%%%%%%
-%\lstlistoflistings
-%\addcontentsline{toc}{chapter}{Listings}				
+\lstlistoflistings
+\addcontentsline{toc}{chapter}{Listings}				
 
 \printbibliography
-\addcontentsline{toc}{chapter}{Literatur}				
+\addcontentsline{toc}{chapter}{Literatur}		
 
 %%%%%%%%%%%%%%%%%%%
 %% declaration on oath
@@ -767,5 +890,4 @@ Hiermit versichere ich, dass ich die vorgelegte Bachelorarbeit selbstständig ve
 $\overline{~~~~~~~~~~~~~~~~~\mbox{\BaAuthor, am \today}~~~~~~~~~~~~~~~~~}$
 \end{flushright}
 \end{document}
-
 
