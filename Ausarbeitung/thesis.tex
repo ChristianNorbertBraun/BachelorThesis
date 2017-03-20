@@ -473,7 +473,7 @@ Etwa 24 \% davon fließen alleine in die Buchungsdienste. Gerechnet auf die Giro
 
 
 \chapter{Grundlagen eines DFS}
-Zu den Skalierungsproblemen und den hohen Kastenfaktor der Anwendungssysteme der Banken tragen auch die ACID-basierten Datenbanksysteme bei. Auch wenn die Funktionalität, die ACID mit sich bringt, nur für einen Bruchteil der Prozesse benötigt wird, wird so das gesamte System ausgebremst und in den Skalierungsmöglichkeiten eingeschränkt \cite{salt}.
+Zu den Skalierungsproblemen und den hohen Kostenfaktor der Anwendungssysteme der Banken tragen auch die ACID-basierten Datenbanksysteme bei. Auch wenn die Funktionalität, die ACID mit sich bringt, nur für einen Bruchteil der Prozesse benötigt wird, wird so das gesamte System ausgebremst und in den Skalierungsmöglichkeiten eingeschränkt \cite{salt}.
 Systeme, die hingegen die Skalierbarkeit und Verfügbarkeit gegenüber der Konsistenz priorisieren, funktionieren nach dem BASE (Basically Available, Soft State, Eventual consistency) Prinzip. Häufig weisen diese Systeme niedrigere Betriebskosten im Vergleich zu den ACID-Alternativen auf \cite{clusterBASE}.
 In diesem Kapitel soll zunächst die Bedeutung von BASE geklärt werden. Ein besonderer Fokus liegt dabei auf den Unterschieden der Konsistenz zu traditionellen ACID-Systemen. Dann soll es um die Funktionsweise von DFS gehen. Diese funktionieren nach dem BASE Prinzip und haben Verfügbarkeit, Ausfallsicherheit und Kosteneffizienz zu ihrer Königsdisziplin gemacht. Zum besseren Verständnis werden zwei populäre Vertreter der DFS näher erläutert. Im letzten Teil des Kapitels werden die Vorteile und Grenzen der DFS nochmal genauer betrachtet und die Anforderungen an ein Buchungssystem mit den Möglichkeiten eines DFS abgeglichen.
 
