@@ -782,7 +782,7 @@ curl -F file=@testData.txt http://localhost:8080/3,01637037d6
 Die ersten beiden Probleme können aber über eine Besonderheit von SeaweedFS gelöst werden. Neben dem Directory und den Store Machines verfügt SeaweedFS auch über einen sogenannten Filer. Über diesen können Dateien in Pfaden und Ordnern abgelegt werden. Da SeaweedFS ganz nach dem Vorbild von Haystack entwickelt wurde, werden diese Pfade und Ordner hocheffizient im Hauptspeicher des Filers gehalten. Stellt man beim Filer eine Anfrage nach einer Datei innerhalb eines Ordners, müssen drei Schritte unternommen werden. Zunächst muss die Ordner-ID für den der Datei übergeordneten Ordner gefunden werden. Gemeinsam mit der ermittelten Ordner-ID und dem Namen der Datei kann dann der Dateischlüssel gefunden werden. Zuletzt wird über den Dateischlüssel der entsprechende Datenblock aus den Volumes gesucht. Der letzte Schritt fällt bereits in den Aufgabenbereich des Directories. Der Filer ist demnach nur für die Zuordnung von Ordner zu Ordner-ID und Dateiname zu Dateischlüssel zuständig. Während die Ordner und Pfade im Hauptspeicher des Filers liegen, wird die Zuordnung von übergeordneter Ordner und Dateiname zu Dateischlüssel in einem Key-Value-Store gespeichert. In der Standardkonfiguration von SeaweedFS ist dieser eine LevelDB. Wenn der Dateischlüssel ermittelt wurde, leitet der Filer die Anfrage an das entsprechende Volume weiter. Dieses Antwortet dann dem Client mit den Daten.
 Über den Filer kann jetzt ein eigener Schlüssel in Form von Ordner und Dateiname vergeben werden. Der erste Teil des Schlüssels also BIC und IBAN wird dabei in den Pfad kodiert, der stets aufsteigende  zweite Teil des Schlüssels, der Zeitstempel, in den Dateinamen. Der Schlüssel für eine Buchung hat demnach die Form \textit{[BIC/IBAN/Timestamp]}. Über den Filer kann auch nach Dateien innerhalb eines Ordners gesucht werden. Gibt man bei einer Anfrage einen \textit{lastFileName} über einen Query-Parameter mit, werden alle Dateien vom Filer zurückgeliefert, die in alphabetischer Reihenfolge nach dem \textit{lastFileName} liegen. Ein Beispiel zum Anlegen, Auslesen und dem Filtern nach Dateien ist in Listing \ref{lst:filer} zu sehen.
 
-In der Standardkonfiguration stellt der Filer jedoch einen Single Point of Failure da. Durch den Einsatz von Redis oder Apache Casandra anstelle der LevelDB als Persistenzschicht für den Filer, kann ein Verteilter Filer realisiert werden. Alternativ könnten auch mehrere Filer gestartet werden, die jeweils einen anderen Namensraum verwalten. 
+In der Standardkonfiguration stellt der Filer jedoch einen Single Point of Failure da. Durch den Einsatz von Redis oder Apache Casandra anstelle der LevelDB als Persistenzschicht für den Filer, kann ein Verteilter Filer realisiert werden. Alternativ könnten auch mehrere Filer gestartet werden, die jeweils einen anderen Namensraum verwalten. Für den Rahmen dieser Arbeit reicht die Leistung eines einzigen Filers jedoch aus.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[label=lst:filer,
@@ -794,16 +794,15 @@ In der Standardkonfiguration stellt der Filer jedoch einen Single Point of Failu
            stringstyle=\color{black},
            firstnumber=1,
            caption=Schritte zum Ablegen einer Datei in SeaweedFS.]           
-
 # Ablegen einer Datei über den Filer
-curl -F "file=@Buchung" "http://localhost:8888/book/IBAN/BIC/Timestamp"
+curl -F "file=@Buchung" "http://localhost:8888/book/BIC/IBAN/Timestamp"
 
 # Anfragen einer Datei über den Filer
-curl "http://localhost:8888/book/IBAN/BIC/Timestamp"
+curl "http://localhost:8888/book/BIC/IBAN/Timestamp"
 {"Daten":1,"MehrDaten":2}
 
 # Filtern aller Dateien in einem Ordner über den Dateinamen
-curl "http://localhost:8888/book/IBAN/BIC/?lastFileName=Timestamp"
+curl "http://localhost:8888/book/BIC/IBAN/?lastFileName=Timestamp"
 {
   "Path": "/BIC/IBAN/",
   "Files": [
@@ -823,10 +822,159 @@ curl "http://localhost:8888/book/IBAN/BIC/?lastFileName=Timestamp"
 }
 \end{lstlisting}
 \end{minipage}
-Einsatz von SeaweedFS und wieso?
-Wie wird er hier konkret Konfiguriert
-\section{golang}
-Wieso habe ich golang verwendet? Bezug zu SeaweedFS 
+
+Für die Kommunikation mit SeaweedFS wurde extra eine eigene Client-Bibliothek entwickelt. Diese trägt den Namen \textit{Weedharvester} und ist unter der MIT-Lizenz auf GitHub öffentlich zugänglich \cite{weedharvester}. Weedharvester abstrahiert den Zugriff auf SeaweedFS und kann sowohl direkt über das Directory, als auch über den Filer Anfragen an SeaweedFS senden. Alle wichtigen Operationen wie das Hochladen, Anfragen, Filtern und Löschen von Dateien werden unterstützt. Dabei ist das Hochladen nicht auf Dateien beschränkt. Mit Weedharvester kann jede beliebige Bytefolge in SeaweedFS abgelegt werden. Ein Beispiel für die Nutzung des Standard-Clients und des Filer-Clients ist in Listing \ref{lst:weedharvester} dargestellt.
+
+\begin{minipage}{\linewidth}
+\begin{lstlisting}[label=lst:weedharvester,
+           language={},
+           emphstyle=\color{black},
+           extendedchars=true,
+           literate={ü}{{\"u}}1,
+           keywordstyle=\color{black},
+           stringstyle=\color{black},
+           firstnumber=1,
+           caption=Beispiele zur Verwendung von Weedharvester.]          
+# Client
+client := NewClient("http://masterurl.com")
+
+fid, err := client.Create(reader)
+reader := client.Read(fid)
+
+# Filer
+filer := NewFiler("http://filerurl.com")
+
+err := filer.Create(reader, filename, path)
+reader := filer.Read(filename, path)
+\end{lstlisting}
+\end{minipage}
+
+Die Datenreplikation kann bei SeaweedFS entweder beim Anlegen jeder Datei separat mitgegeben werden, oder, wie hier der Fall, beim Starten des Directories allgemeingültig festgelegt werden. Über ein Schema mit drei Ziffern kann bestimmt werden, wie viele Replikas auf unterschiedlichen Datenzentren, unterschiedlichen Racks und gleichen Datenzentren oder dem gleichen Rack und unterschiedlichen Servern angelegt werden sollen. Die Kennung für Datenzentrum und Rack wird den Store Machines beim Start mitgegeben.
+
+Nicht nur die Fähigkeit relativ kleine Dateien zu verwalten, macht SeaweedFS zu einer guten Wahl für die beispielhafte Implementierung eines Buchungssystems sondern auch die einfache Nutzung. Das Starten und Konfigurieren ist in wenigen Schritten getan. Außerdem hat der Autor auch ein Docker Image für SeaweedFS veröffentlicht, mit dem die Konfiguration und Verwaltung noch einfacher ist. Ein Beispiel für eine docker-compose Datei, die ein Directory, einen Filer und einen Store Machine startet und entsprechend konfiguriert, ist in Listing \ref{lst:docker} zu sehen. Auf diese Weise wurde SeaweedFS auch in der folgenden Implementierung eingesetzt.
+
+\begin{lstlisting}[label=lst:docker,
+           language={},
+           emphstyle=\color{black},
+           extendedchars=true,
+           literate={ü}{{\"u}}1,
+           keywordstyle=\color{black},
+           stringstyle=\color{black},
+           firstnumber=1,
+           caption=docker-compose Datei zum Starten eines Filers{,} eines Directories (master) und einer Store Machine (volume) in SeaweedFS.]          
+version: '2.1'
+services:
+  seaweed:
+    container_name: seaweedf
+    image: chrislusf/seaweedfs
+    ports:
+      - 8888:8888
+      - 9333:9333
+      - 8080:8080
+    command: 'server -master.port=9333 -volume.port=8080 -filer=true -volume.publicUrl http://docker:8080'
+\end{lstlisting}
+
+\section{Aufbau der Implementierung}
+Das komplett implementierte System ist auf Github unter der MIT-Lizenz öffentlich zugänglich. Die Grundbausteine sind ein Backend, mehrere Account-Updater, und SeaweedFS als das zugrundeliegende DFS. Das Backend stellt dabei die Schnittstelle zum Client und somit die einzige Möglichkeit um mit SeaweedFS zu kommunizieren dar. Zu seinen Aufgaben gehört genauso das Anlegen und Auslesen von Konten, wie das persistente Speichern einer jeden eingehenden Buchung. Zusätzlich informiert das Backend den Account-Updater über das Eintreffen neuer Daten. Auch für das Lesen von Buchungen ist das Backend zuständig. Der Account-Updater hingegen ist für das Zusammenfassen mehrerer Buchungen in eine Datei verantwortlich und löst damit das Problem, das SeaweedFS alleine nicht bewältigen konnte. Über das Backend erfährt der Account-Updater, für welche Konten neue Buchungen vorliegen und verarbeitet diese. SeaweedFS speichert zum einen jede einzelne Buchung in einem Ordner \url{books} und zum anderen für jedes Konto eine Zusammenfassung von Buchungen im Ordner \url{accounts}. Alle Daten die das System über das Backend betreten oder verlassen, sind in JSON formatiert. Ein in JSON formatiertes Konto ist in Listing \ref{lst:accountJson} zu sehen. Jedes Konto ist durch \textit{bic} und \textit{iban} eindeutig identifizierbar und kann mit einem beliebigen Kontostand initiiert werden.
+
+\begin{lstlisting}[label=lst:accountJson,
+           language={},
+           firstnumber=1,
+           caption=Kontoobjekt in JSON-Format.]           
+{
+  "name": "RandomAccount",
+  "bic": "BQLM8NINHQ4",
+  "iban": "DE627131848139984060",
+  "balance": 2481
+}
+\end{lstlisting}
+
+Für jedes Konto können beliebig viele Buchungen abgespeichert werden. Eine einzelne JSON codierte Buchung wird in Listing \ref{lst:transactionJson} dargestellt. Eine Buchung ist eindeutig über ihr \textit{bookingDate} in Kombination mit \textit{bic} und \textit{iban} des \textit{recipients} also dem Empfänger der Buchung. Nur anhand der Daten einer Buchung kann nicht herausgefunden werden, ob sie durch Online-Banking, eine Lastschrift oder eine Überweisung entstanden ist. Lediglich die Beschreibung im Feld \textit{intendedUse} könnte darüber Auskunft geben. Bei jeder Bewegung von bargeldlosen Zahlungsmitteln werden immer zwei solcher Buchungen erstellt. Diese beiden Buchungen unterscheiden sich lediglich darin, dass der \textit{recipient} und der \textit{sender} getauscht und der Betrag in \textit{valueInSmallestUnit} das Komplementär zur ursprünglichen Buchung ist. Jede dieser beiden Buchungen werden dann für den entsprechenden Empfänger abgelegt. Dieses Vorgehen entspricht der zuvor erklärten doppelten Buchführung. Da die beiden Konten, die an einer Zahlungsmittelbewegung beteiligt sind, nicht immer bei der gleichen Bank liegen müssen, kümmert sich ein sogenannter Zahlungsdienstleister um die Verteilung der beiden Buchungen an die zuständigen Banken \cite{wiki:zahlungsdienstleister}. Das Buchungssystem selbst kann dadurch jede Buchung unabhängig voneinander verarbeiten.
+
+\begin{lstlisting}[label=lst:transactionJson,
+           language={},
+           firstnumber=1,
+           caption=Buchung in JSON-Format.]           
+{
+  "recipient": {
+    "name": "RandomAccount",
+    "bic": "BQLM8NINHQ4",
+    "iban": "DE627131848139984060"
+  },
+  "sender": {
+    "name": "TestUser",
+    "bic": "TESTBIC",
+    "iban": "TESTIBAN"
+  },
+  "bookingDate": "2017-03-20T15:30:45.027280618Z",
+  "currency": "EUR",
+  "valueInSmallestUnit": 1913,
+  "intendedUse": "TestCreateTransaction"
+}
+\end{lstlisting}
+
+Die grundlegende Architektur der Anwendung ist in Abbildung \ref{architectureImpl} dargestellt. Das Backend verfügt hierbei über alle Schnittstellen um Konten oder Buchungen anzulegen und auszulesen.  Das Senden einer POST-Anfrage mit einem JSON-formatierten Konto im Body-Teil an die Adresse \url{/accounts} erzeugt zum einen einen einen Eintrag in der Kontostandsdatenbank, hier eine PostgreSQL, mit den Attributen \textit{bic}, \textit{iban} und \textit{balance} als auch eine sogenannte \textit{AccountInfo} im DFS unter dem Verzeichnis \url{accounts/[BIC]/[IBAN]} mit dem Zeitpunkt der Erstellung als Dateinamen. Eine \textit{AccountInfo} ist vergleichbar mit dem im Konzept beschriebenen Bucket, nur das keine Index File zum schnellen Zugriff innerhalb der \textit{AccountInfo} angelegt werden kann. Der Pfad in Kombination mit dem Dateinamen entspricht hierbei wieder dem im Konzept vorgestellten Schlüssel. Sowohl das Speichern des Eintrages in der Kontodatenbank als auch das Erstellen der \textit{AccountInfo} im DFS muss gelingen, damit das Anlegen eines Kontos als erfolgreich gilt. Eine \textit{AccountInfo} wie sie im DFS abgelegt wird, ist in Listing \ref{lst:accountinfoJson} dargestellt. Neben den Informationen für ein Konto, speichert die \textit{AccountInfo} noch Buchungen. Über die Felder \textit{oldestTransaction} und \textit{latestTransaction} ist auch das Datum der ältesten und der neusten Buchung innerhalb der \textit{AccountInfo} einfach zugänglich. Das Feld \textit{predeccessor} gibt den Namen der vorangegangenen \textit{AccountInfo} an.
+
+\begin{lstlisting}[label=lst:accountinfoJson,
+           language={},
+           firstnumber=1,
+           caption=AccountInfo in JSON-Format.]           
+{
+  "name": "RandomAccount",
+  "bic": "2B9PX8YTFLX",
+  "iban": "DE440007387504066832",
+  "balance": 8542,
+  "predeccessor": "2017-03-20T15:30:42.027280124Z",
+  "oldestTransaction": "2017-03-20T15:30:45.027280618Z",
+  "latestTransaction": "2017-03-20T15:30:45.027280618Z",
+  "transactions": [
+    {
+      "receipient": {
+        "name": "RandomAccount8",
+        "bic": "2B9PX8YTFLX",
+        "iban": "DE440007387504066832"
+      },
+      "sender": {
+        "name": "TestUser",
+        "bic": "TESTBIC",
+        "iban": "TESTIBAN"
+      },
+      "bookingDate": "2017-03-20T15:30:45.027280618Z",
+      "currency": "EUR",
+      "valueInSmallestUnit": 1913,
+      "intendedUse": "TestCreateTransaction"
+    }
+}
+\end{lstlisting}
+
+Die \textit{AccountInfo} dient der Bündelung von mehreren Buchungen eines Kontos in eine größere Datei. Wie viele Buchungen in in einer \textit{AccountInfo} abgelegt werden, kann konfiguriert werden. Wurde ein Konto angelegt kann er direkt über eine GET-Anfrage an die Adresse \url{accounts/[BIC]/[IBAN]} beim Backend ausgelesen werden, oder eine Liste aller Konten über \url{/accounts}. Buchungen können nur für bereits bestehende Konten empfangen werden. Zum Speichern einer Buchung für ein Konto muss eine POST-Anfrage mit einer JSON-formatierten Buchung im Body-Teil an die Adresse \url{accounts/[BIC]/[IBAN]/transactions} gestellt werden. Jede eingehende Buchung wirkt sich zum Einen auf den entsprechenden Eintrag des Empfängers in der Kontostanddatenbank aus, zum anderen wird sie in SeaweedFS unter dem Pfad \url{books/[BIC]/[IBAN]} mit ihrem \textit{bookingDate} als Dateiname abgelegt. Als nächsten Schritt teilt das Backend einem Account-Updater mit, für welches Konto eine neue Buchung eingegangen ist. Hier endet der Aufgabenbereich des Backends.
+
+\begin{figure}
+  \centering
+  \includegraphics[width=15cm]{img/6/architecture.png}
+  \caption[Grundlegende Architektur des implementierten Systems]{ Grundlegende Architektur des implementierten Systems.}
+  \label{architectureImpl}
+\end{figure}
+
+Die weiteren Schritte zum Verarbeiten der Buchung übernehmen die Account-Updater. Diese sind in einem Master und mehrere Slaves aufgeteilt. Welcher Account-Updater Master und welcher Slave ist, wird beim Start festgelegt. Während der Master keinerlei Kenntnis über mögliche Slaves beim hochfahren besitzt, wird Slaves die Adresse des Master-Account-Updaters mitgeteilt. Die Slaves melden sich dann selbstständig beim Master mit ihrer Adresse an. Für das Backend spielt es jedoch keine Rolle, welcher Account-Updater Master oder Slave ist. Jeder kann die Information, für welches Konto es neue Buchungen gibt empfangen und abspeichern. Dabei wird die BIC, der IBAN sowie das Erstellungsdatum der Buchung in einer Update-Datenbank, hier eine MongoDB, abgelegt, die sich alle Account-Updater teilen. Der Master ist jedoch als einziger berechtigt in regelmäßigen Zeitabschnitten allen Slaves den Auftrag zu erteilen neuen Buchungen zu verarbeiten. Dabei erhält jeder Slave seinen eigenen Satz an Kontonummern, deren Buchungen noch in eine \textit{AccountInfo} zusammengefasst werden müssen. Die Account-Updater beginnen dann, mit dem gegebenen BICs und IBANs die letzte \textit{AccountInfo} für jedes Konto auszulesen. Über das Feld \textit{latestTransaction} ist ein schneller Vergleich mit dem Erstellungsdatum der neuesten Buchung der Update-Datenbank möglich. 
+Liegt dieses Datum nach dem Datum der letzten Buchung innerhalb der \textit{AccountInfo}, fordert der Account-Updater alle Buchungen die sich unter dem Pfad \url{books/[BIC]/[IBAN]/} befinden und nach dem Erstellungsdatum der neuesten Buchung innerhalb der \textit{AccountInfo} liegen, bei SeaweedFS an. Diese Buchungen werden an die bestehende neueste \textit{AccountInfo} angehängt und das Feld \textit{latestTransaction} entsprechend angepasst. Wird während dieses Vorgangs der Schwellenwert für die maximale Anzahl an Buchungen innerhalb einer \textit{AccountInfo} überschritten, wird die volle abgespeichert und das befüllen einer neuen begonnen. Auch diese wird wieder unter dem Pfad \url{accounts/[BIC]/[IBAN]/} mit dem Zeitpunkt der Erstellung der ältesten Buchung als Dateiname in SeaweedFS angelegt. Die Entscheidung das Gruppieren von ausstehenden Buchungen in regelmäßigen Abständen, anstelle nach jeder eingehenden Buchung durchzuführen hat einige Vorteile. Da SeaweedFS wie Haystack nicht in der Lage ist Daten an eine bestehende Datei anzuhängen, wird bei jedem Einfügen einer Buchung in eine bestehende \textit{AccountInfo} eine neue Needle im Volume angelegt und die ursprüngliche als ungültig erklärt. Das hat wiederum für jede eingehende Buchung ein Anpassen des Volume Index Files sowie der dazugehörigen Repräsentation im Hauptspeicher zur Folge. Fasst man Buchungen aber nur in gewissen Abständen zusammen, können manchmal mehrere Buchungen eines Kontos mit nur einem Update-Vorgang berücksichtigt werden. Außerdem muss so im besten Fall eine \textit{AccountInfo} für das Hinzufügen mehrere Buchungen nur ein einziges mal ausgelesen werden. Die Last die dadurch entsteht wird besser berechenbar und handhabbar.
+
+Nach erfolgreicher Verarbeitung und Gruppierung der ausstehenden Buchungen in die \textit{AcountInfos}, wird jedoch der Eintrag in der Update-Datenbank und die einzelnen Buchungen im Pfad \url{books/[BIC]/[IBAN]/} noch nicht gelöscht. Dies geschieht erst, wenn bei einem zweiten Update-Durchgang festgestellt wird, dass das Datum in der Update-Datenbank das gleiche ist wie das Datum der letzten Buchung in der \textit{AccountInfo}. Dieses Vorgehen stellt gerade bei stark frequentierten Konten sicher, dass immer alle Buchungen berücksichtigt werden. Wenn zwei Account-Updater gleichzeitig Buchungen für das gleiche Konto verarbeiten, kann es zu einem Lost-Update-Problem kommen. Dieses wird in Abbildung \ref{lostUpdate} aufgezeigt. Wenn Account-Updater beginnt die Buchungen zu verarbeiten, berücksichtigt er dabei nur Buchung1 und Buchung2. Aus irgendwelchen Gründen dauert die Verarbeitung dieser beiden Buchungen so lange, dass in einer zweiten Runde ein zweiter Account-Updater beginnt das Update durchzuführen. Dieser berücksichtigt nun Buchung1, Buchung2 und Buchung3. Account-Updater1 schließt seine Aufgabe nun erst nach Account-Updater2 ab und überschreibt die \textit{AccountInfo}. Würden nun einzelnen Buchungen sowie der Eintrag in der Update-Datenbank gelöscht werden, so wäre Buchung3 nicht berücksichtigt worden. Durch das erzwingen des gleichen Datums in der neuesten \textit{AccountInfo} sowie im Eintrag der Update-Datenbank, kann dieses Problem nicht auftreten.
+\begin{figure}
+  \centering
+  \includegraphics[width=15cm]{img/6/race.png}
+  \caption[Lost-Update-Problem beim Zusammenfassen der Buchungen]{ Lost-Update-Problem beim Zusammenfassen der Buchungen.}
+  \label{lostUpdate}
+\end{figure}
+Kann der Master einen Slave während der Verteilung der Update-Vorgänge nicht erreichen, entfernt der Master diesen aus seiner Liste. Auch regelmäßige Heartbeat-Nachrichten der Slaves an den Master stellen sicher, dass dieser immer über eine aktuelle Liste der Slaves verfügt.
+
+Sind alle Buchungen in \textit{AccountInfos} zusammengefasst, wurde ein Zustand hergestellt, der dem im Konzept besprochenen System sehr nahe ist. Mehrere Buchungen eines Kontos wurden in \textit{AccountInfos} zusammengefasst, die über BIC und IBAN und einem Zeitstempel erreichbar sind. Auch das Suchen der \textit{AccountInfos}, die nach einem bestimmten Zeitpunkt angelegt wurden ist über den SeaweedFS Filer und der Angabe eines \textit{lastFileName} möglich. Jedoch gibt es keine Datei, welche den schnellen Zugriff innerhalb einer \textit{AccountInfo} ermöglicht. Wann immer eine oder mehrere Buchungen gelesen werden sollen, muss immer die ganze \textit{AccountInfo} verarbeitet werden. Daher ist die Auswahl der maximalen Anzahl an Buchungen in einer \textit{AccountInfo} wichtig. Ist sie zu groß, muss für jede Anfrage ein sehr großer Datenblock gelesen werden, ist sie zu klein, müssen möglicherweise viele \textit{AccountInfos} gelesen werden um mehrere Buchungen zu erhalten. In der hier besprochenen Implementierung liegen 50 Buchungen in einer \textit{AccountInfo}. Das Lesen aller Buchungen, die in einem Zeitraum getätigt wurden ist über die Schnittstelle \url{account/BIC/IBAN/transactions?from=2017-02-16_13:05:00} des Backends möglich. Es kann auch ein Query-Parameter mitgegeben werden, der das Ende des gesuchten Zeitraums angibt. Mit dem gegebenen Startdatum wird der Filer nach allen \textit{AccountInfos} die danach erstellt wurden befragt. Es kann vorkommen, dass obwohl Buchungen für den angegebenen Zeitraum vorliegen der Filer keine Daten zurückliefert. Das ist immer dann der Fall, wenn der Dateiname der neuesten \textit{AccountInfo} einen Zeitstempel beinhaltet, der älter als das angefragte Datum ist. In diesem Fall muss explizit nach der letzten \textit{AccountInfo} für das Konto gefragt und nach Buchungen im gewünschten Zeitraum durchsucht werden. Liefert der Filer Daten zu mehreren \textit{AccountInfos}, die Buchungen nach dem gewünschten Datum speichern, so werden diese alle nacheinander geladen und zu einer großen \textit{AccountInfo} zusammengeführt. Das geschieht so lange, bis alle \textit{AccountInfos} berücksichtigt wurden, oder das angegebene Enddatum erreicht wurde. Als letzter Schritt wird dann noch die \textit{AccountInfo} angefordert, die der ältesten berücksichtigten vorausging. Über das Feld \textit{predeccessor} ist dies leicht möglich. Auch diese wird noch mit zu einer großen \textit{AccountInfo} hinzugefügt. Die so kombinierten Daten, werden dann dem Client ausgeliefert. 
+Durch die Verzögerung beim Verarbeiten der ausstehenden Buchungen, kann es vorkommen, dass neue Buchungen bei einer Anfrage der \textit{AccountInfo} noch nicht berücksichtigt werden. Über die Kontostandsdatenbank ist jedoch zu jedem Zeitpunkt das Auslesen des korrekten Kontostands möglich.
+
+Zum Abschluss des Kapitels soll noch ein letztes mal der Schreib- und Lesevorgang einer oder mehrerer Buchungen zusammengefasst werden. Nachdem die Buchung das Backend erreicht hat, wir ihr Betrag zunächst in der Kontostandsdatenbank vermerkt, bevor sie in SeaweedFS abgelegt wird. Nachdem einem Account-Updater das Vorhandensein neuer Buchungen mitgeteilt wurde, wird der Auftrag diese zu Verarbeiten gegeben. Dabei werden alle Buchungen eines Kontos in einer \textit{AccountInfo} zusammengefasst.
+
+Möchte der Client nun Buchungen für einen bestimmten Zeitraum lesen, stellt er diese Anfrage an die entsprechende Schnittstelle des Backends. Dieses sammelt über den Filer von SeaweedFS alle \textit{AccountInfos} zusammen, die möglicherweise Buchungen für den gewünschten Zeitraum halten und fasst diese in eine große \textit{AccountInfo} zusammen. Diese wird dem Client als Antwort zurückgeliefert.
+
 \section{Schnittstelle zu SeaweedFS}
 Wieso wurde eine neue Schnittstelle geschrieben?
 Worauf war zu achten? Nutzung des Filers (Distributed Filer)
