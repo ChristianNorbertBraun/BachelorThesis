@@ -19,9 +19,10 @@
 \usepackage[verbose]{placeins} 
 \usepackage[nouppercase,headsepline,plainfootsepline]{scrpage2}
 \usepackage{listings}	
-\usepackage{xcolor}			
+\usepackage[table,xcdraw]{xcolor}	
 \usepackage{color}			
 \usepackage{caption}		
+\usepackage{booktabs}
 \usepackage{subfigure}			
 \usepackage{epstopdf}		
 \usepackage{longtable}  
@@ -248,6 +249,8 @@ Das Kapitel zur Implementierung beschreibt die schrittweise Umsetzung des Konzep
 
 Im Kapitel zur Evaluierung wird die Zielsetzung der Arbeit mit den Funktionen der Testimplementierung verglichen und das Ergebnis bewertet. Das letzte Kapitel zeigt Möglichkeiten und Erweiterungen der Lösung auf.
 
+
+\cleardoublepage
 \chapter{Vorgehensweise}
 Die in der Einführung beschriebene Zielsetzung kann sich leider nur auf sehr wenige wissenschaftliche Quellen stützen. Gerade die benötigte Information zu den Banken ist rar gesät und kann meist nur aus Artikeln von News-Seiten oder Blogs entnommen werden. Angaben zur Datenmenge von Banken oder den Betriebskosten eines Kernbankensystems können daher nur geschätzt werden. Die Entwicklung des Konzepts und die darauf folgende Bewertung begründet sich also mehr auf Analysen und Annahmen als auf empirisch bewiesene Tatsachen. Alle technologiebezogenen Annahmen werden jedoch durch wissenschaftliche Arbeiten, welche sich mit den Grenzen und Möglichkeiten eben dieser Technologie beschäftigen, untermauert.
 
@@ -278,6 +281,7 @@ Die Bewertung der im Rahmen dieser Arbeit entwickelten Lösung kann nur auf Basi
 Der Einfluss eines \acp{dfs} auf ein Buchungssystem soll aus diesen Kriterien hervorgehen.
 Daher sollen auch aktuell bei Banken eingesetzte Buchungssysteme anhand dieser Kriterien bewertet werden. Im direkten Vergleich zeigt sich am besten, was der Einsatz eines \acp{dfs} für ein Buchungssystem leistet.
 
+\cleardoublepage
 \chapter{Wesen und Probleme eines Buchungssystems}
 \label{bookingSystem}
 Die Anwendungssysteme der Banken sind alt und über lange Zeit gewachsen. Wo 1970 die ersten spartenbezogenen Programme nur bei Kredit-, Einlagegeschäften und
@@ -471,7 +475,7 @@ Zusätzlich ist bei einem sehr hohen Durchsatz von Transaktionen nicht zu erwart
 Die Kosten der IT-Systeme sind jedoch auch jetzt schon ein Problem für die Banken. Eine exakte Ermittlung der Ausgaben für die IT der Banken stellt sich aber als schwierig heraus, da die Zahlen in der Regel nicht öffentlich gemacht werden. Die Schätzungen der IT-Kosten beziehen sich daher auf die in der Gewinn- und Verlustrechnung öffentlich gemachten Aufwendungen für den Verwaltungsaufwand der Banken. Experten schätzen, dass 15 - 20 \% davon für die IT anfallen. Demnach lagen die Kosten für die Anwendungssysteme der Deutschen Bank im Jahre 2004 bei rund 2,6 Mrd. Euro und die der HypoVereinsbank bei mehr als 900 Mio. Euro. Die zehn größten Banken in Deutschland haben 2004 etwa 6,5 Mrd. Euro für die Instandhaltung und Entwicklung ihrer IT ausgegeben. 
 Etwa 24 \% davon fließen alleine in die Buchungsdienste. Gerechnet auf die Girokonten ergibt das Jahresausgaben von etwa 14 Euro pro Girokonto \cite[29-39]{ITidF}. Diese Zahl lässt sich auch durch den Umsatz und die betreuten Konten von Kernbanksystem-Anbietern validieren. So betreute die Fiducia IT 2005 insgesamt 52,6 Mio. Kundenkonten und erzielte einen Jahresumsatz von etwa 728,6 Mio. Euro. Das entspricht einem Preis von 13,80 Euro pro Konto. Die Finanz Informatik erzielte im Jahr 2005 bei 58 Mio. Kundenkonten einen Umsatz von 723 Mio. Euro, was einem Kontopreis von etwa 12,50 Euro entspricht. Dabei fließen nur etwa 20 \% in die Entwicklung neuer Dienste. Die restlichen Kosten fallen für Betrieb und Instandhaltung an. Langfristig sind diese Ausgaben für Banken nicht tragbar \cite[75-91]{ITidF}\cite{SuPdIiB}\cite[41-42]{DdF}\cite{bankingsCosts}. 
 
-
+\cleardoublepage
 \chapter{Grundlagen eines DFS}
 Zu den Skalierungsproblemen und den hohen Kostenfaktor der Anwendungssysteme der Banken tragen auch die ACID-basierten Datenbanksysteme bei. Auch wenn die Funktionalität, die ACID mit sich bringt, nur für einen Bruchteil der Prozesse benötigt wird, wird so das gesamte System ausgebremst und in den Skalierungsmöglichkeiten eingeschränkt \cite{salt}.
 Systeme, die hingegen die Skalierbarkeit und Verfügbarkeit gegenüber der Konsistenz priorisieren, funktionieren nach dem BASE (Basically Available, Soft State, Eventual consistency) Prinzip. Häufig weisen diese Systeme niedrigere Betriebskosten im Vergleich zu den ACID-Alternativen auf \cite{clusterBASE}.
@@ -610,6 +614,7 @@ ylabel={Zeit zum Herunterladen in Sekunden},
 \end{center}
 \end{figure}
 
+\cleardoublepage
 \chapter{Konzept}
 \label{concept}
 Der Erhalt eines konsistenten Zustandes, sowie die geringe Datenmenge einer einzelnen Buchung scheinen nicht mit den Möglichkeiten eines DFS vereinbar. Wenn der Kontostand eines Kontos nicht sicher bestimmt werden kann, kann die Durchführung einer Buchung den Kontostand unter Null bringen. Das darf aber zum Beispiel bei einem Girokonto nicht passieren. Aber gelten diese Bedingungen denn für alle Kontoarten? In diesem Kapitel soll ein Konzept entwickelt werden, das die Stärken eines DFS für ein Buchungssystem zugänglich macht. Dabei wird die Relevanz der strong consistency in Frage gestellt und eine Lösung für das Speichern der kleinen Datenmenge einer Buchung erarbeitet. Zu Letzt soll ein Designvorschlag für das Buchungssystem gemacht werden, der eine extreme Skalierbarkeit sowie ausreichende Konsistenz liefert.
@@ -699,7 +704,9 @@ Der Sinn dieses Konzepts für ein DFS und des darauf aufsetzenden Buchungssystem
 
 Das hier entwickelte Buchungssystem und das dazugehörige DFS lässt sich auf mehrere Arten skalieren. Die Anwendungsschicht ist zunächst einmal komplett unabhängig vom DFS und der relationalen Datenbank. Demnach lassen sich beliebig viele Instanzen davon parallel hochfahren. Je nach Anzahl der Anfragen, kann dies sogar lastbezogen geschehen. Wenn sehr viele Anfragen auf das Buchungssystem einprasseln, lassen sich mehrere Anwendungsschichten hochfahren, wenn die Anzahl der Anfragen wieder sinkt, können die zusätzlichen Systeme wieder entfernt werden. Die Skalierung der relationalen Datenbank kann entweder über Replikation erfolgen, also mehrere gleiche Systeme oder über eine klare Aufteilung der Zuständigkeit auf mehrere Datenbanksysteme. Sodass ein Datenbanksystem immer nur für einen bestimmten BIC Bereich zuständig ist und nur Anfragen beantwortet, die diesen Bereich betreffen. Das DFS lässt sich wie bereits beschrieben, einfach durch das Hinzufügen weiterer OSDs oder das Aufstocken des Hauptspeichers des Masters skalieren. Dabei ist zu erwähnen, dass die Skalierung des DFS, sowie die Skalierung der Anwendungsschicht der Buchungssysteme komplett unabhängig von einander statt finden kann. Die Anwendungsschicht braucht keine Anpassungen vorzunehmen, um die gesteigerte Kapazität des DFS zu nutzen. Demnach wäre es auch denkbar das DFS auf Systeme von Drittanbietern auszulagern. Sollte die Möglichkeiten der Skalierung des DFS an ihre Grenzen stoßen, kann ähnlich wie bei der Kontostands Datenbank die Zuständigkeit für die Buchungen anhand des BICs auf mehreren DFS aufgeteilt werden.
 
+\cleardoublepage
 \chapter{Implementierung}
+\label{implementation}
 Ein DFS, so wie es im Kapitel \ref{oneOnlyDFS} beschrieben wurde, existiert aktuell nicht. Da die Entwicklung eines DFS aber äußert komplex und zeitaufwendig ist, wird für die beispielhafte Implementierung auf ein bereits bestehendes DFS, das am besten auf die erarbeiteten Anforderungen passt, zurückgegriffen. Hauptkriterium ist dabei das Speichern und Lesen vieler kleiner Dateien. Von den beiden betrachteten DFS bietet sich dafür Haystack an. Leider gibt es jedoch von Haystack keine öffentlich zugängliche Version. Das Open Source Projekt SeaweedFS wurde aber auf Basis des Haystack Artikels entwickelt und weist dementsprechend eine große Ähnlichkeit in Architektur und Leistung zu seinem Vorbild auf. Bevor in diesem Kapitel näher auf die Anwendung und Details von SeaweedFS eingegangen wird, soll die Programmiersprache Go kurz angerissen werden. In ihr wurde sowohl SeaweedFS und die extra für diese Arbeit angefertigte Client-Bibliothek für SeaweedFS als auch alle anderen Systemkomponenten implementiert. Auch der Aufbau des entwickelten Systems und der Ablauf beim Lesen und Schreiben einer Buchung wird in diesem Kapitel dargelegt. Bei der hier besprochenen Implementierung handelt es sich mehr um einen Proof of Concept als um eine allumfassende Lösung zur Umstrukturierung von Buchungssystemen. Der Schwerpunkt lag auf Skalierung und Ausfallsicherheit. Der Sicherheit der Daten und der Entwicklung einer Nutzerauthentifizierung wurden im Rahmen dieser Implementierung keine Aufmerksamkeit geschenkt.
 
 \section{Golang}
@@ -782,7 +789,7 @@ curl -F file=@testData.txt http://localhost:8080/3,01637037d6
 Die ersten beiden Probleme können aber über eine Besonderheit von SeaweedFS gelöst werden. Neben dem Directory und den Store Machines verfügt SeaweedFS auch über einen sogenannten Filer. Dieser kann Dateien in Pfaden und Ordnern ablegen. Da SeaweedFS ganz nach dem Vorbild von Haystack entwickelt wurde, werden diese Pfade und Ordner hocheffizient im Hauptspeicher des Filers gehalten. Stellt man beim Filer eine Anfrage nach einer Datei innerhalb eines Ordners, müssen drei Schritte unternommen werden. Zunächst muss die Ordner-ID für den der Datei übergeordneten Ordner gefunden werden. Gemeinsam mit der ermittelten Ordner-ID und dem Namen der Datei kann dann der Dateischlüssel gefunden werden. Zuletzt wird über den Dateischlüssel der entsprechende Datenblock aus einem Volume geladen. Der letzte Schritt fällt bereits in den Aufgabenbereich des Directories und der Store Machines. Der Filer ist demnach nur für die Zuordnung von Ordner zu Ordner-ID und Dateiname zu Dateischlüssel zuständig. Während die Ordner und Pfade im Hauptspeicher des Filers liegen, wird die Zuordnung von übergeordneter Ordner und Dateiname zu Dateischlüssel in einem Key-Value-Store gespeichert. In der Standardkonfiguration von SeaweedFS ist dieser eine LevelDB. Wenn der Dateischlüssel ermittelt wurde, leitet der Filer die Anfrage an das entsprechende Volume weiter. Dieses Antwortet dann dem Client mit den Daten.
 Über den Filer kann jetzt ein eigener Schlüssel, in Form von Ordner und Dateiname, vergeben werden. Der erste Teil des Schlüssels also BIC und IBAN wird dabei in den Pfad kodiert, der stets aufsteigende  zweite Teil des Schlüssels, der Zeitstempel, in den Dateinamen. Der Schlüssel für eine Buchung hat demnach die Form \textit{[BIC/IBAN/Timestamp]}. Über den Filer kann auch nach Dateien innerhalb eines Ordners gesucht werden. Gibt man bei einer Anfrage einen \textit{lastFileName} über einen Query-Parameter mit, werden alle Dateien vom Filer zurückgeliefert, die in alphabetischer Reihenfolge nach dem \textit{lastFileName} liegen. Ein Beispiel zum Anlegen, Auslesen und Filtern von Dateien ist in Listing \ref{lst:filer} zu sehen.
 
-In der Standardkonfiguration stellt der Filer jedoch einen Single Point of Failure da. Durch den Einsatz von Redis oder Apache Casandra anstelle der LevelDB als Persistenzschicht für den Filer, kann ein Verteilter-Filer realisiert werden. Alternativ könnten auch mehrere Filer gestartet werden, die jeweils einen anderen Namensraum verwalten. Im Rahmen dieser Arbeit wird jedoch nur mit einem einzigen Filer gearbeitet.
+In der Standardkonfiguration stellt der Filer jedoch einen Single Point of Failure da. Durch den Einsatz von Redis oder Apache Cassandra anstelle der LevelDB als Persistenzschicht für den Filer, kann ein Verteilter-Filer realisiert werden. Alternativ könnten auch mehrere Filer gestartet werden, die jeweils einen anderen Namensraum verwalten. Im Rahmen dieser Arbeit wird jedoch nur mit einem einzigen Filer gearbeitet.
 
 \begin{minipage}{\linewidth}
 \begin{lstlisting}[label=lst:filer,
@@ -970,9 +977,137 @@ Zum Abschluss des Kapitels soll noch ein letztes mal der Schreib- und Lesevorgan
 
 Möchte der Client nun Buchungen für einen bestimmten Zeitraum lesen, stellt er diese Anfrage an die entsprechende Schnittstelle des Backends. Dieses sammelt über den Filer von SeaweedFS alle \textit{AccountInfos} zusammen, die möglicherweise Buchungen für den gewünschten Zeitraum halten und fasst diese in eine große \textit{AccountInfo} zusammen. Diese wird dem Client als Antwort zurückgeliefert.
 
+\cleardoublepage
 \chapter{Evaluation}
-Mal sehen was hier später steht.
+Das implementierte System soll in der Evaluation genauer untersucht werden. Die Bereiche, die analysiert werden, sind Interoperabilität, Skalierbarkeit, Performanz, Ausfallsicherheit und Wirtschaftlichkeit. Vergleiche zu aktuellen Buchungssystemen können nur in Bezug auf die Persistenzschicht erfolgen. Informationen zum technischen Aufbau sowie Leistung der Anwendungsschicht eines Buchungssystems, sind nicht bekannt. 
 
+\section{Interoperabilität}
+Wie gut sich das entwickelte System in die bestehende Anwendungslandschaft einer Bank integriert, kann nur vermutet werden. Die Entscheidung die Anwendung in Go zu programmieren, könnte das Einflechten in ein anderes System jedoch erleichtern. Mit Go ist eine einfache Kompilierung für unterschiedliche Plattformen möglich \cite{goCompile}. Der Compiler muss lediglich über eine Flag entsprechend konfiguriert werden, um Binaries für Windows oder Linux zu erzeugen. Auch das eingesetzte DFS SeaweedFS ist für viele unterschiedliche Plattformen erhältlich. Die Anforderungen an die Schnittstellen eines Buchungssystems sind nicht genau bekannt. Nach einer Anpassung der entwickelten Anwendungsschicht, sollte aber eine leichte Integration möglich sein. Das Speichern von Konten und Buchungen in einer relationalen Datenbank, ist den Banken bekannt. Der Schritt anstelle aller Buchungen nur noch die ausstehenden abzulegen, sollte daher nicht schwer fallen. Die geringe Erfahrung im Umgang mit einem DFS im Bankenwesen hingegen, stellt eine größere Hürde dar. Die Technologie ist verglichen mit den relationalen Datenbanken, die in den 1980er Jahren entstanden, sehr jung \cite{wiki:datenbankGeschichte}. Ohne langfristige Leistungserfassungen und ausgeklügelte Sicherheitskonzepte, wird der Einsatz eines DFS als Persistenzschicht des Buchungssystem für Banken nicht in Frage kommen.
+
+\section{Skalierbarkeit}
+Die Skalierbarkeit eines DFS wurde im Rahmen dieser Arbeit ausführlich beschrieben. DFS generell und auch SeaweedFS lassen sich leicht horizontal über das Hinzufügen neuer OSDs skalieren. Eine hohe Menge an OSDs wird aber auch mehr Hauptspeicher des Masters erfordern. Daher muss für den Master eine vertikale Skalierung durchgeführt werden. Eine Store Machine in SeaweedFS benötigt wie bei Haystack sehr wenig Hauptspeicher um eine Datei abzulegen. Gerade einmal 24 Byte werden von jeder neuen Datei beansprucht. Eine Store Machine mit 16 Gigabyte Hauptspeicher kann demnach fast 670 Millionen Dateien ablegen.
+Wenn jede dieser Dateien 50 Buchungen bündelt, können so mehr als 33 Milliarden Buchungen auf einer einzigen Store Machine abgelegt und über einen schnellen Zugriff im Hauptspeicher auch wieder ausgelesen werden. Das Directory speichert dabei nur die Adresse der Volumes, sowie die Zuordnung von logischen zu physikalischen Volumes. Der dafür benötigte Hauptspeicher dürfte einige Bytes betragen. Demnach ist ein einziges Directory in der Lage mehrere tausend Volumes zu adressieren, wobei jedes Volume mehrere Millionen Buchungen speichern kann.
+
+Auch wenn das Directory sehr gut vertikal skaliert, stellt es einen Single Point of Failure dar. Daher bietet SeaweedFS die Möglichkeit mehrere Directories parallel zu starten. Diese küren untereinander einen Führer. Fällt dieser aus, nimmt ein anderer Master seinen Platz ein. Der Filer allein begrenzt in diesem Szenario die Skalierbarkeit von SeaweedFS. Jede abgelegte Datei wird im Filer vermerkt. Die dazu eingesetzte LevelDB kann aber nicht horizontal skaliert werden. Auch wenn die Leistung im Rahmen der durchgeführten Tests ausreichend war, muss für die Verwaltung mehrere Petabyte an Daten eine andere Lösung gefunden werden. Das verwenden eines Verteilten-Filers mit Redis oder Apache Cassandra zum Speichern der Dateinamen, könnte aber Abhilfe schaffen. 
+
+Das entwickelte Backend, sowie der Account-Updater sind nahezu beliebig skalierbar. Ohne Probleme können mehrere Backends parallel betrieben werden oder je nach Anzahl der Anfragen gestartet under heruntergefahren werden. Gleiches gilt für den Account-Updater. Auch von diesem können mehrere Instanzen parallel existieren. Es muss nur sicher gestellt sein, dass ein Account-Updater als Master gekennzeichnet ist. 
+
+Die relationale Datenbank, die für Kontostände und ausstehende Buchungen zuständig ist, lässt nur begrenzt und schwer skalieren. Jedoch ist die Datenmenge, die gespeichert werden muss gering. Für jedes Konto existiert ein einziges Eintrag in der Kontostandstabelle. Und die ausstehenden Buchungen werden in regelmäßigen Abständen in das DFS überführt und der Speicherplatz in der Datenbank wieder frei gemacht. Die Aufgaben, die in der Implementierung der relationalen Datenbank zugeteilt wurden, erfordern in jedem Falle eine geringere Skalierung als die aktuell eingesetzten Datenbanken in Buchungssystemen. Des Weiteren sind Banken mit dem Umgang und der Skalierung von relationalen Datenbanken vertraut und sollten wenig Probleme mit einem System dieser Größe haben.
+
+
+\section{Performanz}
+Für die Messung der Performanz wird die Implementierung auf zwei Mac Minis installiert. Beide verfügen über einen Dual-Core 2,5 Gigahertz Intel Core i5 Prozessor sowie 16 Gigabyte Hauptspeicher.
+Der Leistungstest beinhaltet drei Teile die jeweils für zehn Sekunden mit zehn parallelen Goroutines ausgeführt werden. Im ersten Teil werden Konten, im zweiten Transaktionen angelegt. Im letzten Teil des Tests, werden für die Konten alle zuvor angelegten Buchungen ausgelesen. Um die Ergebnisse mit einem System zu vergleichen, dass nur auf einer relationalen Datenbank beruht, wird die Anwendungsschicht Backends komplett auf eine PostgreSQL aufgesetzt und die gleichen Tests durchgeführt.
+
+Bei der Testreihe für das hier implementierte System, ist ein Rechner für Backend, Account-Updater sowie die PostgreSQL-Datenbank zuständig. Der andere Rechner kümmerte sich alleine um die Verwaltung von SeaweedFS. Die abgelegten Daten werden nicht repliziert. Der Account-Updater wurde so konfiguriert, dass alle zehn Sekunden jeweils 50 Buchungen zu einer \textit{AccountInfo} gebündelt werden. Um aufzuzeigen, wie sich die Leistung verhält, wenn eine unterschiedliche Anzahl an \textit{AccountInfos} für eine Anfrage gelesen werden muss, werden zunächst 50 Buchungen und dann in 50er Schritten bis hin zu 200 Buchungen angefragt. Hierfür müssen dann vier \textit{AccountInfos} gelesen werden. 
+Zum Testen des Systems, welches komplett auf die PostgreSQL-Datenbank basierten, ist ein Rechner für das Backend und ein Rechner für die Datenbank zuständig.
+
+Die Ergebnisse für das Erstellen eines Kontos beziehungsweise einer Buchung in den unterschiedlichen Systemen ist in Tabelle \ref{tab:create} zu sehen. Demnach benötigt das auf SeaweedFS basierende System etwas länger um ein Konto anzulegen. Diese Verzögerung ist der Tatsache geschuldet, dass neben dem Eintrag der der Kontostandstabelle auch noch eine \textit{AccountInfo} in SeaweedFS angelegt werden muss. Bei dem rein auf PostgreSQL basierten System, muss hingegen lediglich ein Eintrag in der Kontentabelle erstellt werden. Das Speichern einer Buchung beansprucht aber auf beiden Systemen die gleiche Zeit. Beide Systeme empfangen die Buchung, passen den Kontostand entsprechend an und legen die Buchung in einer Buchungstabelle ab. Die spätere Verschieben der Buchung nach SeaweedFS, spielt für die Zeitmessung hier keine Rolle. Eine Erhöhung der Replikation der Daten in SeaweedFS hat nur eine geringfügige Steigerung der Dauer zum Erstellen eines Kontos zur Folge.
+
+\begin{table}[h]
+\caption{Dauer zum Erstellen eines Kontos bzw. einer Buchung.} %title of the table
+\centering % centering table
+\begin{tabular}{c rr} % creating eight columns
+\hline\hline %inserting double-line
+System & Erstellen eines Kontos & Erstellen einer Buchung  \\ [0.5ex]
+\hline % inserts single-line
+PostgreSQL & 4,2 ms& 3,8 ms\\ % Entering row contents
+SeaweedFS  & 6,5 ms& 3,8 ms\\
+\hline % inserts single-line
+\end{tabular}
+\label{tab:create}
+\end{table}
+
+Größere Unterschiede zwischen den beiden Systemen, sind jedoch beim Lesen der erstellten Transaktionen zu sehen. Abbildung \ref{evaRead} zeigt, wie sich die Zeit zum Lesen unterschiedlich vieler Buchungen in beiden Systemen entwickelt. Für die Messungen wurden zunächst 50 Buchungen gelesen. Diese Menge wurde in 50er Schritten bis zu 200 Buchungen für ein Konto gesteigert. Das getestete System speicherte dabei immer mehrere tausend Buchungen. Das Diagramm zeigt zunächst, dass beide Systeme mehr Zeit benötigen und mehr Buchungen zu lesen. Auch wenn das SeaweedFS-basierte System zunächst etwa doppelt so schnell antwortet wie das rein PostgreSQL-basierte System, wird dieser Unterschied mit steigender Buchungszahl immer geringer. Der Grund dafür, dürfte die Anzahl der gebündelten Buchungen in einer \textit{AccountInfo} sein. Während für 50 Buchungen nur eine einzige \textit{AccountInfo} gelesen werden muss, kommt für jeden Testschritt eine weitere \textit{AccountInfo} dazu. Während 50 Buchungen noch mit einer einzigen Anfrage an den Filer und einem Festplattenzugriff gelesen werden können, vervierfacht sich die Anzahl dieser Operationen für 200 Buchungen. Langfristig, ist abzusehen, dass das PostgreSQL-basierte System wieder schneller wird, als das SeaweedFS-basierte System. Die Maximalanzahl an Buchungen für eine \textit{AccountInfo} ist nicht optimal gewählt für das Auslesen derartig großer Blöcke. Abbildung \ref{evaRead2} zeigt, dass eine höhere Maximalanzahl an Buchungen für eine \textit{AccountInfo} die Lesezeit für eine höhere Anzahl an Buchungen verringert. 
+Die Kehrseite einer größeren \textit{AccountInfo} ist jedoch, dass beim Auslesen eines Untersets an Buchungen trotzdem die gesamte \textit{AccountInfo} in den Speicher geladen werden muss. Das Auslesen von 50 oder 200 Buchungen aus einer \textit{AccountInfo}, die mit 200 Buchungen gefüllt ist, dauert also fast genauso lange. Die Wahl einer passenden Maximalanzahl an Buchungen in einer \textit{AccountInfo} hängt also von dem erwarteten Leseverhalten der Clients ab. Wenn Buchungen immer für jeden Monat abgefragt werden, und die Anzahl der Buchungen gering ist, kann die Anzahl der gebündelten Buchungen auch klein ausfallen. Wenn hingegen große Zeitbereiche auf einmal ausgelesen werden, eignet sich eine höhere Anzahl an Buchungen pro \textit{AccountInfo} besser.
+
+
+\begin{filecontents}{date7.dat}
+date  value
+50      1.5
+100     2.4
+150     3.5
+200     4.3
+\end{filecontents}
+
+\begin{filecontents}{date8.dat}
+date  value
+50      3.0
+100     3.8
+150     4.4
+200     4.9
+\end{filecontents}
+
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+/pgf/number format/.cd,
+use comma,
+1000 sep = {},
+xtick=data,
+ymin=0, ymax=6,
+legend entries={SeaweedFS,PostgreSQL},
+legend pos={south east},
+scaled ticks=false,
+xlabel={Anzahl der zu lesenden Buchungen},
+ylabel={Dauer des Lesevorgangs in Millisekunden},
+]
+\addplot table[x=date,y=value] {date7.dat};
+\addplot table[x=date,y=value] {date8.dat};
+\end{axis}
+\end{tikzpicture}
+\caption[Lesegeschwindigkeit bei unterschiedlicher Anzahl Buchungen]{Lesegeschwindigkeit bei steigender Anzahl an Buchungen.}
+\label{evaRead}
+\end{center}
+\end{figure}
+
+
+\begin{filecontents}{date9.dat}
+date  value
+50      1.5
+100     2.4
+150     3.5
+200     4.3
+\end{filecontents}
+
+\begin{filecontents}{date10.dat}
+date  value
+50      1.5
+100     2.3
+150     3.1
+200     3.9
+\end{filecontents}
+
+
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+/pgf/number format/.cd,
+use comma,
+1000 sep = {},
+xtick=data,
+ymin=0, ymax=6,
+legend entries={max. 50 Buchungen, max. 200 Buchungen },
+legend pos={south east},
+scaled ticks=false,
+xlabel={Anzahl der zu lesenden Buchungen},
+ylabel={Dauer des Lesevorgangs in Millisekunden},
+]
+\addplot table[x=date,y=value] {date9.dat};
+\addplot table[x=date,y=value] {date10.dat};
+\end{axis}
+\end{tikzpicture}
+\caption[Lesegeschwindigkeit bei unterschiedlicher Anzahl Buchungen mit größerer \textit{AccountInfo}]{Lesegeschwindigkeit bei steigender Anzahl an Buchungen mit größerer \textit{AccountInfo}.}
+\label{evaRead2}
+\end{center}
+\end{figure}
+
+\section{Ausfallsicherheit}
+Fällt dieser aus, werden keine Updates mehr durchgeführt, bis ein neuer Master konfiguriert wurde. Buchungen die während eines solchen Ausfalls getätigt werden, können vom Kunden nicht ausgelesen werden. Das System ist aber weiterhin erreichbar und funktionstüchtig. Buchungen können getätigt und der Kontostand weiterhin ausgelesen werden. Nur bei der Anfrage der Buchungen werden die ausstehenden nicht berücksichtigt.
 \chapter{Ausblick}
 Ich bin sehr gespannt.
 
