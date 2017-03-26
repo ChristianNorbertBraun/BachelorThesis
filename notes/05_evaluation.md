@@ -96,3 +96,16 @@ was die Leistung der Persistenzschicht angeht
 	* Nur das deutlich weniger Daten verwaltet werden
 	* und Operationen leichtgewichtiger sind
 
+
+* Fazit
+	* Die Skalierbarikeit sowie Ausfallsicherheit ist sehr hoch
+	* Auch die Performanz ist generell gut, aber es muss darauf geachtet werden,
+	wie die Anfragen gestellt werden
+	* Dahingehens muss die Anzahld er zu einer AI gebündelten Buchungen
+	gewählt werden
+	* Die Preisleistung ist enorm stark
+	* 
+	* Die Integration in ein bestehendes System ist schwer zu bewerten
+	* Zu wenig bekannt über schnittstelle
+	* Generell nicht viel aufwand
+	* Aber das Nutzen eines DFS ist für Banken wahrscheinlich noch zu früh
