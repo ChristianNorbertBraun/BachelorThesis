@@ -36,6 +36,7 @@
 \usepackage[nolist]{acronym}
 \usepackage{booktabs}
 \usepackage[style=numeric]{biblatex}
+\usepackage{afterpage}
 %\bibliography{literatur2}
 \addbibresource{literatur.bib}
 
@@ -43,6 +44,12 @@
 \hyphenation{Dritt-an-bie-tern}
 \hyphenation{Dritt-an-bie-ter}
 \hyphenation{Da-tei-na-men}
+
+\newcommand\blankpage{%
+    \null
+    \thispagestyle{empty}%
+    \addtocounter{page}{-1}%
+    \newpage}
 
 %%%%%%%%%%%%%%%%%%%
 %% definitions
@@ -189,7 +196,6 @@ pdfkeywords={Keywords}
 
 \maketitle
 
-
 %%%%%%%%%%%%%%%%%%%
 %% abstract
 %%%%%%%%%%%%%%%%%%%
@@ -219,6 +225,7 @@ Das Anfertigen dieser Arbeit war Zeitaufwendig und anstrengend. Ohne die Hilfe e
 %%%%%%%%%%%%%%%%%%%
 %% Main part of the thesis
 %%%%%%%%%%%%%%%%%%%
+\afterpage{\blankpage}
 \mainmatter
 
 
@@ -249,7 +256,6 @@ Das Kapitel zur Implementierung beschreibt die schrittweise Umsetzung des Konzep
 Im Kapitel zur Evaluierung wird die Zielsetzung der Arbeit mit den Funktionen der Testimplementierung verglichen und das Ergebnis bewertet. Das letzte Kapitel zeigt Möglichkeiten und Erweiterungen der Lösung auf.
 
 
-\cleardoublepage
 \chapter{Vorgehensweise}
 Die in der Einführung beschriebene Zielsetzung kann sich leider nur auf sehr wenige wissenschaftliche Quellen stützen. Gerade die benötigte Information zu den Banken ist rar gesät und kann meist nur aus Artikeln von News-Seiten oder Blogs entnommen werden. Angaben zur Datenmenge von Banken oder den Betriebskosten eines Kernbankensystems können daher nur geschätzt werden. Die Entwicklung des Konzepts und die darauf folgende Bewertung begründet sich also mehr auf Analysen und Annahmen als auf empirisch bewiesene Tatsachen. Alle technologiebezogenen Annahmen werden jedoch durch wissenschaftliche Arbeiten, welche sich mit den Grenzen und Möglichkeiten eben dieser Technologie beschäftigen, untermauert.
 
@@ -280,7 +286,6 @@ Die Bewertung der im Rahmen dieser Arbeit entwickelten Lösung kann nur auf Basi
 Der Einfluss eines \acp{dfs} auf ein Buchungssystem soll aus diesen Kriterien hervorgehen.
 Daher sollen auch aktuell bei Banken eingesetzte Buchungssysteme anhand dieser Kriterien bewertet werden. Im direkten Vergleich zeigt sich am besten, was der Einsatz eines \acp{dfs} für ein Buchungssystem leistet.
 
-\cleardoublepage
 \chapter{Wesen und Probleme eines Buchungssystems}
 \label{bookingSystem}
 Die Anwendungssysteme der Banken sind alt und über lange Zeit gewachsen. Wo 1970 die ersten spartenbezogenen Programme nur bei Kredit-, Einlagegeschäften und
@@ -475,7 +480,6 @@ Zusätzlich ist bei einem sehr hohen Durchsatz von Transaktionen nicht zu erwart
 Die Kosten der IT-Systeme sind jedoch auch jetzt schon ein Problem für die Banken. Eine exakte Ermittlung der Ausgaben für die IT der Banken stellt sich aber als schwierig heraus, da die Zahlen in der Regel nicht öffentlich gemacht werden. Die Schätzungen der IT-Kosten beziehen sich daher auf die in der Gewinn- und Verlustrechnung öffentlich gemachten Aufwendungen für den Verwaltungsaufwand der Banken. Experten schätzen, dass 15 - 20 \% davon für die IT anfallen. Demnach lagen die Kosten für die Anwendungssysteme der Deutschen Bank im Jahre 2004 bei rund 2,6 Milliarden. Euro und die der HypoVereinsbank bei mehr als 900 Millionen Euro. Die zehn größten Banken in Deutschland haben 2004 etwa 6,5 Milliarden Euro für die Instandhaltung und Entwicklung ihrer IT ausgegeben. 
 Etwa 24 \% davon fließen alleine in die Buchungsdienste. Gerechnet auf die Girokonten ergibt das Jahresausgaben von etwa 14 Euro pro Girokonto \cite[29-39]{ITidF}. Diese Zahl lässt sich auch durch den Umsatz und die betreuten Konten von Kernbanksystem-Anbietern validieren. So betreute die Fiducia IT 2005 insgesamt 52,6 Millionen Kundenkonten und erzielte einen Jahresumsatz von etwa 728,6 Millionen Euro. Das entspricht einem Preis von 13,80 Euro pro Konto. Die Finanz Informatik erzielte im Jahr 2005 bei 58 Millionen Kundenkonten einen Umsatz von 723 Millionen Euro, was einem Kontopreis von etwa 12,50 Euro entspricht. Dabei fließen nur etwa 20 \% in die Entwicklung neuer Dienste. Die restlichen Kosten fallen für Betrieb und Instandhaltung an. Langfristig sind diese Ausgaben für Banken nicht tragbar \cite[75-91]{ITidF}\cite{SuPdIiB}\cite[41-42]{DdF}\cite{bankingsCosts}. 
 
-\cleardoublepage
 \chapter{Grundlagen eines DFS}
 Zu den Skalierungsproblemen und den hohen Kostenfaktor der Anwendungssysteme der Banken tragen auch die ACID-basierten Datenbanksysteme bei. Auch wenn die Funktionalität, die ACID mit sich bringt, nur für einen Bruchteil der Prozesse benötigt wird, wird so das gesamte System ausgebremst und in den Skalierungsmöglichkeiten eingeschränkt \cite{salt}.
 Systeme, die hingegen die Skalierbarkeit und Verfügbarkeit gegenüber der Konsistenz priorisieren, funktionieren nach dem BASE (Basically Available, Soft State, Eventual consistency) Prinzip. Häufig weisen diese Systeme niedrigere Betriebskosten im Vergleich zu den ACID-Alternativen auf \cite{clusterBASE}.
@@ -614,7 +618,6 @@ ylabel={Zeit zum Herunterladen in Sekunden},
 \end{center}
 \end{figure}
 
-\cleardoublepage
 \chapter{Konzept}
 \label{concept}
 Der Erhalt eines konsistenten Zustandes, sowie die geringe Datenmenge einer einzelnen Buchung scheinen nicht mit den Möglichkeiten eines DFS vereinbar. Wenn der Kontostand eines Kontos nicht sicher bestimmt werden kann, kann die Durchführung einer Buchung den Kontostand unter Null bringen. Das darf aber zum Beispiel bei einem Girokonto nicht passieren. Aber gelten diese Bedingungen denn für alle Kontoarten? In diesem Kapitel soll ein Konzept entwickelt werden, das die Stärken eines DFS für ein Buchungssystem zugänglich macht. Dabei wird die Relevanz der strong consistency in Frage gestellt und eine Lösung für das Speichern der kleinen Datenmenge einer Buchung erarbeitet. Zu Letzt soll ein Designvorschlag für das Buchungssystem gemacht werden, der eine extreme Skalierbarkeit sowie ausreichende Konsistenz liefert.
@@ -704,7 +707,6 @@ Der Sinn dieses Konzepts für ein DFS und des darauf aufsetzenden Buchungssystem
 
 Das hier entwickelte Buchungssystem und das dazugehörige DFS lässt sich auf mehrere Arten skalieren. Die Anwendungsschicht ist zunächst einmal komplett unabhängig vom DFS und der relationalen Datenbank. Demnach lassen sich beliebig viele Instanzen davon parallel hochfahren. Je nach Anzahl der Anfragen, kann dies sogar lastbezogen geschehen. Wenn sehr viele Anfragen auf das Buchungssystem einprasseln, lassen sich mehrere Anwendungsschichten hochfahren, wenn die Anzahl der Anfragen wieder sinkt, können die zusätzlichen Systeme wieder entfernt werden. Die Skalierung der relationalen Datenbank kann entweder über Replikation erfolgen, also mehrere gleiche Systeme oder über eine klare Aufteilung der Zuständigkeit auf mehrere Datenbanksysteme. Sodass ein Datenbanksystem immer nur für einen bestimmten BIC Bereich zuständig ist und nur Anfragen beantwortet, die diesen Bereich betreffen. Das DFS lässt sich wie bereits beschrieben, einfach durch das Hinzufügen weiterer OSDs oder das Aufstocken des Hauptspeichers des Masters skalieren. Dabei ist zu erwähnen, dass die Skalierung des DFS, sowie die Skalierung der Anwendungsschicht der Buchungssysteme komplett unabhängig von einander statt finden kann. Die Anwendungsschicht braucht keine Anpassungen vorzunehmen, um die gesteigerte Kapazität des DFS zu nutzen. Demnach wäre es auch denkbar das DFS auf Systeme von Drittanbietern auszulagern. Sollte die Möglichkeiten der Skalierung des DFS an ihre Grenzen stoßen, kann ähnlich wie bei der Kontostands Datenbank die Zuständigkeit für die Buchungen anhand des BICs auf mehreren DFS aufgeteilt werden.
 
-\cleardoublepage
 \chapter{Implementierung}
 \label{implementation}
 Ein DFS, so wie es im Kapitel \ref{oneOnlyDFS} beschrieben wurde, existiert aktuell nicht. Da die Entwicklung eines DFS aber äußert komplex und zeitaufwendig ist, wird für die beispielhafte Implementierung auf ein bereits bestehendes DFS, das am besten auf die erarbeiteten Anforderungen passt, zurückgegriffen. Hauptkriterium ist dabei das Speichern und Lesen vieler kleiner Dateien. Von den beiden betrachteten DFS bietet sich dafür Haystack an. Leider gibt es jedoch von Haystack keine öffentlich zugängliche Version. Das Open Source Projekt SeaweedFS wurde aber auf Basis des Haystack Artikels entwickelt und weist dementsprechend eine große Ähnlichkeit in Architektur und Leistung zu seinem Vorbild auf. Bevor in diesem Kapitel näher auf die Anwendung und Details von SeaweedFS eingegangen wird, soll die Programmiersprache Go kurz angerissen werden. In ihr wurde sowohl SeaweedFS und die extra für diese Arbeit angefertigte Client-Bibliothek für SeaweedFS als auch alle anderen Systemkomponenten implementiert. Auch der Aufbau des entwickelten Systems und der Ablauf beim Lesen und Schreiben einer Buchung wird in diesem Kapitel dargelegt. Bei der hier besprochenen Implementierung handelt es sich mehr um einen Proof of Concept als um eine allumfassende Lösung zur Umstrukturierung von Buchungssystemen. Der Schwerpunkt lag auf Skalierung und Ausfallsicherheit. Der Sicherheit der Daten und der Entwicklung einer Nutzerauthentifizierung wurden im Rahmen dieser Implementierung keine Aufmerksamkeit geschenkt.
@@ -977,7 +979,6 @@ Zum Abschluss des Kapitels soll noch ein letztes mal der Schreib- und Lesevorgan
 
 Möchte der Client nun Buchungen für einen bestimmten Zeitraum lesen, stellt er diese Anfrage an die entsprechende Schnittstelle des Backends. Dieses sammelt über den Filer von SeaweedFS alle \textit{AccountInfos} zusammen, die möglicherweise Buchungen für den gewünschten Zeitraum halten und fasst diese in eine große \textit{AccountInfo} zusammen. Diese wird dem Client als Antwort zurückgeliefert.
 
-\cleardoublepage
 \chapter{Evaluation}
 Das implementierte System soll in der Evaluation genauer untersucht werden. Die Bereiche, die analysiert werden, sind Interoperabilität, Skalierbarkeit, Performanz, Ausfallsicherheit und Wirtschaftlichkeit. Vergleiche zu aktuellen Buchungssystemen können nur in Bezug auf die Persistenzschicht erfolgen. Informationen zum technischen Aufbau sowie Leistung der Anwendungsschicht eines Buchungssystems sind nicht bekannt. 
 
@@ -1112,35 +1113,34 @@ Auch Ausfallsicherheit ist eine Kernkompetenz von DFS und somit auch von Seaweed
 
 
 \section{Wirtschaftlichkeit}
-Zu guter Letzt soll die Wirtschaftlichkeit des Systems betrachtet werden. Skalierbarkeit, Ausfallsicherheit und Leistung der SeaweedFS-basierten Lösung scheinen die Anforderungen eines Buchungssystem gut zu erfüllen. Wenn jedoch der Preis dafür die Kosten aktueller Systeme übersteigt, ist der Umstieg für Banken weniger attraktiv. Die Wirtschaftlichkeit des hier implementierten sowie aktueller Buchungssysteme, kann jedoch nicht genau ermittelt werden. Als Näherungswert, werden die Kosten herangezogen, die benötigt werden um das System mit den Amazon Web Services zu realisieren. Da die Ausgaben für die Anwendungsebene des Buchungssystems unabhängig von der Persistenzschicht sind, werden hier nur die Kosten für die relationalen Datenbanken beziehungsweise das DFS berücksichtigt. 
+Zu guter Letzt soll die Wirtschaftlichkeit des Systems betrachtet werden. Skalierbarkeit, Ausfallsicherheit und Leistung der SeaweedFS-basierten Lösung scheinen die Anforderungen eines Buchungssystem gut zu erfüllen. Wenn jedoch der Preis dafür die Kosten aktueller Systeme übersteigt, ist der Umstieg für Banken weniger attraktiv. Die Wirtschaftlichkeit des hier implementierten sowie aktueller Buchungssysteme, kann jedoch nicht genau ermittelt werden. Als Näherungswert, werden die Kosten herangezogen, die benötigt werden um das System mit den Amazon Web Services zu realisieren. Da die Ausgaben für die Anwendungsebene des Buchungssystems unabhängig von der Persistenzschicht sind, werden hier nur die Kosten für die relationalen Datenbanken beziehungsweise das DFS berücksichtigt. Alle Preise beziehen sich auf Maschinen die in London stehen sollen.
 
-Für SeaweedFS werden Amazon-Elastic-Compute-Cloud Instanzen (EC2-Instanzen) genutzt \cite{EC2}. Dabei handelt es sich generell um normale Server, die aber über eine Web-Service-Oberfläche einfach konfiguriert oder skaliert werden können. Als Speichermedium dient ihnen der Amazon Elastic Block Store (EBS) \cite{EBS}. Auch dieser lässt sich leicht skalieren und liefert von Haus aus eine Replikation der Daten um Ausfälle zu verhindern. Da die Arbeitslast immer auf mehrere Store Machines verteilt wird, werden für diese keine besonders starken Maschinen benötigt. Eine Store Machine wird daher mit einer m4.xlarge-EC2-Instanz abgebildet. Vier CPUs sowie 16 Gigabyte Hauptspeicher sollten für die Verwaltung von Volumes ausreichen. Das Directory sowie der Filer werden auf einer m4.2xlarge-EC2-Instanz gehostet. Diese besitzt acht CPUs und 32 Gigabyte Arbeitsspeicher. Sowohl Directory als auch Filer sind in der Verarbeitung nahezu jeder Anfrage involviert und benötigen daher mehr Leistung als die Store Machines. Als EBS werden durchsatzoptimierte Festplatten genutzt, die pro Monat und Gigabyte 0.029 Dollar kosten. Für die relationale Datenbank zum Speichern des Kontostandes sowie der ausstehenden Buchungen kommt der Amazon Relational Database Service (RDS) zum Einsatz \cite{RDS}. Da eine durchgängige Last an der Datenbank zu erwarten ist, können die Instanzen als Reserved Instances gebucht werden. Dabei bezahlt man eine Datenbankinstanz für bis zu drei Jahre im voraus. Der Stundenpreis ist so deutlich geringer, als bei einer On-Demand-Buchung von Datenbanken. Jedoch müssen die Kosten auch gezahlt werden, wenn die Instanz nicht genutzt wird. Für die Datenbank zum Speichern der Kontostände und der ausstehenden Buchungen wird eine db.m4.4xlarge-RDS-Instanz mit PostgreSQL gewählt. Diese verfügt über 16 CPUs sowie 64 Gigabyte Hauptspeicher. Da die relationale Datenbank ein Kernelement zum Erstellen von Konten sowie Buchungen bildet, wird diese Leistung benötigt. Als Speicherkapazität sollte ein Terabyte genügen. Die relationale Datenbank wird als eine Reserved Instance mit einer einmaligen Zahlung für einen Zeitraum von drei Jahren gebucht. Zusätzlich wird die Multi-AZ-Bereitstellungsoption eingeplant. Diese stellt sicher, dass beim Ausfall der Hauptdatenbank eine synchron replizierte sekundäre Datenbank die Anfragen beantwortet. Gerade für Banken ist diese Sicherheit sehr relevant.
+Für SeaweedFS werden Amazon-Elastic-Compute-Cloud Instanzen (EC2-Instanzen) genutzt \cite{EC2}. Dabei handelt es sich generell um normale Server, die aber über eine Web-Service-Oberfläche einfach konfiguriert oder skaliert werden können. Eine Store Machine wird mit einer speicheroptimierten d2.2xlarge-EC2-Instanz abgebildet. Acht CPUs sowie 61 Gigabyte Hauptspeicher sollten für die Verwaltung von zwölf Terabyte Festplattenspeicher genügen. Das Directory sowie der Filer werden auf einer m4.4xlarge-EC2-Instanz gehostet. Diese besitzt 16 CPUs und 64 Gigabyte Arbeitsspeicher. Sowohl Directory als auch Filer sind in der Verarbeitung nahezu jeder Anfrage involviert und benötigen daher mehr Leistung als die Store Machines. Für die relationale Datenbank zum Speichern des Kontostandes sowie der ausstehenden Buchungen kommt der Amazon Relational Database Service (RDS) zum Einsatz \cite{RDS}. Hier wird eine db.m4.4xlarge-RDS-Instanz mit PostgreSQL gewählt. Diese verfügt über 16 CPUs sowie 64 Gigabyte Hauptspeicher. Da die relationale Datenbank ein Kernelement zum Erstellen von Konten sowie Buchungen bildet, wird diese Leistung benötigt. Als Speicherkapazität sollte ein Terabyte genügen. Zusätzlich wird die Multi-AZ-Bereitstellungsoption eingeplant. Diese stellt sicher, dass beim Ausfall der Hauptdatenbank eine synchron replizierte sekundäre Datenbank die Anfragen beantwortet. Gerade für Banken ist diese Sicherheit sehr relevant.
+Sowohl die RDS- als auch die EC2-Instanzen werden als Reserved Instances mit einer einmaligen Zahlung für drei Jahre gebucht. Der Stundenpreis ist so deutlich geringer, als bei einer On-Demand-Buchung. Jedoch müssen die Kosten auch gezahlt werden, wenn die Instanz nicht genutzt wird.
 
 Die Datenbankkonfiguration für das SeaweedFS-basierte System kann auch für das rein auf einer relationalen Datenbank basierte System genutzt werden. Da hier jedoch eine höhere Skalierung des RDBMS zu erwarten ist, kann die Leistung einer einzelnen Instanz verringert werden. Deswegen kommen hier db.m4.2xlarge-RDS-Instanzen mit jeweils acht CPUs sowie 32 Gigabyte Arbeitsspeicher zum Einsatz. 
 
 
-Abbildung \ref{costsAmazon} zeigt, wie sich die jährlichen Kosten der beiden so aufgestellten Systeme bei steigendem nutzbaren Speicher entwickeln. Durch die Replikation der Dateien in SeaweedFS kann nicht die Gesamtkapazität des Systems zum Ablegen neuer Daten genutzt werden. In dem hier angewendeten Beispiel wird jede Datei auf zwei Replikas abgebildet. Fünf Terabyte nutzbarer Speicher entspricht demnach eigentlich zehn Terabyte an verfügbaren Speicher. Um die Gefahr eines Single Point of Failures durch Directory und Filer zu verringern wurde hier bereits jeweils eine zweite Instanz mit eingerechnet. In diesem Beispiel verwaltet eine EC2-Instanz in Kombination mit einem EBS Volume jeweils fünf Terabyte an nutzbaren Speicher im SeaweedFS-basierten System. Im PostgreSQL-basierten System ist eine RDS-Instanz für die Verwaltung von fünf Terabyte zuständig. Für die 50 Terabyte Speicherkapazität werden also entweder 10 EC2-Instanzen sowie 10 EBS Volumes benötigt oder 10 RDS-Instanzen. 
+Abbildung \ref{costsAmazon} zeigt, wie sich die jährlichen Kosten der beiden so aufgestellten Systeme bei steigendem nutzbaren Speicher entwickeln. Durch die Replikation der Dateien in SeaweedFS kann nicht die Gesamtkapazität des Systems zum Ablegen neuer Daten genutzt werden. In dem hier angewendeten Beispiel wird jede Datei auf drei Store Machines abgebildet. Sechs Terabyte nutzbarer Speicher entspricht demnach eigentlich 36 Terabyte an verfügbaren Speicher. Um die Gefahr eines Single Point of Failures durch Directory und Filer zu verringern, wurde hier bereits jeweils eine zweite Instanz mit eingerechnet. In diesem Beispiel verwaltet eine EC2-Instanz jeweils vier Terabyte an nutzbaren Speicher im SeaweedFS-basierten System. Im PostgreSQL-basierten System ist eine RDS-Instanz für sechs Terabyte nutzbaren Speicher zuständig. Für die 60 Terabyte Speicherkapazität werden also entweder 15 EC2-Instanzen oder 10 RDS-Instanzen benötigt. 
 
-Wie die Abbildung \ref{costsAmazon} zeigt, sind die Initialkosten des SeaweedFS-basierten Systems höher, als die des rein PostgreSQL-basierten Systems. Das kommt dadurch zustande, dass auch für wenige Daten bereits ein komplettes DFS sowie eine PostgreSQL-Datenbank benötigt wird. Da diese aber nur eine geringe Datenmenge verwaltet, muss sie bei der Skalierung des Gesamtsystems nicht mitwachsen. Die Kosten steigen also nur durch das Hinzufügen weiterer Store Machines in Form von ESD2-Instanzen und ESB Volumes. Da diese aber deutlich günstiger als eine RDS-Instanz sind, fällt das SeaweedFS-basierte System bereits bei 20 Terabyte günstiger aus als das rein PostgreSQL-basierte System. Bei 50 Terabyte beträgt dieser Kostenunterschied bereits über 30 \%. Bezogen auf die Kosten der Banken die in Kapitel \ref{problems} aufgezeigt wurden, könnte so ein Preis von etwa 9 Euro pro Konto erzielt werden. Die Kosten traditioneller Buchungssysteme liegen bei etwa 13 Euro pro Konto. Je größer die zu speichernde Datenmenge wird, desto größer wird der Preisunterschied zwischen den beiden Systemen.
+Wie die Abbildung \ref{costsAmazon} zeigt, sind die Initialkosten des SeaweedFS-basierten Systems minimal höher, als die des rein PostgreSQL-basierten Systems. Bei einer kleineren Datenmenge als zwölf Terabyte, ist das Betreiben des SeaweedFS-basierten Systems teurer. Das kommt dadurch zustande, dass auch für wenige Daten bereits ein komplettes DFS sowie eine PostgreSQL-Datenbank benötigt wird. Da diese aber nur eine geringe Datenmenge verwaltet, muss sie bei der Skalierung des Gesamtsystems nicht mitwachsen. Die Kosten steigen also nur durch das Hinzufügen weiterer Store Machines in Form von EC2-Instanzen. Da diese aber deutlich günstiger als eine RDS-Instanz sind, fällt das SeaweedFS-basierte System bei mehr als zwölf Terabyte bereits günstiger aus, als das rein PostgreSQL-basierte System. Bei 60 Terabyte beträgt dieser Kostenunterschied bereits über 50 \%. Bezogen auf die Kosten der Banken die in Kapitel \ref{problems} aufgezeigt wurden, könnte so ein Preis von etwa 6 Euro pro Konto erzielt werden. Die Kosten traditioneller Buchungssysteme liegen bei etwa 13 Euro pro Konto. Je größer die zu speichernde Datenmenge wird, desto größer wird der Preisunterschied zwischen den beiden Systemen.
 
 \begin{filecontents}{date11.dat}
 date  value
-1     32209.08
-2     41620.68
-3     60443.88
-4     79267.08
-5     98090.28
-6     116913.48
+1     49170.63
+2     63973.53
+3     78776.43
+4     93556.93
+5     108077.91
 \end{filecontents}
 
 \begin{filecontents}{date12.dat}
 date  value
-1     17556
-2     35112
-3     70224
-4     105336
-5     140217.6
-6     174372
+1     46725.03
+2     93350
+3     139880.13
+4     185931.73
+5     231381.34
 \end{filecontents}
 
 
@@ -1150,9 +1150,9 @@ date  value
 \begin{tikzpicture}
 \begin{axis}[
 xtick=data,
-ytick={40000, 80000, 120000, 160000},
-yticklabels={40000, 80000, 120000, 160000},
-xticklabels={5TB,10TB,20TB,30TB,40TB,50TB},
+ytick={40000, 80000, 120000, 160000, 200000, 240000},
+yticklabels={40000, 80000, 120000, 160000, 200000, 240000},
+xticklabels={12TB,24TB,36TB,48TB,60TB},
 legend entries={SeaweedFS mit EC2, PostgreSQL mit RDS },
 legend pos={south east},
 scaled ticks=false,
@@ -1169,7 +1169,7 @@ ylabel={Jährliche Kosten in Dollar},
 \end{figure}
 
 \chapter{Ausblick}
-Das entwickelte Konzept beschäftige sich vor allem mit der Skalierbarkeit und Ausfallsicherheit von Buchungssystemen. Doch auch das Thema Sicherheit ist für Banken von großer Bedeutung. Die Verschlüsselung einzelner Buchungen oder eines ganzen Buckets, könnte das System vor unberechtigten Zugriffen schützen. Dazu wird jedoch eine ausgeklügelte Schlüsselverwaltung und eine sichere Verschlüsselung benötigt. Um den Effekt des entworfenen DFS auf ein Buchungssystem messbar zu machen, muss das DFS entwickelt werden. Danach lässt sich ermitteln, welche Größen der Buckets und welche Anzahl an Checkpoints in einem Bucket Index File die besten Ergebnisse liefern. Die Analyse des Nutzerverhaltens könnte hier auch von Nutzen sein. Auch die Last, die die relationale Datenbank tatsächlich zu stemmen hat muss erst noch ermittelt werden. 
+Das entwickelte Konzept beschäftige sich vor allem mit der Skalierbarkeit und Ausfallsicherheit von Buchungssystemen. Doch auch das Thema Sicherheit ist für Banken von großer Bedeutung. Die Verschlüsselung einzelner Buchungen oder eines ganzen Buckets, könnte das System vor unberechtigten Zugriffen schützen. Dazu wird jedoch eine ausgeklügelte Schlüsselverwaltung und eine sichere Verschlüsselung benötigt. Um den Effekt des entworfenen DFS auf ein Buchungssystem messbar zu machen, muss das DFS entwickelt werden. Danach lässt sich ermitteln, welche Größen der Buckets und welche Anzahl an Checkpoints in einem Bucket Index File die besten Ergebnisse liefern. Eine Analyse des Nutzerverhaltens könnte hier sinnvoll sein. Auch die Last, die die relationale Datenbank tatsächlich zu stemmen hat muss erst noch ermittelt werden. 
 
 Besonders spannend dürfte jedoch die Frage sein, ob in der Realität ein DFS nicht ausreicht, um die Buchungen für einfache Girokonten abzudecken. Nur in seltenen Fällen kommen gleichzeitige Buchungen bei Konten normaler Endkunden vor. Wenn der Betrieb eines DFS entsprechend günstig ist, könnten die seltenen Fälle einer ungewollten Überbuchung von der Bank selbst gedeckt werden. Weitere Forschung in diesem Gebiet ist jedoch ohne genaue Informationen zu den Ausgaben für die Buchungssysteme und die Risikobereitschaft der Banken nur schwer möglich.
 
@@ -1182,10 +1182,10 @@ Bei der Erarbeitung des Konzepts wurde zunächst in Frage gestellt, ob überhaup
 
 Das so entworfene System musste noch nur beispielhaft implementiert werden, um die Leistung messbar zu machen. Die Entwicklung eines DFS war aber im Rahmen dieser Arbeit zu aufwendig und da es kein DFS gibt, das dem im Konzept beschrieben entspricht, musste auf das am besten passende ausgewichen werden. Dieses sollte wie Haystack mit vielen kleinen Dateien umgehen können. Da Haystack nicht öffentlich zugänglich ist, wurde SeaweedFS gewählt, welches auf den Prinzipien von Haystack entwickelt wurde. Die drei Punkte aus dem Konzept, die realisiert werden mussten waren, das Ablegen mehrerer kleiner Dateien in eine große Datei, das codieren des logischen Zusammenhanges der Dateien in einen Schlüssel beziehungsweise Dateipfad und die Suche nach Dateien. Die letzten beiden Punkte konnte SeaweedFS alleine über den Filer lösen. Das Zusammenführen mehrerer Buchungen wurde über den Account-Updater realisiert. Die Buchungen wurden jedoch nicht in Buckets sondern in \textit{AccountInfos} gefüllt. Das implementierte System hat eine große Ähnlichkeit mit dem entworfenen Konzept. Es gibt aber dennoch einige Unterschiede. So können Daten nicht an bestehende Dateien angehängt werden. Um Daten zu ändern, werden diese immer komplett überschrieben. Des Weiteren muss eine \textit{AccountInfo} immer als ganzes gelesen werden, um  and die darin enthaltenen Buchungen zu gelangen. Aus diesem Grund, können in einer \textit{AccountInfo} nicht so viele Buchungen wie in einem Bucket gebündelt werden. 
 
-Das implementierte System wurde dann in den Bereichen Interoperabilität, Skalierbarkeit, Performanz, Ausfallsicherheit und Wirtschaftlichkeit evaluiert. Die einfache Erweiterung der Speicherkapazität durch das Hinzufügen weiterer Store Machines, räumt Banken die Möglichkeit ein, Buchungen über einen sehr langen Zeitraum persistent zu speichern. Auch die Leistung des entwickelten Systems scheint ausreichend um als Grundlage für ein Buchungssystem zu dienen. Dabei ist jedoch zu beachten, dass für die optimale Performanz das Zugriffsverhalten der Kunden bekannt sein muss. Die Wahl der Maximalanzahl der Buchungen die gebündelt werden, ist kritisch für die Antwortzeit des Systems. Die Ausfallsicherheit dürfte den aktuellen Systemen in nichts nachstehen. Durch Replikation und das Starten neuer Directories, Filer und Store Machines, kann ein Single Point of Failure vermieden und das System ohne Einbußen der Performanz skaliert werden. Der größte Vorteil des entwickelten Systems dürfte jedoch die Kosteneffizienz sein. Die Kostenersparnis von bis zu 30 \% tritt zwar erst bei größeren Datenmengen auf, jedoch sollten Banken bereits über genügend Daten verfügen, um sich diesen Vorteil zu Nutze machen zu können. Die Investition in das System kann auch im Zuge der Vorbereitung auf die PSD2 sinnvoll sein. Spätestens, wenn diese in Kraft tritt, müssen Banken einen Plan haben, um mit der stark wachsenden Datenmenge und den Anfragen vieler Clients umzugehen. Dennoch ist der Einsatz eines DFS als Grundlage eines Buchungssystems mit Risiko verbunden. Banken haben keine Erfahrung mit der Technologie und es ist ungewiss, ob sich die Vorteile eines DFS in der Realität auch entfalten können. Außerdem hat das entwickelte System mehr Systemkomponenten als traditionellen Buchungssysteme. Backend, Account-Updater, Filer, Directories und Store Machines müssen einzelnen verwaltet und gewartet werden. Wenn mehr Elemente in einen Prozess involviert sind, können sich jedoch auch leichter Fehler einschleichen. Bevor ein System wie das entwickelte eingesetzt werden kann, müssten lange Testreihen durchgeführt werden. Des Weiteren müssen Banken ihren Kunden ein gewisses Maß an Inkonsistenz bei der Anzeige der Buchungen zumuten. 
+Das implementierte System wurde dann in den Bereichen Interoperabilität, Skalierbarkeit, Performanz, Ausfallsicherheit und Wirtschaftlichkeit evaluiert. Die einfache Erweiterung der Speicherkapazität durch das Hinzufügen weiterer Store Machines, räumt Banken die Möglichkeit ein, Buchungen über einen sehr langen Zeitraum persistent zu speichern. Auch die Leistung des entwickelten Systems scheint ausreichend um als Grundlage für ein Buchungssystem zu dienen. Dabei ist jedoch zu beachten, dass für die optimale Performanz das Zugriffsverhalten der Kunden bekannt sein muss. Die Wahl der Maximalanzahl der Buchungen die gebündelt werden, ist kritisch für die Antwortzeit des Systems. Die Ausfallsicherheit dürfte den aktuellen Systemen in nichts nachstehen. Durch Replikation und das Starten neuer Directories, Filer und Store Machines, kann ein Single Point of Failure vermieden und das System ohne Einbußen der Performanz skaliert werden. Der größte Vorteil des entwickelten Systems dürfte jedoch die Kosteneffizienz sein. Die Kostenersparnis von mehr als 50 \% tritt zwar erst bei größeren Datenmengen auf, jedoch sollten Banken bereits über genügend Daten verfügen, um sich diesen Vorteil zu Nutze machen zu können. Die Investition in das System kann auch im Zuge der Vorbereitung auf die PSD2 sinnvoll sein. Spätestens, wenn diese in Kraft tritt, müssen Banken einen Plan haben, um mit der stark wachsenden Datenmenge und den Anfragen vieler Clients umzugehen. Dennoch ist der Einsatz eines DFS als Grundlage eines Buchungssystems mit Risiko verbunden. Banken haben keine Erfahrung mit der Technologie und es ist ungewiss, ob sich die Vorteile eines DFS in der Realität auch entfalten können. Außerdem hat das entwickelte System mehr Systemkomponenten als traditionelle Buchungssysteme. Backend, Account-Updater, Filer, Directories und Store Machines müssen einzeln verwaltet und gewartet werden. Wenn mehr Elemente in einem Prozess involviert sind, können sich jedoch auch leichter Fehler einschleichen. Bevor ein System, wie das entwickelte, eingesetzt werden kann, müssten lange Testreihen durchgeführt werden. Des Weiteren müssen Banken ihren Kunden ein gewisses Maß an Inkonsistenz bei der Anzeige der Buchungen zumuten. 
 
 Der Schritt zum Einsatz eines DFS als Grundlage eines Buchungssystem ist sicher nicht leicht, jedoch trotzdem vielversprechend. Es ermöglicht die Skalierung von Buchungssystemen auf vielen Gebieten.
-Zum einen die Skalierung der Speicherkapazität durch das Hinzufügen neuer OSDs. Zum anderen die Skalierung der Ausfallsicherheit durch den Einsatz von Replikas und nur geringen Abhängigkeiten der Systemkomponenten untereinander. Selbst wenn OSDs oder ein Master nicht erreichbar sind, können Anfragen durch Shadow Master und andere OSDs beantwortet werden. Und zu guter Letzt die Skalierbarkeit auf der Kostenebene. Durch den Einsatz eines DFS wird die Verwaltung großer Datenmengen bezahlbar.
+Zum einen die Skalierung der Speicherkapazität durch das Hinzufügen neuer OSDs. Zum anderen die Skalierung der Ausfallsicherheit durch den Einsatz von Replikas und nur geringen Abhängigkeiten der Systemkomponenten untereinander. Selbst wenn OSDs oder ein Master nicht erreichbar sind, können Anfragen durch Shadow Master und andere OSDs beantwortet werden. Und zu guter Letzt, die Skalierbarkeit auf der Kostenebene. Durch den Einsatz eines DFS wird die Verwaltung großer Datenmengen bezahlbar.
 
 \backmatter
 %%%%%%%%%%%%%%%%%%%
