@@ -52,7 +52,6 @@
 \newcommand\blankpage{%
     \null
     \thispagestyle{empty}%
-    \addtocounter{page}{-1}%
     \newpage}
 
 %%%%%%%%%%%%%%%%%%%
@@ -199,25 +198,25 @@ pdfkeywords={Keywords}
 %\lowertitleback{ }
 
 \maketitle
+\afterpage{\blankpage}
 
 %%%%%%%%%%%%%%%%%%%
 %% abstract
 %%%%%%%%%%%%%%%%%%%
 
-\section*{Überblick}
-\addcontentsline{toc}{chapter}{Überblick}
+\chapter*{Überblick}
+
 Die Systeme der Banken sind alt und über lange Zeit gewachsen. Seit jeher steht dabei das Konto und das Buchungssystem im Zentrum aller Bankprozesse. Neue Vertriebswege wie Online- und Mobile-Banking stellen jedoch Anforderung an die Buchungssysteme der Banken, die mit der aktuellen Technologie nur schwer zu meistern sind. Besonders die benötigte Skalierung, um tausende Anfragen zu beantworten, ist teuer und schwer umzusetzen. Systeme, die deutlich günstiger und leichter zu skalieren sind, sind Distributed File Systeme (DFS). Firmen wie Google, Facebook und Yahoo setzen sie schon länger zur Verwaltung großer Datenmengen ein. Diese Arbeit versucht, ein Konzept zu entwickeln, dass die Vorteile eines DFS für ein Banking-Buchungssystem zugänglich macht.
 
 
-\section*{Abstract}
-\addcontentsline{toc}{chapter}{Abstract}
+\chapter*{Abstract}
 
-The IT systems of banks are ancient and have grown over a long period of time. Since then the account and the booking system formed the core of all banking processes. But new channels of distribution like online or mobile banking cause challenges which are hard to solve with the currently used technology. Especially the urgently needed scalability for processing thousands of requests is hard to manage and drives the costs up. Systems capable of cheap and easy scaling are distributed file systems. Companies like Google, Facebook or Yahoo utilize them already to handle big amounts of data. In this thesis we introduce a concept which enables the banking booking system, to make use of the capabilities of a distributed file system.
+The IT systems of banks are ancient and have grown over a long period of time. Since then the account and the booking system formed the core of all banking processes. But new channels of distribution like online or mobile banking cause challenges which are hard to solve with the currently used technology. Especially the urgently needed scalability for processing thousands of requests is hard to manage and drives up the IT transaction costs. Systems capable of cheap and easy scaling are distributed file systems. Companies like Google, Facebook or Yahoo utilize them already to handle big amounts of data. In this thesis we introduce a concept which enables the banking booking system, to make use of the capabilities of a distributed file system and to drive .
 
-\newpage
 \chapter*{Danksagung}
-\addcontentsline{toc}{chapter}{Danksagung}
+
 Das Anfertigen dieser Arbeit war zeitaufwendig und anstrengend. Ohne die Hilfe einiger guter Freunde und Bekannte wäre das nicht möglich gewesen. Ich möchte mich hier bei Herrn Professor Doktor Steffen Heinzl bedanken. Sein Interesse an der Arbeit und seine konstruktive Kritik waren motivierend und haben Lust am Schreiben gemacht. Besonderer Dank geht auch an Herrn Francis Pouatcha von der adorsys GmbH \& Co. KG, der die Idee für das Thema dieser Arbeit hatte. Genauso wie ich hat er unzählige Stunden in das Lesen der Arbeit und das Entwickeln neuer Ideen gesteckt. Besonders seine unkonventionelle Herangehensweise zum Lösen von Problemen hat mich sehr geprägt. Zuletzt, möchte ich meinen tiefsten Dank für alle Korrekturleser und Unterstützer der Arbeit aussprechen. Eure Geduld und Hilfe, hat mich beruhigt und den ein oder anderen Rechtschreibfehler aufgespürt. Vielen Dank an meinen Bruder Herbert Braun, an Laura Vogel, Timo Schäfer und Tobias Fertig.
+
 
 \afterpage{\blankpage}
 %%%%%%%%%%%%%%%%%%%
@@ -259,7 +258,7 @@ Das Kapitel zur Implementierung beschreibt die schrittweise Umsetzung des Konzep
 
 Im Kapitel zur Evaluierung wird die Zielsetzung der Arbeit mit den Funktionen der Testimplementierung verglichen und das Ergebnis bewertet. Das letzte Kapitel zeigt Möglichkeiten und Erweiterungen der Lösung auf, bevor in der Zusammenfassung ein abschließendes Fazit gebildet wird.
 
-
+\afterpage{\blankpage}
 \chapter{Vorgehensweise}
 Die in der Einführung beschriebene Zielsetzung kann sich leider nur auf sehr wenige wissenschaftliche Quellen stützen. Gerade die benötigte Information zu den Banken ist rar gesät und kann meist nur aus Artikeln von News-Seiten oder Blogs entnommen werden. Angaben zur Datenmenge von Banken oder den Betriebskosten eines Kernbankensystems können daher nur geschätzt werden. Die Entwicklung des Konzepts und die darauf folgende Bewertung begründet sich also mehr auf Analysen und Annahmen als auf empirisch bewiesene Tatsachen. Alle technologiebezogenen Annahmen werden jedoch durch wissenschaftliche Arbeiten, welche sich mit den Grenzen und Möglichkeiten eben dieser Technologie beschäftigen, untermauert.
 
@@ -290,6 +289,7 @@ Die Bewertung der im Rahmen dieser Arbeit entwickelten Lösung kann nur auf Basi
 Der Einfluss eines \acp{dfs} auf ein Buchungssystem soll aus diesen Kriterien hervorgehen.
 Daher soll auch die Technologie, der aktuell bei Banken eingesetzten Buchungssysteme anhand dieser Kriterien bewertet werden. Im direkten Vergleich zeigt sich am besten, was der Einsatz eines \acp{dfs} für ein Buchungssystem leistet.
 
+\afterpage{\blankpage}
 \chapter{Wesen und Probleme eines Buchungssystems}
 \label{bookingSystem}
 Die Anwendungssysteme der Banken sind alt und über lange Zeit gewachsen. Wo 1970 die ersten spartenbezogenen Programme nur bei Kredit-, Einlagegeschäften und
@@ -484,6 +484,7 @@ Zusätzlich ist bei einem sehr hohen Durchsatz von Transaktionen nicht zu erwart
 Die Kosten der IT-Systeme sind jedoch auch jetzt schon ein Problem für die Banken. Eine exakte Ermittlung der Ausgaben für die IT der Banken stellt sich als schwierig heraus, da die Zahlen in der Regel nicht öffentlich gemacht werden. Die Schätzungen der IT-Kosten beziehen sich daher auf die in der Gewinn- und Verlustrechnung öffentlich gemachten Aufwendungen für den Verwaltungsaufwand der Banken. Experten schätzen, dass 15 - 20 \% davon für die IT anfallen. Demnach lagen die Kosten für die Anwendungssysteme der Deutschen Bank im Jahre 2004 bei rund 2,6 Milliarden Euro und die der HypoVereinsbank bei mehr als 900 Millionen Euro. Die zehn größten Banken in Deutschland haben 2004 etwa 6,5 Milliarden Euro für die Instandhaltung und Entwicklung ihrer IT ausgegeben. 
 Etwa 24 \% davon fließen alleine in die Buchungsdienste. Gerechnet auf die Girokonten ergibt das Jahresausgaben von etwa 14 Euro pro Girokonto \cite[29-39]{ITidF}. Diese Zahl lässt sich auch durch den Umsatz und die betreuten Konten von Kernbanksystem-Anbietern validieren. So betreute die Fiducia IT 2005 insgesamt 52,6 Millionen Kundenkonten und erzielte einen Jahresumsatz von etwa 728,6 Millionen Euro. Das entspricht einem Preis von 13,80 Euro pro Konto. Die Finanz Informatik erzielte im Jahr 2005 bei 58 Millionen Kundenkonten einen Umsatz von 723 Millionen Euro, was einem Kontopreis von etwa 12,50 Euro entspricht. Dabei fließen nur etwa 20 \% in die Entwicklung neuer Dienste. Die restlichen Kosten fallen für Betrieb und Instandhaltung an. Langfristig sind diese Ausgaben für Banken nicht tragbar \cite[75-91]{ITidF}\cite{SuPdIiB}\cite[41-42]{DdF}\cite{bankingsCosts}. 
 
+\cleardoublepage
 \chapter{Grundlagen eines DFS}
 Zu den Skalierungsproblemen und dem hohen Kostenfaktor der Anwendungssysteme der Banken tragen auch die ACID-basierten Datenbanksysteme bei. Auch wenn die Funktionalität, die ACID mit sich bringt, nur für einen Bruchteil der Prozesse benötigt wird, wird so das gesamte System ausgebremst und in den Skalierungsmöglichkeiten eingeschränkt \cite{salt}.
 Systeme, die hingegen die Skalierbarkeit und Verfügbarkeit gegenüber der Konsistenz priorisieren, funktionieren nach dem BASE-Prinzip (Basically Available, Soft State, Eventual consistency). Häufig weisen diese Systeme niedrigere Betriebskosten im Vergleich zu den ACID-Alternativen auf \cite{clusterBASE}.
@@ -622,6 +623,7 @@ ylabel={Zeit zum Herunterladen in Sekunden},
 \end{center}
 \end{figure}
 
+\cleardoublepage
 \chapter{Konzept}
 \label{concept}
 Der Erhalt eines konsistenten Zustandes, sowie die geringe Datenmenge einer einzelnen Buchung scheinen nicht mit den Möglichkeiten eines DFS vereinbar. Wenn der Kontostand eines Kontos nicht sicher bestimmt werden kann, kann die Durchführung einer Buchung den Kontostand unter null bringen. Das darf aber zum Beispiel bei einem Girokonto nicht passieren. Aber gelten diese Bedingungen denn für alle Kontoarten? In diesem Kapitel soll ein Konzept entwickelt werden, das die Stärken eines DFS für ein Buchungssystem zugänglich macht. Dabei wird die Relevanz der strong consistency in Frage gestellt und eine Lösung für das Speichern der kleinen Datenmenge einer Buchung erarbeitet. Zuletzt soll ein Designvorschlag für das Buchungssystem gemacht werden, der eine extreme Skalierbarkeit sowie ausreichende Konsistenz liefert.
@@ -711,12 +713,13 @@ Der Sinn dieses Konzepts für ein DFS und des darauf aufsetzenden Buchungssystem
 
 Das hier entworfene Buchungssystem und das dazugehörige DFS lässt sich auf mehrere Arten skalieren. Die Anwendungsschicht ist zunächst einmal komplett unabhängig vom DFS und der relationalen Datenbank. Demnach lassen sich beliebig viele Instanzen davon parallel hochfahren. Je nach Anzahl der Anfragen, kann dies sogar lastbezogen geschehen. Wenn sehr viele Anfragen auf das Buchungssystem einprasseln, lassen sich mehrere Anwendungsschichten hochfahren, wenn die Anzahl der Anfragen wieder sinkt, können die zusätzlichen Systeme wieder entfernt werden. Die Skalierung der relationalen Datenbank kann entweder über Replikation erfolgen, also mehrere gleiche Systeme, oder über eine klare Aufteilung der Zuständigkeit auf mehrere Datenbanksysteme, sodass ein Datenbanksystem immer nur für einen bestimmten BIC-Bereich zuständig ist und nur Anfragen beantwortet, die diesen Bereich betreffen. Das DFS lässt sich, wie bereits beschrieben, einfach durch das Hinzufügen weiterer OSDs oder das Aufstocken des Hauptspeichers des Masters skalieren. Dabei ist zu erwähnen, dass die Skalierung des DFS sowie die Skalierung der Anwendungsschicht der Buchungssysteme komplett unabhängig voneinander stattfinden kann. Die Anwendungsschicht braucht keine Anpassungen vorzunehmen, um die gesteigerte Kapazität des DFS zu nutzen. Demnach wäre es auch denkbar, das DFS auf Systeme von Drittanbietern auszulagern. Sollten die Möglichkeiten der Skalierung des DFS an ihre Grenzen stoßen, kann ähnlich wie bei der relationalen Datenbank die Zuständigkeit für die Buchungen anhand des BICs auf mehrere DFS aufgeteilt werden.
 
+\cleardoublepage
 \chapter{Implementierung}
 \label{implementation}
 Ein DFS, so wie es im Kapitel \ref{oneOnlyDFS} beschrieben wurde, existiert aktuell nicht. Da die Entwicklung eines DFS aber äußert komplex und zeitaufwendig ist, wird für die beispielhafte Implementierung auf ein bereits bestehendes DFS, das am besten auf die erarbeiteten Anforderungen passt, zurückgegriffen. Hauptkriterium ist dabei das Speichern und Lesen vieler kleiner Dateien. Von den beiden betrachteten DFS bietet sich dafür Haystack an. Leider gibt es jedoch von Haystack keine öffentlich zugängliche Version. Das Open-Source-Projekt-SeaweedFS wurde aber auf Basis des Haystack-Artikels entwickelt und weist dementsprechend eine große Ähnlichkeit in Architektur und Leistung zu seinem Vorbild auf. Bevor in diesem Kapitel näher auf die Anwendung und Details von SeaweedFS eingegangen wird, soll die Programmiersprache Go kurz angerissen werden. In ihr wurden sowohl SeaweedFS und die extra für diese Arbeit angefertigte Client-Bibliothek für SeaweedFS als auch alle anderen Systemkomponenten implementiert. Auch der Aufbau des entwickelten Systems und der Ablauf beim Lesen und Schreiben einer Buchung wird in diesem Kapitel dargelegt. Bei der hier besprochenen Implementierung handelt es sich mehr um einen Proof of Concept als um eine allumfassende Lösung zur Umstrukturierung von Buchungssystemen. Der Schwerpunkt lag auf Skalierung und Ausfallsicherheit. Der Sicherheit der Daten und der Entwicklung einer Nutzerauthentifizierung wurden im Rahmen dieser Implementierung keine Aufmerksamkeit geschenkt.
 
 \section{Golang}
-Go ist eine von Robert Griesemer, Rob Pike und Ken Thompson bei Google entwickelte Programmiersprache. 2009 wurde der Quellcode Open Source. Als Grund, wieso nach der Meinung der Autoren von Go eine neue Sprache gebraucht wurde, geben sie die Frustration über bestehende Programmiersprachen zur Systementwicklung an \cite{gofaq}. Demnach musste man sich immer zwischen Leichtigkeit der Programmierung, schneller Kompilierung oder schneller Ausführung entscheiden. Go soll all diese Kritikpunkte erfüllen und die  leichtgewichtige Programmierung, die von interpretierten dynamisch typisierten Programmiersprachen bekannt ist, mit den Vorteilen einer statischen Typisierung kombinieren. Zusätzlich soll Go in der Lage sein, auch große Programme schnell zu kompilieren und auszuführen. Dazu bringt Go schon von Haus aus viele Werkzeuge mit, die die Entwicklung erleichtern sollen. Neben dem Kompilieren der Programme für unterschiedliche Betriebssysteme können Unit-Tests sowie Benchmark-Tests bereits mit der Standard-Runtime von Go entwickelt werden. Zusätzlich liefert Go eine Art Linter, eine vordefinierte Quellcodeformatierung, sowie eine automatisch generierte Projektdokumentation.
+Go ist eine von Robert Griesemer, Rob Pike und Ken Thompson bei Google entwickelte Programmiersprache. 2009 wurde der Quellcode Open Source. Als Grund, wieso nach der Meinung der Autoren von Go eine neue Sprache gebraucht wurde, geben sie die Frustration über bestehende Programmiersprachen zur Systementwicklung an \cite{gofaq}. Demnach musste man sich immer zwischen Leichtigkeit der Programmierung, schneller Kompilierung oder schneller Ausführung entscheiden. Go soll all diese Kritikpunkte erfüllen und die  leichtgewichtige Programmierung, die von interpretierten dynamisch typisierten Programmiersprachen bekannt ist, mit den Vorteilen einer statischen Typisierung kombinieren. Zusätzlich soll Go in der Lage sein, auch große Programme schnell zu kompilieren und auszuführen. Dazu bringt Go schon von Haus aus viele Werkzeuge mit, die die Entwicklung erleichtern sollen. Neben dem Kompilieren der Programme für unterschiedliche Betriebssysteme können Unit-Tests sowie Benchmark-Tests bereits mit der Standard-Runtime von Go entwickelt werden. Zusätzlich liefert Go eine Art Linter, eine vordefinierte Quellcodeformatierung, sowie eine automatisch generierte Projektdokumentation \cite{gocommands}.
 
 Bei Go handelt es sich um eine prozedurale Programmiersprache, die sich in ihrer Syntax stark an C orientiert. Der Code für \textit{Hello World} in Go ist in Abbildung \ref{lst:helloworld} zu sehen.
 \begin{lstlisting}[label=lst:helloworld,
@@ -983,6 +986,7 @@ Zum Abschluss des Kapitels soll noch ein letztes Mal der Schreib- und Lesevorgan
 
 Möchte der Client nun Buchungen für einen bestimmten Zeitraum lesen, stellt er diese Anfrage an die entsprechende Schnittstelle des Backends. Dieses sammelt über den Filer von SeaweedFS alle \textit{AccountInfos}, die möglicherweise Buchungen für den gewünschten Zeitraum halten, und fasst diese in eine große \textit{AccountInfo} zusammen. Diese wird dem Client als Antwort zurückgeliefert.
 
+\cleardoublepage
 \chapter{Evaluation}
 Das implementierte System soll in der Evaluation genauer untersucht werden. Die Bereiche, die analysiert werden, sind Interoperabilität, Skalierbarkeit, Performanz, Ausfallsicherheit und Wirtschaftlichkeit. Vergleiche zu aktuellen Buchungssystemen können nur in Bezug auf die Persistenzschicht erfolgen. Informationen zum technischen Aufbau sowie Leistung der Anwendungsschicht eines Buchungssystems sind nicht bekannt. 
 
@@ -1174,11 +1178,15 @@ ylabel={Jährliche Kosten in Dollar},
 \end{center}
 \end{figure}
 
+\cleardoublepage
 \chapter{Ausblick}
 Das entwickelte Konzept beschäftigt sich vor allem mit der Skalierbarkeit und Ausfallsicherheit von Buchungssystemen. Doch auch das Thema Sicherheit ist für Banken von großer Bedeutung. Die Verschlüsselung einzelner Buchungen oder eines ganzen Buckets, könnte das System vor unberechtigten Zugriffen schützen. Dazu wird jedoch eine ausgeklügelte Schlüsselverwaltung und eine sichere Verschlüsselung benötigt. Um den Effekt des entworfenen DFS auf ein Buchungssystem messbar zu machen, muss das DFS erst entwickelt werden. Danach lässt sich ermitteln, welche Größen der Buckets und welche Anzahl an Checkpoints in einem Bucket Index File die besten Ergebnisse liefern. Eine Analyse des Nutzerverhaltens könnte hier sinnvoll sein. Auch die Last, die die relationale Datenbank tatsächlich zu stemmen hat, muss erst noch ermittelt werden. 
 
+Denkbar wäre auch, ein DFS als ein Buchungsarchiv zu nutzen. Alle Aufgaben des Buchungssystems, würden weiterhin über die aktuellen Systeme der Banken laufen. Das langfristige Lesen und Verwalten von Buchungen würde jedoch das DFS übernehmen. Banken könnten die Buchungen der Kunden so beliebig lange speichern, ohne dadurch Speicher und Leistung des Buchungssystem zu belagern.
+
 Besonders spannend dürfte jedoch die Frage sein, ob in der Realität ein DFS allein nicht ausreicht, um die Buchungen für einfache Girokonten abzudecken. Nur in seltenen Fällen kommen Buchungen so kurzzeitig nacheinander bei Konten normaler Endkunden vor, dass die Konsistenz davon betroffen wäre. Wenn der Betrieb eines DFS entsprechend günstig ist, könnten die seltenen Fälle einer ungewollten Überbuchung von der Bank selbst gedeckt werden. Weitere Forschung in diesem Gebiet ist jedoch ohne genaue Informationen zu den Ausgaben für die Buchungssysteme und die Risikobereitschaft der Banken nur schwer möglich.
 
+\afterpage{\blankpage}
 \chapter{Zusammenfassung}
 Ziel der Arbeit war, herauszufinden, welche Auswirkungen der Einsatz eines DFS als Persistenzschicht auf ein Buchungssystem hat. Dabei lag ein besonderes Augenmerk auf der Skalierbarkeit sowie Ausfallsicherheit. Dazu musste zunächst der Aufbau und historische Hintergrund aktueller Buchungssysteme verstanden werden. Von der Eigenentwicklung bis zum Einkauf der Systeme bei Drittanbietern hat das Buchungssystem immer eine tragende Rolle im Gesamtsystem der Banken gespielt. Die wichtigste Aufgabe ist dabei das Speichern der Buchungen. Auch die Verfügbarkeit der Systeme spielt eine große Rolle. Ist das System nicht erreichbar, können auch keine Buchungen durchgeführt werden. Die Probleme der Buchungssysteme mit den aktuellen Anforderungen, rechtfertigt bereits die Überlegung, eine andere Technologie als Persistenzschicht einzusetzen – ganz zu schweigen von der zusätzlichen Belastung durch die PSD2, die vor allem einen Anstieg der Lesezugriffe zur Folge haben wird. Hauptproblem ist, dass die aktuellen Systeme nicht beliebig skaliert werden können. Wen man es trotzdem versucht, verursacht das hohe Kosten. So fließen etwa 20 \% der Kosten für den Verwaltungsaufwand der Banken pro Jahr in die Banken-IT. 
 
@@ -1193,6 +1201,7 @@ Das implementierte System wurde dann in den Bereichen Interoperabilität, Skalie
 Der Schritt zum Einsatz eines DFS als Grundlage eines Buchungssystems ist sicher nicht leicht, jedoch trotzdem vielversprechend. Es ermöglicht die Skalierung von Buchungssystemen auf vielen Gebieten:
 zum einen die Skalierung der Speicherkapazität durch das Hinzufügen neuer OSDs, zum anderen die Skalierung der Ausfallsicherheit durch den Einsatz von Replikas und nur geringen Abhängigkeiten der Systemkomponenten untereinander. Selbst wenn OSDs oder ein Master nicht erreichbar sind, können Anfragen durch Shadow Master und andere OSDs beantwortet werden. Und zu guter Letzt, überzeugt das DFS durch die Skalierbarkeit auf der Kostenebene. Der Einsatz eines DFS macht die Verwaltung großer Datenmengen bezahlbar.
 
+\afterpage{\blankpage}
 \backmatter
 %%%%%%%%%%%%%%%%%%%
 %% create figure list
